@@ -1,0 +1,9 @@
+# to install all dependencies, run:
+# pip install -r requirements.txt
+
+
+tensorflow==2.20.0
+numpy
+matplotlib
+seaborn
+scikit-learn

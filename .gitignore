@@ -1,0 +1,90 @@
+####################################
+# OS / System
+####################################
+.DS_Store
+Thumbs.db
+
+####################################
+# IDEs
+####################################
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+####################################
+# ================================
+# Python / FastAPI
+# ================================
+####################################
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Python virtual environments
+env/
+venv/
+.venv/
+ai_env/
+
+# Environment variables
+.env
+
+####################################
+# ================================
+# YOLO / AI (HEAVY FILES)
+# ================================
+####################################
+*.pt
+*.pth
+*.onnx
+*.tflite
+
+runs/
+datasets/
+only_Split_Dataset/
+Split_AI_Model/
+testing/new_images/
+checkpoints/
+results/
+
+####################################
+# ================================
+# Flutter / Dart
+# ================================
+####################################
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+
+# Android
+android/.gradle/
+android/app/build/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# iOS
+ios/Pods/
+ios/Runner.xcworkspace/
+**/ios/Flutter/.last_build_id
+*.xcuserstate
+DerivedData/
+
+####################################
+# ================================
+# Misc
+####################################
+.atom/
+.history/
+.svn/
+.swiftpm/
+migrate_working_dir/
+tmp/
+temp/
