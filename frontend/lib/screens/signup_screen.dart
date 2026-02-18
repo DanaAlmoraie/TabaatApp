@@ -108,9 +108,9 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not get location.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Could not get location.')));
     }
   }
 
@@ -141,26 +141,31 @@ class _SignupScreenState extends State<SignupScreen> {
         longitude: _userLongitude,
       );
 
+      final userData = {
+        'name': name,
+        'email': email,
+        'role': _selectedRole!,
+        //'token': token, // لو عندك توكن من الـ API
+      };
+
       if (!mounted) return;
 
       final userName = (userJson['name'] ?? name).toString();
-      final roleValue =
-          (userJson['role'] ?? '').toString().toLowerCase().trim();
+      final roleValue = (userJson['role'] ?? '')
+          .toString()
+          .toLowerCase()
+          .trim();
 
       if (roleValue == 'farmer') {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (_) => FarmerHomePage(userName: userName),
-          ),
+          MaterialPageRoute(builder: (_) => FarmerHomePage()),
           (route) => false,
         );
       } else if (roleValue == 'shopper') {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (_) => HomePage(userName: userName),
-          ),
+          MaterialPageRoute(builder: (_) => ShopperHomePage()),
           (route) => false,
         );
       } else {
@@ -320,8 +325,9 @@ class _SignupScreenState extends State<SignupScreen> {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Please enter your email';
                               }
-                              final emailRegex =
-                                  RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                              final emailRegex = RegExp(
+                                r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
+                              );
                               if (!emailRegex.hasMatch(value.trim())) {
                                 return 'Please enter a valid email';
                               }
@@ -345,23 +351,23 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             controller: _passwordController,
                             obscureText: _obscurePassword,
-                            decoration:
-                                _fieldDecoration('Enter password').copyWith(
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  size: 20,
-                                  color: Colors.grey.shade500,
+                            decoration: _fieldDecoration('Enter password')
+                                .copyWith(
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      size: 20,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
-                              ),
-                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your password';
@@ -389,24 +395,24 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             controller: _confirmPasswordController,
                             obscureText: _obscureConfirmPassword,
-                            decoration:
-                                _fieldDecoration('Re-enter password').copyWith(
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscureConfirmPassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  size: 20,
-                                  color: Colors.grey.shade500,
+                            decoration: _fieldDecoration('Re-enter password')
+                                .copyWith(
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscureConfirmPassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      size: 20,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscureConfirmPassword =
+                                            !_obscureConfirmPassword;
+                                      });
+                                    },
+                                  ),
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureConfirmPassword =
-                                        !_obscureConfirmPassword;
-                                  });
-                                },
-                              ),
-                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please confirm your password';
@@ -458,7 +464,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           const SizedBox(height: 14),
 
-                          
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -469,11 +474,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (value == null) return;
 
                                   if (value) {
-                                    
                                     setState(() {
                                       _shareLocation = true;
                                     });
-                                   
+
                                     await _getCurrentLocation();
                                   } else {
                                     setState(() {

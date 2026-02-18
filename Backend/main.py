@@ -124,9 +124,13 @@ class ReminderCreate(BaseModel):
 # =====================================
 app = FastAPI(title="Taabat API")
 
+origins = [
+    "*"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins= origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -178,7 +182,7 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
 @app.post("/login", response_model=Token)
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
 
-    user = db.query(models.User).filter(models.User.email == form.username).first()
+    user = db.query(models.User).filter(models.User.email == (form.username).lower()).first()
 
     if not user or not verify_password(form.password, user.password):
         raise HTTPException(401, "Invalid email or password")
@@ -217,6 +221,14 @@ def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = 
 
     return {"message": "Farm added", "farm": farm}
 
+
+# ------------------------
+# Add Farm (Farmer Only)
+# ------------------------
+@app.post("/farms")
+def get_all_farms(db: Session = Depends(get_db)):
+    farms = db.query(Farm).filter(Farm.is_archived == False).all()
+    return farms
 
 @app.get("/farms/me")
 def get_my_farms(current=Depends(get_current_user), db: Session = Depends(get_db)):

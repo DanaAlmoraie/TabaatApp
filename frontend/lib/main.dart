@@ -9,6 +9,7 @@ late List<CameraDescription> cameras;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
+
   runApp(const TaabatApp());
 }
 
@@ -19,7 +20,7 @@ class AppColors {
 }
 
 class TaabatApp extends StatelessWidget {
-  const TaabatApp({Key? key}) : super(key: key);
+  const TaabatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +31,13 @@ class TaabatApp extends StatelessWidget {
         fontFamily: 'Roboto',
         scaffoldBackgroundColor: AppColors.background,
       ),
-      home: const LoginScreen(),
+
       routes: {
         '/camera': (context) => CameraScreen(camera: cameras.first),
+        '/login': (context) => const LoginScreen(),
       },
+
+      home: const LoginScreen(),
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/core/user_session.dart';
 import '../../services/api_service.dart';
 import '../screens/signup_screen.dart';
 import 'farmer_screen.dart';
 import '../screens/shoper_screen.dart';
 
-
 const Color kShopperGreen1 = Color.fromARGB(255, 90, 128, 90);
 const Color kShopperGreen2 = Color.fromARGB(255, 60, 156, 78);
-const Color kPrimaryAccent = Color(0xFFFF9F1C);  
+const Color kPrimaryAccent = Color(0xFFFF9F1C);
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -35,17 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
   InputDecoration _fieldDecoration(String hintText) {
     return InputDecoration(
       hintText: hintText,
-      hintStyle: TextStyle(
-        color: Colors.grey.shade500,
-        fontSize: 13,
-      ),
+      hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 13),
       filled: true,
       fillColor: Colors.white,
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
@@ -74,32 +68,38 @@ class _LoginScreenState extends State<LoginScreen> {
       final email = _emailController.text.trim();
       final password = _passwordController.text;
 
-      // 1) Login → token
-      final token = await ApiService.login(
+      final String token = await ApiService.login(
         email: email,
         password: password,
       );
 
-      // 2) getMe → role + name
       final me = await ApiService.getMe(token);
-      final role = (me['role'] ?? '').toString().toLowerCase();
-      final userName = (me['name'] ?? '').toString();
+
+      UserSession.setUser({
+        'id': me['user_id'] ?? 0,
+        'name': me['name'] ?? '',
+        'email': me['email'] ?? '',
+        'role': me['role'] ?? 'shopper',
+        'token': token,
+        'location': me['location'] ?? '',
+        'latitude': (me['latitude'] ?? 0).toDouble(),
+        'longitude': (me['longitude'] ?? 0).toDouble(),
+      });
 
       if (!mounted) return;
+
+      final role = UserSession.role;
+      //final role = (me['role'] ?? '').toString().toLowerCase();
 
       if (role == 'farmer') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (_) => FarmerHomePage(userName: userName),
-          ),
+          MaterialPageRoute(builder: (_) => const FarmerHomePage()),
         );
       } else if (role == 'shopper') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (_) => HomePage(userName: userName),
-          ),
+          MaterialPageRoute(builder: (_) => const ShopperHomePage()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -108,9 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign in failed: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Sign in failed: $e')));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -139,8 +139,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     bottomRight: Radius.circular(25),
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 18,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -173,10 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 4),
                         Text(
                           'Welcome back to the Taabat app 🌱',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
                         ),
                       ],
                     ),
@@ -192,7 +191,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 18, vertical: 22),
+                      horizontal: 18,
+                      vertical: 22,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(18),
@@ -224,14 +225,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            decoration:
-                                _fieldDecoration('name@email.com'),
+                            decoration: _fieldDecoration('name@email.com'),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Please enter your email';
                               }
-                              final emailRegex =
-                                  RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                              final emailRegex = RegExp(
+                                r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
+                              );
                               if (!emailRegex.hasMatch(value.trim())) {
                                 return 'Please enter a valid email';
                               }
@@ -257,21 +258,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             obscureText: _obscurePassword,
                             decoration: _fieldDecoration('Enter password')
                                 .copyWith(
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  size: 20,
-                                  color: Colors.grey.shade500,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      size: 20,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscurePassword = !_obscurePassword;
+                                      });
+                                    },
+                                  ),
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscurePassword = !_obscurePassword;
-                                  });
-                                },
-                              ),
-                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your password';
@@ -291,8 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
                                 minimumSize: const Size(0, 0),
-                                tapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               child: const Text(
                                 'Forgot Password?',
@@ -309,8 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: double.infinity,
                             height: 46,
                             child: ElevatedButton(
-                              onPressed:
-                                  _isSubmitting ? null : _handleLogin,
+                              onPressed: _isSubmitting ? null : _handleLogin,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kPrimaryAccent,
                                 foregroundColor: Colors.white,

@@ -1,46 +1,79 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/core/user_session.dart';
+import 'package:frontend/services/api_service.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'farms_screen.dart';
-
-
+import 'profile_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:camera/camera.dart';
 import '../main.dart';
 import 'camera_screen.dart';
 
-class HomePage extends StatefulWidget {
-  final String userName;
-
-  const HomePage({super.key, required this.userName});
+class ShopperHomePage extends StatefulWidget {
+  const ShopperHomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ShopperHomePage> createState() => _ShopperHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ShopperHomePageState extends State<ShopperHomePage> {
   int _currentIndex = 0;
+  Map<String, dynamic>? userData;
+  List farms = [];
+  bool loadingFarms = true;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('en', null);
+
+    Future.microtask(() {
+      setState(() {
+        userData = UserSession.user;
+      });
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadFarms();
+    });
+  }
+
+  Future<void> loadFarms() async {
+    try {
+      final data = await ApiService.getAllFarms();
+      setState(() {
+        farms = data;
+        loadingFarms = false;
+      });
+    } catch (e) {
+      setState(() {
+        loadingFarms = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (userData == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
       bottomNavigationBar: _buildBottomNavBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _buildCameraButton(),
+      //floatingActionButton: _buildCameraButton(),
+      floatingActionButton: kIsWeb ? null : _buildCameraButton(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // الهيدر
             _buildHeader(),
-
-            // بوكس الفروت كلاسفاي
             _buildClassifyBox(context),
-
             const SizedBox(height: 25), // مساحة بين البوكسين
-
-            // بوكس اكسبلور فارم
             _buildFarmSection(context),
-
-            const SizedBox(height: 100),
+            const SizedBox(height: 100), // مساحة بين البوكسين
           ],
         ),
       ),
@@ -90,7 +123,7 @@ class _HomePageState extends State<HomePage> {
               // اسم المستخدم
               Expanded(
                 child: Text(
-                  "Hello ${widget.userName}",
+                  "Hello ${userData?['name']}",
                   style: const TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -168,10 +201,7 @@ class _HomePageState extends State<HomePage> {
               offset: const Offset(0, 3),
             ),
           ],
-          border: Border.all(
-            color: Colors.orange[200]!,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.orange[200]!, width: 1),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,10 +215,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     color: Colors.orange[100],
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.orange[300]!,
-                      width: 1.5,
-                    ),
+                    border: Border.all(color: Colors.orange[300]!, width: 1.5),
                   ),
                   child: Icon(
                     Icons.camera_alt_outlined,
@@ -222,11 +249,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             // السهم البرتقالي
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.orange[700],
-              size: 20,
-            ),
+            Icon(Icons.arrow_forward_ios, color: Colors.orange[700], size: 20),
           ],
         ),
       ),
@@ -235,6 +258,14 @@ class _HomePageState extends State<HomePage> {
 
   // ================= FARM SECTION =================
   Widget _buildFarmSection(BuildContext context) {
+    // عرض المزارع غير المؤرشفة
+    if (loadingFarms) {
+      return const Padding(
+        padding: EdgeInsets.all(30),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -250,14 +281,12 @@ class _HomePageState extends State<HomePage> {
               offset: const Offset(0, 3),
             ),
           ],
-          border: Border.all(
-            color: Colors.grey[200]!,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.grey[200]!, width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // العنوان
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -274,11 +303,11 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const FarmsPage()),
-                    );
+                    ).then((_) {
+                      loadFarms();
+                    });
                   },
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  ),
+
                   child: Text(
                     "View All",
                     style: TextStyle(
@@ -290,43 +319,47 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
 
-           
-
-            const SizedBox(height: 16),
-
-            // المزرعة الأولى
-            _buildFarmListItem(
-              "Green Valley Farm",
-              "Apples, Oranges, Bananas",
-              "2.5 km",
-            ),
             const SizedBox(height: 12),
 
-            // المزرعة الثانية
-            _buildFarmListItem(
-              "Organic Hills Farm",
-              "Strawberries, Blueberries, Raspberries",
-              "3.8 km",
+            /// إذا ما فيه مزارع
+            if (farms.isEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Center(child: Text("No farms available yet")),
+              ),
+            Column(
+              children: farms.take(3).map<Widget>((farm) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _buildFarmListItemDynamic(
+                    name: farm['name'] ?? 'Unknown Farm',
+                    location: farm['location'] ?? 'Unknown location',
+                    fruits: List<String>.from(farm['fruits'] ?? []),
+                    distance: _fakeDistance(),
+                  ),
+                );
+              }).toList(),
             ),
-            const SizedBox(height: 4),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFarmListItem(String title, String fruits, String distance) {
+  /// عنصر المزرعة (ديناميكي)
+  Widget _buildFarmListItemDynamic({
+    required String name,
+    required String location,
+    required List<String> fruits,
+    required String distance,
+  }) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
+        color: Colors.white.withOpacity(0.95),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.green.withOpacity(0.2),
-          width: 1.1,
-        ),
+        border: Border.all(color: Colors.green.withOpacity(0.2), width: 1.1),
       ),
       child: Row(
         children: [
@@ -337,10 +370,7 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
               color: Colors.green[50],
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: Colors.green[200]!,
-                width: 1.5,
-              ),
+              border: Border.all(color: Colors.green[200]!, width: 1.5),
             ),
             child: Icon(
               Icons.location_on_outlined,
@@ -349,32 +379,64 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(width: 12),
+
+          // النصوص
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // اسم المزرعة
                 Text(
-                  title,
+                  name,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.green[900],
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 3),
+
+                // الموقع كنص
                 Text(
-                  fruits,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.green[700],
-                  ),
+                  location,
+                  style: TextStyle(fontSize: 11, color: Colors.grey[700]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                ),
+
+                const SizedBox(height: 6),
+
+                // الفواكه
+                Wrap(
+                  spacing: 6,
+                  children: fruits.take(3).map((f) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        f,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.green[800],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+
+          const SizedBox(width: 10),
+
+          // المسافة
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -396,10 +458,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 2),
               Text(
                 "Distance",
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.green[700],
-                ),
+                style: TextStyle(fontSize: 10, color: Colors.green[700]),
               ),
             ],
           ),
@@ -408,23 +467,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// مسافة وهمية مؤقتة (لين نربط GPS)
+  String _fakeDistance() {
+    final distances = ["1.2 km", "2.5 km", "3.1 km", "4.0 km"];
+    distances.shuffle();
+    return distances.first;
+  }
+
   // ================= CAMERA BUTTON =================
   Widget _buildCameraButton() {
     return Container(
       width: 60,
       height: 60,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white,
-          width: 3,
-        ),
+        border: Border.all(color: Colors.white, width: 3),
         gradient: LinearGradient(
           begin: Alignment.centerRight,
           end: Alignment.centerLeft,
-          colors: [
-            Colors.orange[700]!,
-            Colors.amber[600]!,
-          ],
+          colors: [Colors.orange[700]!, Colors.amber[600]!],
         ),
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
@@ -452,9 +512,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: const Icon(Icons.camera_alt, size: 26),
       ),
     );
@@ -463,7 +521,7 @@ class _HomePageState extends State<HomePage> {
   // ================= BOTTOM NAV BAR =================
   Widget _buildBottomNavBar() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       decoration: BoxDecoration(
         color: const Color(0xFF0D1B2A),
         borderRadius: BorderRadius.circular(24),
@@ -481,21 +539,42 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildNavItem(Icons.grid_view_outlined, Icons.grid_view, 'Home', 0),
-            _buildNavItem(Icons.person_outline, Icons.person, 'Profile', 2),
+            _buildNavItem(
+              Icons.person_outline,
+              Icons.person,
+              'Profile',
+              2,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProfilePage(userData: userData!),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
+  // ================= NAV ITEM =================
   Widget _buildNavItem(
-      IconData iconOutlined, IconData iconFilled, String label, int index) {
+    IconData iconOutlined,
+    IconData iconFilled,
+    String label,
+    int index, {
+    VoidCallback? onTap, // ← مهم جداً
+  }) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
+      onTap:
+          onTap ??
+          () {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -517,11 +596,14 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 2),
           Text(
             label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Colors.white,
               fontSize: 9,
-              fontWeight:
-                  _currentIndex == index ? FontWeight.bold : FontWeight.normal,
+              fontWeight: _currentIndex == index
+                  ? FontWeight.bold
+                  : FontWeight.normal,
             ),
           ),
         ],
