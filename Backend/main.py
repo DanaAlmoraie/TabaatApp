@@ -3,7 +3,7 @@
 # ================================
 
 from datetime import datetime, timedelta
-from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -22,7 +22,8 @@ load_dotenv()
 # =====================================
 # Database Initialization
 # =====================================
-models.Base.metadata.create_all(bind=engine)
+# مهم: تأكدي الجداول تنشأ على Supabase
+# --------------------Base.metadata.create_all(bind=engine)
 
 # =====================================
 # Authentication Setup
@@ -36,7 +37,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 if not SECRET_KEY:
-    raise ValueError("SECRET_KEY is missing! Check .env file.")
+    raise ValueError("SECRET_KEY is missing in .env")
 
 
 # =====================================
@@ -57,7 +58,6 @@ def create_access_token(data: dict):
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    """Decode token + get user from DB"""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
@@ -77,9 +77,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 
 # =====================================
-# Pydantic Schemas (must match SQL)
+# Pydantic Schemas
 # =====================================
-
 class UserBase(BaseModel):
     name: str
     email: EmailStr
@@ -87,7 +86,7 @@ class UserBase(BaseModel):
     location: str | None = None
     latitude: float | None = None
     longitude: float | None = None
-    role: str   # Farmer / Shopper
+    role: str
 
 
 class UserOut(BaseModel):
@@ -123,7 +122,7 @@ class ReminderCreate(BaseModel):
 
 
 # =====================================
-# FastAPI App Initialization
+# FastAPI App
 # =====================================
 app = FastAPI(title="Taabat API")
 
@@ -141,10 +140,6 @@ app.add_middleware(
 )
 
 
-# =====================================
-# Endpoints
-# =====================================
-
 @app.get("/")
 def root():
     return {"message": "Taabat API is running 🚜🍎"}
@@ -155,7 +150,6 @@ def root():
 # ------------------------
 @app.post("/register", response_model=UserOut)
 def register_user(user: UserBase, db: Session = Depends(get_db)):
-
     exists = db.query(models.User).filter(models.User.email == user.email).first()
     if exists:
         raise HTTPException(400, "Email already exists")
@@ -170,7 +164,7 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
         latitude=user.latitude,
         longitude=user.longitude,
         role=user.role,
-        created_at=datetime.utcnow().date(),
+        created_at=datetime.utcnow(),
     )
 
     db.add(db_user)
@@ -185,8 +179,12 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
 # ------------------------
 @app.post("/login", response_model=Token)
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+<<<<<<< HEAD
 
     user = db.query(models.User).filter(models.User.email == (form.username).lower()).first()
+=======
+    user = db.query(models.User).filter(models.User.email == form.username).first()
+>>>>>>> 6807c90404d57c6e8f4e3f64d15ebc6ad802fa12
 
     if not user or not verify_password(form.password, user.password):
         raise HTTPException(401, "Invalid email or password")
@@ -196,7 +194,7 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
 
 
 # ------------------------
-# Get My Profile
+# My Profile
 # ------------------------
 @app.get("/me", response_model=UserOut)
 def get_me(current=Depends(get_current_user)):
@@ -204,11 +202,10 @@ def get_me(current=Depends(get_current_user)):
 
 
 # ------------------------
-# Add Farm (Farmer Only)
+# Add Farm
 # ------------------------
 @app.post("/farms")
 def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = Depends(get_db)):
-
     if current.role != "Farmer":
         raise HTTPException(403, "Only farmers can add farms")
 
@@ -240,23 +237,15 @@ def get_all_farms(db: Session = Depends(get_db)):
 # ------------------------
 @app.get("/farms/me")
 def get_my_farms(current=Depends(get_current_user), db: Session = Depends(get_db)):
-    farms = db.query(models.Farm).filter(models.Farm.user_id == current.user_id).all()
-    return farms
+    return db.query(models.Farm).filter(models.Farm.user_id == current.user_id).all()
 
 
 # ------------------------
-# Upload Fruit Image (Placeholder)
+# Upload Image (placeholder)
 # ------------------------
 @app.post("/fruit-images")
-def upload_fruit_image(
-    file: UploadFile = File(...),
-    current=Depends(get_current_user),
-):
-    return {
-        "message": "Image uploaded successfully",
-        "filename": file.filename,
-        "user": current.user_id
-    }
+def upload_fruit_image(file: UploadFile = File(...), current=Depends(get_current_user)):
+    return {"message": "Image uploaded", "filename": file.filename, "user": current.user_id}
 
 
 # ------------------------
@@ -264,13 +253,12 @@ def upload_fruit_image(
 # ------------------------
 @app.post("/reminders")
 def add_reminder(data: ReminderCreate, current=Depends(get_current_user), db: Session = Depends(get_db)):
-
     reminder = models.Reminder(
         user_id=current.user_id,
         message=data.message,
         image_id=data.image_id,
         farm_id=data.farm_id,
-        date_sent=datetime.utcnow().date(),
+        date_sent=datetime.utcnow(),
         is_read=False,
     )
 

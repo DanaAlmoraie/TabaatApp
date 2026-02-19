@@ -24,6 +24,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
 
+
     # نفس الأعمدة اللي في SQL
     location = Column(String)
     latitude = Column(Float)
@@ -47,6 +48,7 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan",
     )
+    
 
 
 # ===========================
