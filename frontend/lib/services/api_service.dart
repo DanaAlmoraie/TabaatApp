@@ -104,19 +104,18 @@ class ApiService {
     final response = await http.put(
       url,
       headers: {
-        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
       },
       body: jsonEncode(body),
     );
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    } else {
+    if (response.statusCode != 200) {
       throw Exception(
         "Update profile failed [${response.statusCode}]: ${response.body}",
       );
     }
+    return jsonDecode(response.body);
   }
 
   // ========================== ADD FARM (To: Farmer) ====================
@@ -124,7 +123,7 @@ class ApiService {
     required String name,
     required String location,
     required List<String> fruits,
-    required bool isArchived,
+    required bool isOpen,
   }) async {
     final token = UserSession.user['token'];
 
@@ -140,7 +139,7 @@ class ApiService {
         "name": name,
         "location": location,
         "fruits": fruits,
-        "is_archived": isArchived,
+        "isOpen": isOpen,
       }),
     );
 

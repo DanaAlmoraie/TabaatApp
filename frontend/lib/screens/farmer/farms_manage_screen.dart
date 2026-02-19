@@ -138,7 +138,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                                     ),
                                   ),
 
-                                  if ((farm['is_archived'] ?? false) == true)
+                                  if ((farm['is_open'] ?? false) == true)
                                     const Icon(
                                       Icons.visibility_off_rounded,
                                       size: 18,

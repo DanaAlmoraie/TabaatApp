@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:frontend/core/mock_farms_db.dart';
 import 'package:frontend/services/api_service.dart';
-import 'farm_model.dart';
+import '../../moldels/farm_model.dart';
 
 class AddEditFarmScreen extends StatefulWidget {
   final Farm? farm;
@@ -17,7 +16,7 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
 
   late TextEditingController nameController;
   late TextEditingController locationController;
-  bool isArchived = false;
+  bool isOpen = true;
 
   // Predefined list of fruits
   final List<String> allFruits = [
@@ -43,7 +42,7 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
       text: widget.farm?.location ?? '',
     );
     selectedFruits = widget.farm?.fruits ?? [];
-    isArchived = widget.farm?.isArchived ?? false;
+    isOpen = widget.farm!.isOpen;
   }
 
   // ================= GRADIENT SWITCH =================
@@ -208,10 +207,10 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                       ],
                     ),
                     gradientSwitch(
-                      value: !isArchived,
+                      value: isOpen,
                       onChanged: (val) {
                         setState(() {
-                          isArchived = !val;
+                          isOpen = val;
                         });
                       },
                     ),
@@ -245,7 +244,7 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                           name: nameController.text.trim(),
                           location: locationController.text.trim(),
                           fruits: selectedFruits,
-                          isArchived: isArchived,
+                          isOpen: isOpen,
                         );
 
                         if (!mounted) return;

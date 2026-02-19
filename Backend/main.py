@@ -11,6 +11,7 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 from dotenv import load_dotenv
+from typing import List
 import os
 
 import models
@@ -111,6 +112,8 @@ class Token(BaseModel):
 class FarmCreate(BaseModel):
     name: str
     location: str
+    fruits: List[str]
+    is_open: bool = False
 
 
 class ReminderCreate(BaseModel):
@@ -125,7 +128,8 @@ class ReminderCreate(BaseModel):
 app = FastAPI(title="Taabat API")
 
 origins = [
-    "*"
+    "http://localhost",
+    "http://127.0.0.1:3000"
 ]
 
 app.add_middleware(
@@ -212,7 +216,7 @@ def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = 
         name=data.name,
         location=data.location,
         user_id=current.user_id,
-        is_open=True
+        is_open=data.is_open
     )
 
     db.add(farm)
@@ -223,13 +227,17 @@ def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = 
 
 
 # ------------------------
-# Add Farm (Farmer Only)
+# Get all open farms (shopper)
 # ------------------------
-@app.post("/farms")
+@app.get("/farms")
 def get_all_farms(db: Session = Depends(get_db)):
-    farms = db.query(Farm).filter(Farm.is_archived == False).all()
+
+    farms = db.query(models.Farm).filter(models.Farm.is_open == True).all()
     return farms
 
+# ------------------------
+# Get My Farms (Farmer dashboard)
+# ------------------------
 @app.get("/farms/me")
 def get_my_farms(current=Depends(get_current_user), db: Session = Depends(get_db)):
     farms = db.query(models.Farm).filter(models.Farm.user_id == current.user_id).all()

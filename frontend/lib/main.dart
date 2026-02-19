@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-
-import 'screens/login_screen.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/camera_screen.dart';
 
 late List<CameraDescription> cameras;

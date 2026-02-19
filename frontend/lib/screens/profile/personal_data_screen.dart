@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/user_session.dart';
-import '../widgets/profile_header.dart';
+import 'package:frontend/services/api_service.dart';
+import '../../widgets/profile_header.dart';
 
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
@@ -80,7 +81,38 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           borderRadius: BorderRadius.circular(24),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final token = UserSession.token;
+                        if (name.text.trim().length < 3) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Name too short")),
+                          );
+                          return;
+                        }
+                        final emailRegex = RegExp(
+                          r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
+                        );
+                        if (!emailRegex.hasMatch(email.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Invalid email")),
+                          );
+                          return;
+                        }
+                        try {
+                          await ApiService.updateUserProfile(
+                            name: name.text.trim(),
+                            email: email.text.trim(),
+                            password: password.text.isEmpty
+                                ? null
+                                : password.text,
+                            token: token,
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
+                        }
+                      },
                       child: const Text(
                         'Save Changes',
                         style: TextStyle(fontSize: 16),

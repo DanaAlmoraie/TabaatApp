@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../screens/farmer_screen.dart';
-import '../screens/shoper_screen.dart';
+import '../screens/farmer/farmer_screen.dart';
+import '../screens/shopper/shoper_screen.dart';
 import 'user_session.dart';
 
 Widget getHomeByRole() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/profile_header.dart';
-import '../core/user_session.dart';
+import '../../widgets/profile_header.dart';
+import '../../core/user_session.dart';
 
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
