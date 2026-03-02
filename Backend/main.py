@@ -113,6 +113,21 @@ class FarmCreate(BaseModel):
     location: str
     fruits: List[str]
     is_open: bool = False
+    latitude: float | None
+    longitude: float | None
+
+class FarmOut(BaseModel):
+    farm_id: int
+    name: str
+    location: str | None
+    fruits: List[str] | None = []
+    is_open: bool
+    latitude: float | None
+    longitude: float | None
+    distance_km: float | None = None
+
+    class Config:
+        from_attributes = True
 
 
 class ReminderCreate(BaseModel):
@@ -179,12 +194,8 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
 # ------------------------
 @app.post("/login", response_model=Token)
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-<<<<<<< HEAD
 
     user = db.query(models.User).filter(models.User.email == (form.username).lower()).first()
-=======
-    user = db.query(models.User).filter(models.User.email == form.username).first()
->>>>>>> 6807c90404d57c6e8f4e3f64d15ebc6ad802fa12
 
     if not user or not verify_password(form.password, user.password):
         raise HTTPException(401, "Invalid email or password")
@@ -213,7 +224,9 @@ def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = 
         name=data.name,
         location=data.location,
         user_id=current.user_id,
-        is_open=data.is_open
+        is_open=data.is_open,
+        latitude=data.latitude,
+        longitude=data.longitude,
     )
 
     db.add(farm)
@@ -223,14 +236,66 @@ def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = 
     return {"message": "Farm added", "farm": farm}
 
 
+from math import radians, cos, sin, asin, sqrt
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371  # KM
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+    c = 2 * asin(sqrt(a))
+    return R * c
+
+
 # ------------------------
-# Get all open farms (shopper)
+# Get all open farms (shopper) - AUTH REQUIRED + SORTED BY DISTANCE
 # ------------------------
-@app.get("/farms")
-def get_all_farms(db: Session = Depends(get_db)):
+@app.get("/farms", response_model=List[FarmOut])
+def get_all_farms(
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # لازم اليوزر يكون محدد لوكيشنه
+    if current.latitude is None or current.longitude is None:
+        raise HTTPException(400, "User location not set")
 
     farms = db.query(models.Farm).filter(models.Farm.is_open == True).all()
-    return farms
+
+    result = []
+    for farm in farms:
+        # لو المزرعة ما عندها لوكيشن نخليها آخر شيء
+        if farm.latitude is None or farm.longitude is None:
+            result.append({
+                "farm_id": farm.farm_id,
+                "name": farm.name,
+                "location": farm.location,
+                "fruits": getattr(farm, "fruits", []),
+                "is_open": farm.is_open,
+                "latitude": farm.latitude,
+                "longitude": farm.longitude,
+                "distance_km": None
+            })
+            continue
+
+        dist = haversine(
+            current.latitude, current.longitude,
+            farm.latitude, farm.longitude
+        )
+
+        result.append({
+            "farm_id": farm.farm_id,
+            "name": farm.name,
+            "location": farm.location,
+            "fruits": getattr(farm, "fruits", []),
+            "is_open": farm.is_open,
+            "latitude": farm.latitude,
+            "longitude": farm.longitude,
+            "distance_km": round(dist, 2)
+        })
+
+    # ترتيب: اللي عندها مسافة أول، واللي بدون لوكيشن آخر
+    result.sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 10**9))
+    return result
 
 # ------------------------
 # Get My Farms (Farmer dashboard)
@@ -267,3 +332,140 @@ def add_reminder(data: ReminderCreate, current=Depends(get_current_user), db: Se
     db.refresh(reminder)
 
     return {"message": "Reminder added", "reminder": reminder}
+
+# =====================================================
+# LOCATION ENDPOINTS — START (added for location task)
+# =====================================================
+
+# ------------------------
+# Update My Location (User)
+# ------------------------
+class UpdateLocation(BaseModel):
+    latitude: float
+    longitude: float
+
+
+@app.patch("/users/me/location")
+def update_my_location(
+    data: UpdateLocation,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    current.latitude = data.latitude
+    current.longitude = data.longitude
+
+    db.commit()
+    db.refresh(current)
+
+    return {
+        "message": "User location updated",
+        "latitude": current.latitude,
+        "longitude": current.longitude
+    }
+
+
+# ------------------------
+# Update Farm Location (Farmer)
+# ------------------------
+@app.patch("/farms/{farm_id}/location")
+def update_farm_location(
+    farm_id: int,
+    data: UpdateLocation,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    farm = db.query(models.Farm).filter(models.Farm.farm_id == farm_id).first()
+
+    if not farm:
+        raise HTTPException(404, "Farm not found")
+
+    if farm.user_id != current.user_id:
+        raise HTTPException(403, "Not your farm")
+
+    farm.latitude = data.latitude
+    farm.longitude = data.longitude
+
+    db.commit()
+    db.refresh(farm)
+
+    return {
+        "message": "Farm location updated",
+        "farm_id": farm.farm_id,
+        "latitude": farm.latitude,
+        "longitude": farm.longitude
+    }
+
+
+# ------------------------
+# Get Nearby Farms (Shopper)
+# ------------------------
+from math import radians, cos, sin, asin, sqrt
+
+
+def haversine(lat1, lon1, lat2, lon2):
+    """
+    Calculate distance between two points in KM
+    """
+    R = 6371  # Earth radius in KM
+
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+    c = 2 * asin(sqrt(a))
+
+    return R * c
+
+
+@app.get("/farms/nearby")
+def get_nearby_farms(
+    radius_km: float = 10,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if current.latitude is None or current.longitude is None:
+        raise HTTPException(400, "User location not set")
+
+    farms = db.query(models.Farm).filter(
+        models.Farm.latitude.isnot(None),
+        models.Farm.longitude.isnot(None),
+        models.Farm.is_open == True
+    ).all()
+
+    nearby = []
+
+    for farm in farms:
+        distance = haversine(
+            current.latitude,
+            current.longitude,
+            farm.latitude,
+            farm.longitude
+        )
+
+        if distance <= radius_km:
+            nearby.append({
+                "farm_id": farm.farm_id,
+                "name": farm.name,
+                "location": farm.location,
+                "latitude": farm.latitude,
+                "longitude": farm.longitude,
+                "distance_km": round(distance, 2)
+            })
+
+    nearby.sort(key=lambda x: x["distance_km"])
+
+    return {
+        "user_location": {
+            "latitude": current.latitude,
+            "longitude": current.longitude
+        },
+        "radius_km": radius_km,
+        "farms_found": len(nearby),
+        "farms": nearby
+    }
+
+
+# =====================================================
+# LOCATION ENDPOINTS — END
+# =====================================================
+
