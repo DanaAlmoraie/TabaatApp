@@ -37,6 +37,8 @@ class _SignupScreenState extends State<SignupScreen> {
   double? _userLatitude;
   double? _userLongitude;
 
+  bool _isGettingLocation = false;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -92,25 +94,43 @@ class _SignupScreenState extends State<SignupScreen> {
     return true;
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<bool> _getCurrentLocation() async {
     final ok = await _ensureLocationPermission();
-    if (!ok) return;
+    if (!ok) return false;
+
+    setState(() => _isGettingLocation = true);
 
     try {
       final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
-      );
+      ).timeout(const Duration(seconds: 10));
 
-      if (!mounted) return;
+      if (!mounted) return false;
+
       setState(() {
         _userLatitude = position.latitude;
         _userLongitude = position.longitude;
+        _isGettingLocation = false;
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Location saved: (${_userLatitude!.toStringAsFixed(5)}, ${_userLongitude!.toStringAsFixed(5)})',
+          ),
+        ),
+      );
+
+      return true;
     } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Could not get location.')));
+      if (!mounted) return false;
+
+      setState(() => _isGettingLocation = false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not get location.')),
+      );
+      return false;
     }
   }
 
@@ -118,10 +138,23 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_selectedRole == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please select your role')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select your role')),
+      );
       return;
+    }
+
+    // ✅ لو اليوزر فعّل مشاركة اللوكيشن وما انحفظت الإحداثيات لسه
+    if (_shareLocation && (_userLatitude == null || _userLongitude == null)) {
+      await _getCurrentLocation(); // حاول يجيبها الآن
+
+      if (_userLatitude == null || _userLongitude == null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enable location to continue.')),
+        );
+        return; // لا تسوي register بدون لوكيشن
+      }
     }
 
     setState(() => _isSubmitting = true);
@@ -476,9 +509,20 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (value) {
                                     setState(() {
                                       _shareLocation = true;
+                                      _isSubmitting = true; // نخلي زر التسجيل يقفل مؤقتًا
                                     });
 
                                     await _getCurrentLocation();
+
+                                    if (!mounted) return;
+                                    setState(() => _isSubmitting = false);
+
+                                    if (_userLatitude == null || _userLongitude == null) {
+                                      setState(() => _shareLocation = false);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Could not get location. Try again.')),
+                                      );
+                                    }
                                   } else {
                                     setState(() {
                                       _shareLocation = false;
@@ -489,12 +533,24 @@ class _SignupScreenState extends State<SignupScreen> {
                                 },
                               ),
                               Expanded(
-                                child: Text(
-                                  'Share my GPS location to show nearby farms and services.',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade700,
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Share my GPS location to show nearby farms and services.',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                      ),
+                                    ),
+                                    if (_isGettingLocation)
+                                      const SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ],

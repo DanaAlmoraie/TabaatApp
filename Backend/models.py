@@ -61,6 +61,8 @@ class Farm(Base):
     user_id = Column(Integer, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False)
     name = Column(String, nullable=False)
     location = Column(String)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
     is_open = Column(Boolean, default=True)
 
     user = relationship("User", back_populates="farms")

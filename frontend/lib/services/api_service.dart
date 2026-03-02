@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const String baseUrl = String.fromEnvironment(
     'API_URL',
-    defaultValue: 'http://localhost:8000',
+    defaultValue: 'http://10.0.2.2:8000',
   );
   // ============ REGISTER ============
   static Future<Map<String, dynamic>> registerUser({
@@ -25,10 +25,14 @@ class ApiService {
       "email": email,
       "password": password,
       "role": role,
-      // backend عندك يستقبل location كـ نص ، فلو بنرسل GPS نخزّنه كنص
-      if (shareLocation && latitude != null && longitude != null)
-        "location": "$latitude,$longitude",
+      "location": shareLocation && latitude != null && longitude != null
+          ? "$latitude,$longitude"
+          : null,
+      "latitude": shareLocation ? latitude : null,
+      "longitude": shareLocation ? longitude : null,
     };
+
+    print("REGISTER body => ${jsonEncode(body)}"); // ✅ للتأكد
 
     final response = await http.post(
       url,
@@ -37,12 +41,9 @@ class ApiService {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      // هنا نرجّع Map حقيقية عشان ما يطيح عند userJson['role']
       return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
-      throw Exception(
-        "Register failed [${response.statusCode}]: ${response.body}",
-      );
+      throw Exception("Register failed [${response.statusCode}]: ${response.body}");
     }
   }
 
@@ -118,16 +119,29 @@ class ApiService {
     return jsonDecode(response.body);
   }
 
-  // ========================== ADD FARM (To: Farmer) ====================
+// ========================== ADD FARM (To: Farmer) ====================
   static Future<void> addFarm({
     required String name,
     required String location,
     required List<String> fruits,
     required bool isOpen,
+    required double latitude,
+    required double longitude,
   }) async {
     final token = UserSession.user['token'];
 
     final url = Uri.parse("$baseUrl/farms");
+
+    final body = {
+      "name": name,
+      "location": location,     // وصف نصي للمكان (مثلا JED)
+      "fruits": fruits,
+      "is_open": isOpen,        // ✅ لازم is_open مو isOpen
+      "latitude": latitude,     // ✅ جديد
+      "longitude": longitude,   // ✅ جديد
+    };
+
+    print("ADD FARM body => ${jsonEncode(body)}");
 
     final response = await http.post(
       url,
@@ -135,48 +149,11 @@ class ApiService {
         "Authorization": "Bearer $token",
         "Content-Type": "application/json",
       },
-      body: jsonEncode({
-        "name": name,
-        "location": location,
-        "fruits": fruits,
-        "isOpen": isOpen,
-      }),
+      body: jsonEncode(body),
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw Exception("Add farm failed: ${response.body}");
-    }
-  }
-
-  static Future<List<dynamic>> getMyFarms() async {
-    final token = UserSession.user['token'];
-
-    final url = Uri.parse("$baseUrl/farms/me");
-
-    final response = await http.get(
-      url,
-      headers: {"Authorization": "Bearer $token"},
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception("Failed to load my farms: ${response.body}");
-    }
-  }
-
-  static Future<void> deleteFarm(int farmId) async {
-    final token = UserSession.user['token'];
-
-    final url = Uri.parse("$baseUrl/farms/$farmId");
-
-    final response = await http.delete(
-      url,
-      headers: {"Authorization": "Bearer $token"},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception("Failed to delete farm");
     }
   }
 
@@ -194,4 +171,42 @@ class ApiService {
       throw Exception("Failed to load farms: ${response.body}");
     }
   }
+
+
+    // ========================== GET MY FARMS (Farmer) ====================
+  static Future<List<dynamic>> getMyFarms() async {
+    final token = UserSession.user['token'];
+
+    final url = Uri.parse("$baseUrl/farms/me");
+
+    final response = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as List<dynamic>;
+    } else {
+      throw Exception("Failed to load my farms: ${response.body}");
+    }
+  }
+
+  // ========================== DELETE FARM (Farmer) ====================
+  static Future<void> deleteFarm(int farmId) async {
+    final token = UserSession.user['token'];
+
+    final url = Uri.parse("$baseUrl/farms/$farmId");
+
+    final response = await http.delete(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to delete farm: ${response.body}");
+    }
+  }
+
+
+
 }
