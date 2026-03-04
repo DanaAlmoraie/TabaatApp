@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/profile_header.dart';
 import '../../core/user_session.dart';
+import '../../l10n/app_localizations.dart';
 
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
@@ -35,13 +36,16 @@ class _PermissionsPageState extends State<PermissionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: kBgColor,
       body: SafeArea(
         child: Column(
           children: [
             buildProfileHeader(
-              pageTitle: 'Permissions',
+              context: context,
+              pageTitle: tr.permissions,
               userName: widget.userData['name'] ?? '',
               showBack: true,
               onBack: () => Navigator.pop(context),
@@ -58,10 +62,10 @@ class _PermissionsPageState extends State<PermissionsPage> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  _permissionTile('Camera Access', camera, (v) {
+                  _permissionTile(tr.cameraAccess, camera, (v) {
                     setState(() => camera = v);
                   }),
-                  _permissionTile('Location Sharing', location, (v) {
+                  _permissionTile(tr.locationSharing, location, (v) {
                     setState(() => location = v);
                   }),
                 ],

@@ -142,16 +142,33 @@ class ReminderCreate(BaseModel):
 app = FastAPI(title="Taabat API")
 
 origins = [
-    "http://localhost",
-    "http://127.0.0.1:3000"
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5000",
+    "http://localhost:8080",
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:8000",
+
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins= origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins= ["*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization",
+        "Content-Type",
+        "Accept",
+        "Origin",
+        "User-Agent",
+        "DNT",
+        "Cache-Control",
+        "X-Mx-ReqToken",
+        "Keep-Alive",
+        "X-Requested-With",
+        "If-Modified-Since",
+    ],
+    expose_headers=["Authorization"],
 )
 
 
@@ -179,7 +196,7 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
         latitude=user.latitude,
         longitude=user.longitude,
         role=user.role,
-        created_at=datetime.utcnow(),
+        created_at=datetime.utcnow().date(),
     )
 
     db.add(db_user)
@@ -211,6 +228,44 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
 def get_me(current=Depends(get_current_user)):
     return current
 
+
+
+
+# ------------------------
+# Update My Profile
+# ------------------------
+class UpdateUser(BaseModel):
+    name: str
+    email: EmailStr
+    password: str | None = None
+    
+    
+
+@app.put("/me", response_model=UserOut)
+def update_me(
+    data: UpdateUser,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    current.name = data.name
+    current.email = data.email
+
+    email_exists = db.query(models.User)\
+        .filter(models.User.email == data.email, models.User.user_id != current.user_id)\
+        .first()
+
+    if email_exists:
+        raise HTTPException(400, "Email already used")
+
+    if data.password and data.password.strip() != "":
+        current.password = get_password_hash(data.password)
+
+
+    db.commit()
+    db.refresh(current)
+
+    return current
 
 # ------------------------
 # Add Farm

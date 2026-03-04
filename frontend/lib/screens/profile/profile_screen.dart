@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/role_router.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/screens/auth/login_screen.dart';
 import 'package:frontend/widgets/profile_header.dart';
 import 'personal_data_screen.dart';
 import 'permissions_data_screen.dart';
 import '../../core/user_session.dart';
+import '../../l10n/app_localizations.dart';
 
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
@@ -16,11 +19,16 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
+
+  /*
+  void _changeLanguage(BuildContext context, String langCode) {
+    MyApp.setLocale(context, locale(langCode));
+  }
+  */
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   int selectedAvatar = UserSession.avatarIndex;
-
   late final List<String> avatars;
   late final String role;
   late String userName;
@@ -28,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
     userName = widget.userData['name'] ?? 'User';
     role = widget.userData['role'] ?? 'farmer';
 
@@ -36,7 +45,10 @@ class _ProfilePageState extends State<ProfilePage> {
         : ['assets/Male-Shopper.png', 'assets/Female-Shopper.png'];
   }
 
+  // --------------------- Avatar Picker -----------------------
   void _showAvatarPicker(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     int tempIndex = selectedAvatar;
 
     showModalBottomSheet(
@@ -54,9 +66,12 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Choose Avatar',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Text(
+                    tr.chooseAvatar,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 20),
 
@@ -109,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         });
                         Navigator.pop(context);
                       },
-                      child: const Text('Confirm'),
+                      child: Text(tr.confirm),
                     ),
                   ),
                 ],
@@ -121,16 +136,174 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void _confirmLogout() {
+    final tr = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(tr.logout),
+        content: Text(tr.logoutConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(tr.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              UserSession.logout();
+
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/login',
+                (route) => false,
+              );
+            },
+            child: Text(tr.logout),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= LOGOUT BUTTON =================
+  Widget _logoutButton() {
+    final tr = AppLocalizations.of(context)!;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: _confirmLogout,
+      child: Container(
+        width: 130,
+        height: 54,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFF9F1C), Color(0xFFFF7A00)],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.orange.withOpacity(0.35),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.logout_rounded, color: Colors.white),
+            const SizedBox(width: 10),
+            Text(
+              tr.logout,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _navItem({
+    required IconData icon,
+    required String label,
+    required bool active,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 42,
+            height: 36,
+            decoration: BoxDecoration(
+              color: active
+                  ? Colors.white.withOpacity(0.15)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              color: active ? Colors.amber : Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: active ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= NAV BAR =================
+  Widget _buildBottomNavBar() {
+    final tr = AppLocalizations.of(context)!;
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0D1B2A),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 18,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _navItem(
+              icon: Icons.grid_view_outlined,
+              label: tr.home,
+              active: false,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => getHomeByRole()),
+                );
+              },
+            ),
+            _navItem(
+              icon: Icons.person,
+              label: tr.profile,
+              active: true,
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: kBgColor,
-      bottomNavigationBar: _buildBottomNavBar(),
       body: SafeArea(
         child: Column(
           children: [
             buildProfileHeader(
-              pageTitle: 'Profile',
+              context: context,
+              pageTitle: tr.profile,
               userName: userName,
               avatar: Stack(
                 children: [
@@ -170,7 +343,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   _mainButton(
                     icon: Icons.person,
-                    title: 'Manage Personal Data',
+                    title: tr.personalData,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -181,10 +354,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                   ),
+
                   const SizedBox(height: 18),
+
                   _mainButton(
                     icon: Icons.security,
-                    title: 'Manage Permissions',
+                    title: tr.permissions,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -195,47 +370,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                   ),
+
                   const SizedBox(height: 18),
-                  _mainButton(
-                    icon: Icons.login_rounded,
-                    title: 'Log Out',
-                    onTap: () {
-                      _confirmLogout();
-                    },
-                  ),
+
+                  _logoutButton(),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _confirmLogout() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Log Out"),
-        content: const Text("Are you sure you want to log out?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              UserSession.logout();
-
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/login',
-                (route) => false,
-              );
-            },
-            child: const Text("Log Out"),
-          ),
-        ],
       ),
     );
   }
@@ -286,89 +429,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // ================= NAV BAR =================
-  Widget _buildBottomNavBar() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0D1B2A),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 18,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _navItem(
-              icon: Icons.grid_view_outlined,
-              label: 'Home',
-              active: false,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => getHomeByRole()),
-                );
-              },
-            ),
-            _navItem(
-              icon: Icons.person,
-              label: 'Profile',
-              active: true,
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _navItem({
-    required IconData icon,
-    required String label,
-    required bool active,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 42,
-            height: 36,
-            decoration: BoxDecoration(
-              color: active
-                  ? Colors.white.withOpacity(0.15)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: active ? Colors.amber : Colors.white,
-              size: 20,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: active ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-        ],
       ),
     );
   }

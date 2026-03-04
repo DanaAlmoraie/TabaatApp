@@ -4,7 +4,9 @@ import '../screens/shopper/shoper_screen.dart';
 import 'user_session.dart';
 
 Widget getHomeByRole() {
-  if (UserSession.role == 'farmer') {
+  final role = UserSession.role;
+
+  if (role == 'farmer') {
     return const FarmerHomePage();
   } else {
     return const ShopperHomePage();

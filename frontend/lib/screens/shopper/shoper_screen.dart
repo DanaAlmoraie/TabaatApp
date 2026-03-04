@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:camera/camera.dart';
 import '../../main.dart';
 import '../camera_screen.dart';
+import '../../l10n/app_localizations.dart';
 
 class ShopperHomePage extends StatefulWidget {
   const ShopperHomePage({Key? key}) : super(key: key);
@@ -33,7 +34,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
   }
 
   Future<void> _initializePage() async {
-    // انتظري لحد ما الـ session يجهز
     await Future.delayed(const Duration(milliseconds: 400));
 
     if (!mounted) return;
@@ -74,7 +74,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     }
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
-      bottomNavigationBar: _buildBottomNavBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       //floatingActionButton: _buildCameraButton(),
       floatingActionButton: kIsWeb ? null : _buildCameraButton(),
@@ -94,6 +93,8 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
   // ================= HEADER =================
   Widget _buildHeader() {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       height: 250,
       padding: const EdgeInsets.fromLTRB(20, 50, 20, 30),
@@ -135,7 +136,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
               // اسم المستخدم
               Expanded(
                 child: Text(
-                  "Hello ${userData?['name']}",
+                  "${tr.hello} ${userData?['name']}",
                   style: const TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -176,7 +177,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
           Padding(
             padding: const EdgeInsets.only(left: 63),
             child: Text(
-              _getCurrentDate(),
+              _getCurrentDate(context),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -189,14 +190,17 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     );
   }
 
-  String _getCurrentDate() {
+  String _getCurrentDate(BuildContext context) {
     final now = DateTime.now();
-    final dateFormat = DateFormat('EEEE, dd MMMM yyyy');
+    final locale = Localizations.localeOf(context).languageCode;
+    final dateFormat = DateFormat('EEEE, dd MMMM yyyy', locale);
     return dateFormat.format(now);
   }
 
   // ================= CLASSIFY BOX =================
   Widget _buildClassifyBox(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -241,7 +245,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Classify Fruit",
+                      tr.classifyFruit,
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -250,7 +254,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Identify fruit type using AI & Camera",
+                      tr.classifyFruitDesc,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.orange[700]!.withOpacity(0.9),
@@ -270,6 +274,8 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
   // ================= FARM SECTION =================
   Widget _buildFarmSection(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     // عرض المزارع غير المؤرشفة
     if (loadingFarms) {
       return const Padding(
@@ -303,7 +309,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Explore Farms",
+                  tr.exploreFarms,
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -321,7 +327,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                   },
 
                   child: Text(
-                    "View All",
+                    tr.viewAll,
                     style: TextStyle(
                       color: Colors.green[700],
                       fontSize: 13,
@@ -336,17 +342,17 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
             /// إذا ما فيه مزارع
             if (farms.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Center(child: Text("No farms available yet")),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Center(child: Text(tr.noFarmsAvailable)),
               ),
             Column(
               children: farms.take(3).map<Widget>((farm) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: _buildFarmListItemDynamic(
-                    name: farm['name'] ?? 'Unknown Farm',
-                    location: farm['location'] ?? 'Unknown location',
+                    name: farm['name'] ?? tr.unknownFarm,
+                    location: farm['location'] ?? tr.unknownLocation,
                     fruits: List<String>.from(farm['fruits'] ?? []),
                     distance: _fakeDistance(),
                   ),
@@ -366,6 +372,8 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     required List<String> fruits,
     required String distance,
   }) {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -469,7 +477,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
               ),
               const SizedBox(height: 2),
               Text(
-                "Distance",
+                tr.distance,
                 style: TextStyle(fontSize: 10, color: Colors.green[700]),
               ),
             ],
@@ -488,6 +496,8 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
   // ================= CAMERA BUTTON =================
   Widget _buildCameraButton() {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       width: 60,
       height: 60,
@@ -526,99 +536,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: const Icon(Icons.camera_alt, size: 26),
-      ),
-    );
-  }
-
-  // ================= BOTTOM NAV BAR =================
-  Widget _buildBottomNavBar() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0D1B2A),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 18,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildNavItem(Icons.grid_view_outlined, Icons.grid_view, 'Home', 0),
-            _buildNavItem(
-              Icons.person_outline,
-              Icons.person,
-              'Profile',
-              2,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ProfilePage(userData: userData!),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ================= NAV ITEM =================
-  Widget _buildNavItem(
-    IconData iconOutlined,
-    IconData iconFilled,
-    String label,
-    int index, {
-    VoidCallback? onTap, // ← مهم جداً
-  }) {
-    return GestureDetector(
-      onTap:
-          onTap ??
-          () {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 36,
-            decoration: BoxDecoration(
-              color: _currentIndex == index
-                  ? Colors.white.withOpacity(0.15)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              _currentIndex == index ? iconFilled : iconOutlined,
-              color: _currentIndex == index ? Colors.amber : Colors.white,
-              size: 20,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-              fontWeight: _currentIndex == index
-                  ? FontWeight.bold
-                  : FontWeight.normal,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
+import '../../l10n/app_localizations.dart';
 
 class FarmsPage extends StatefulWidget {
   const FarmsPage({super.key});
@@ -32,11 +33,13 @@ class _FermsPageState extends State<FarmsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
 
       appBar: AppBar(
-        title: const Text("Explore Farms"),
+        title: Text(tr.exploreFarms),
         centerTitle: true,
         backgroundColor: const Color(0xFFFF8C00),
       ),
@@ -44,11 +47,8 @@ class _FermsPageState extends State<FarmsPage> {
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : farms.isEmpty
-          ? const Center(
-              child: Text(
-                "No farms available yet",
-                style: TextStyle(fontSize: 16),
-              ),
+          ? Center(
+              child: Text(tr.noFarmsAvailable, style: TextStyle(fontSize: 16)),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(16),
@@ -95,7 +95,7 @@ class _FermsPageState extends State<FarmsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              farm['name'] ?? 'Unnamed Farm',
+                              farm['name'] ?? tr.unnamedFarm,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -105,7 +105,7 @@ class _FermsPageState extends State<FarmsPage> {
                             const SizedBox(height: 4),
 
                             Text(
-                              farm['location'] ?? 'No ocation',
+                              farm['location'] ?? tr.noLocation,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[700],

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/core/main_shell.dart';
 import 'package:frontend/core/user_session.dart';
+import 'package:http/http.dart';
 import '../../../services/api_service.dart';
 import '../auth/signup_screen.dart';
 import '../farmer/farmer_screen.dart';
 import '../shopper/shoper_screen.dart';
+import '../../l10n/app_localizations.dart';
 
 const Color kShopperGreen1 = Color.fromARGB(255, 90, 128, 90);
 const Color kShopperGreen2 = Color.fromARGB(255, 60, 156, 78);
@@ -68,44 +71,18 @@ class _LoginScreenState extends State<LoginScreen> {
       final email = _emailController.text.trim();
       final password = _passwordController.text;
 
-      final String token = await ApiService.login(
-        email: email,
-        password: password,
-      );
+      final token = await ApiService.login(email: email, password: password);
 
       final me = await ApiService.getMe(token);
 
-      UserSession.setUser({
-        'id': me['user_id'] ?? 0,
-        'name': me['name'] ?? '',
-        'email': me['email'] ?? '',
-        'role': me['role'] ?? 'shopper',
-        'token': token,
-        'location': me['location'] ?? '',
-        'latitude': (me['latitude'] ?? 0).toDouble(),
-        'longitude': (me['longitude'] ?? 0).toDouble(),
-      });
+      UserSession.startSession(userToken: token, userData: me);
 
       if (!mounted) return;
 
-      final role = UserSession.role;
-      //final role = (me['role'] ?? '').toString().toLowerCase();
-
-      if (role == 'farmer') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const FarmerHomePage()),
-        );
-      } else if (role == 'shopper') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const ShopperHomePage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Unknown role for this user')),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => MainShell()),
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(
@@ -118,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F8),
       body: SafeArea(
@@ -160,22 +138,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(width: 14),
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Sign In',
-                          style: TextStyle(
+                          tr.login,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          'Welcome back to the Taabat app 🌱',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          tr.welcomeBack,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -214,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Email Address',
+                              tr.email,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -225,16 +206,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            decoration: _fieldDecoration('name@email.com'),
+                            decoration: _fieldDecoration(tr.emailHint),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'Please enter your email';
+                                return tr.enterEmail;
                               }
                               final emailRegex = RegExp(
                                 r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
                               );
                               if (!emailRegex.hasMatch(value.trim())) {
-                                return 'Please enter a valid email';
+                                return tr.validEmail;
                               }
                               return null;
                             },
@@ -245,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Password',
+                              tr.password,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -256,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             controller: _passwordController,
                             obscureText: _obscurePassword,
-                            decoration: _fieldDecoration('Enter password')
+                            decoration: _fieldDecoration(tr.enterPassword)
                                 .copyWith(
                                   suffixIcon: IconButton(
                                     icon: Icon(
@@ -275,10 +256,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
+                                return tr.enterPassword;
                               }
                               if (value.length < 8) {
-                                return 'Password must be at least 8 characters';
+                                return tr.password8Chars;
                               }
                               return null;
                             },
@@ -294,9 +275,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 minimumSize: const Size(0, 0),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              child: const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
+                              child: Text(
+                                tr.forgotPassword,
+                                style: const TextStyle(
                                   fontSize: 12,
                                   color: kShopperGreen2,
                                 ),
@@ -327,9 +308,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         color: Colors.white,
                                       ),
                                     )
-                                  : const Text(
-                                      'Sign In',
-                                      style: TextStyle(
+                                  : Text(
+                                      tr.login,
+                                      style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -349,10 +330,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Don't have an account? ",
-                      style: TextStyle(fontSize: 13),
-                    ),
+                    Text(tr.noAccount, style: const TextStyle(fontSize: 13)),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -362,9 +340,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
+                      child: Text(
+                        tr.signUp,
+                        style: const TextStyle(
                           fontSize: 13,
                           color: kShopperGreen2,
                           fontWeight: FontWeight.w600,

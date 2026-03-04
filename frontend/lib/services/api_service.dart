@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const String baseUrl = String.fromEnvironment(
     'API_URL',
-    defaultValue: 'http://10.0.2.2:8000',
+    defaultValue: 'http://192.168.56.1:8000',
   );
   // ============ REGISTER ============
   static Future<Map<String, dynamic>> registerUser({
@@ -43,7 +43,9 @@ class ApiService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
-      throw Exception("Register failed [${response.statusCode}]: ${response.body}");
+      throw Exception(
+        "Register failed [${response.statusCode}]: ${response.body}",
+      );
     }
   }
 
@@ -92,7 +94,7 @@ class ApiService {
     required String name,
     required String email,
     String? password, // اختياري
-    required String token, // لتوثيق المستخدم
+    required String token, //لتوثيق المستخدم
   }) async {
     final url = Uri.parse('$baseUrl/me');
 
@@ -105,8 +107,8 @@ class ApiService {
     final response = await http.put(
       url,
       headers: {
-        "Authorization": "Bearer $token",
         "Content-Type": "application/json",
+        "Authorization": "Bearer ${UserSession.token}",
       },
       body: jsonEncode(body),
     );
@@ -119,7 +121,7 @@ class ApiService {
     return jsonDecode(response.body);
   }
 
-// ========================== ADD FARM (To: Farmer) ====================
+  // ========================== ADD FARM (To: Farmer) ====================
   static Future<void> addFarm({
     required String name,
     required String location,
@@ -128,17 +130,17 @@ class ApiService {
     required double latitude,
     required double longitude,
   }) async {
-    final token = UserSession.user['token'];
+    final token = UserSession.token;
 
     final url = Uri.parse("$baseUrl/farms");
 
     final body = {
       "name": name,
-      "location": location,     // وصف نصي للمكان (مثلا JED)
+      "location": location, // وصف نصي للمكان (مثلا JED)
       "fruits": fruits,
-      "is_open": isOpen,        // ✅ لازم is_open مو isOpen
-      "latitude": latitude,     // ✅ جديد
-      "longitude": longitude,   // ✅ جديد
+      "is_open": isOpen,
+      "latitude": latitude,
+      "longitude": longitude,
     };
 
     print("ADD FARM body => ${jsonEncode(body)}");
@@ -159,7 +161,7 @@ class ApiService {
 
   // ======================= SHOW FARM (To: SHOPPER) ================
   static Future<List<dynamic>> getAllFarms() async {
-    final token = UserSession.user['token'];
+    final token = UserSession.token;
 
     final url = Uri.parse("$baseUrl/farms");
 
@@ -172,8 +174,7 @@ class ApiService {
     }
   }
 
-
-    // ========================== GET MY FARMS (Farmer) ====================
+  // ========================== GET MY FARMS (Farmer) ====================
   static Future<List<dynamic>> getMyFarms() async {
     final token = UserSession.user['token'];
 
@@ -206,7 +207,4 @@ class ApiService {
       throw Exception("Failed to delete farm: ${response.body}");
     }
   }
-
-
-
 }

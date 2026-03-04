@@ -1,52 +1,99 @@
 import 'package:flutter/material.dart';
-import '../screens/profile/profile_screen.dart';
-import '../screens/camera_screen.dart';
-import '../core/user_session.dart';
-import '../core/role_router.dart';
-import '../main.dart';
 
-class MainBottomBar extends StatelessWidget {
-  const MainBottomBar({super.key});
+class MainNavBar extends StatelessWidget {
+  final int currentIndex;
+  final Function(int) onTap;
+
+  const MainNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      color: const Color(0xFF0D1B2A),
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 8,
-      child: SizedBox(
-        height: 65,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // HOME
-            IconButton(
-              icon: const Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => getHomeByRole()),
-                  (route) => false,
-                );
-              },
-            ),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      height: 70,
+      decoration: BoxDecoration(
+        color: const Color(0xFF0D1B2A),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.35),
+            blurRadius: 18,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _navItem(Icons.grid_view_outlined, "Home", 0),
+              const SizedBox(width: 80),
+              _navItem(Icons.person_outline, "Profile", 1),
+            ],
+          ),
 
-            const SizedBox(width: 40),
-
-            // PROFILE
-            IconButton(
-              icon: const Icon(Icons.settings, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ProfilePage(userData: UserSession.user!),
-                  ),
-                );
-              },
+          /// الدائرة الطالعة فوق
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutBack,
+            left: currentIndex == 0
+                ? 70
+                : MediaQuery.of(context).size.width - 150,
+            top: -25,
+            child: GestureDetector(
+              onTap: () => onTap(currentIndex),
+              child: Container(
+                width: 65,
+                height: 65,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0F0F0), // نفس خلفية الصفحة
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 12,
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  currentIndex == 0 ? Icons.grid_view : Icons.person,
+                  color: Colors.orange,
+                  size: 28,
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _navItem(IconData icon, String label, int index) {
+    final selected = currentIndex == index;
+
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: selected ? Colors.transparent : Colors.white),
+          const SizedBox(height: 4),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 200),
+            opacity: selected ? 0 : 1,
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.white, fontSize: 10),
+            ),
+          ),
+        ],
       ),
     );
   }

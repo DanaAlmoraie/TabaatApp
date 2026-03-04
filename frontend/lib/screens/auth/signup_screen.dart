@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/core/main_shell.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../services/api_service.dart';
 import '../farmer/farmer_screen.dart';
 import '../shopper/shoper_screen.dart';
 import 'login_screen.dart';
+import '../../l10n/app_localizations.dart';
 
 // ألوان موحدة مع شاشة تسجيل الدخول
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
@@ -127,9 +129,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
       setState(() => _isGettingLocation = false);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not get location.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Could not get location.')));
       return false;
     }
   }
@@ -138,9 +140,9 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_selectedRole == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select your role')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select your role')));
       return;
     }
 
@@ -174,38 +176,15 @@ class _SignupScreenState extends State<SignupScreen> {
         longitude: _userLongitude,
       );
 
-      final userData = {
-        'name': name,
-        'email': email,
-        'role': _selectedRole!,
-        //'token': token, // لو عندك توكن من الـ API
-      };
-
-      if (!mounted) return;
-
-      final userName = (userJson['name'] ?? name).toString();
       final roleValue = (userJson['role'] ?? '')
           .toString()
           .toLowerCase()
           .trim();
 
-      if (roleValue == 'farmer') {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => FarmerHomePage()),
-          (route) => false,
-        );
-      } else if (roleValue == 'shopper') {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => ShopperHomePage()),
-          (route) => false,
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registered but role is unknown: $roleValue')),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => MainShell()),
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(
@@ -218,6 +197,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: kBgColor,
       body: SafeArea(
@@ -260,22 +240,25 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     const SizedBox(width: 14),
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Sign Up',
-                          style: TextStyle(
+                          tr.signUp,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          'Create your Taabat account 🌱',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          tr.createAccount,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -316,7 +299,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Full Name',
+                              tr.fullName,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -326,12 +309,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           const SizedBox(height: 6),
                           TextFormField(
                             controller: _nameController,
-                            decoration: _fieldDecoration(
-                              'Enter your full name',
-                            ),
+                            decoration: _fieldDecoration(tr.enterFullName),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'Please enter your name';
+                                return tr.enterFullName;
                               }
                               return null;
                             },
@@ -342,7 +323,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Email Address',
+                              tr.email,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -353,16 +334,16 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            decoration: _fieldDecoration('name@email.com'),
+                            decoration: _fieldDecoration(tr.emailHint),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return 'Please enter your email';
+                                return tr.enterEmail;
                               }
                               final emailRegex = RegExp(
                                 r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
                               );
                               if (!emailRegex.hasMatch(value.trim())) {
-                                return 'Please enter a valid email';
+                                return tr.validEmail;
                               }
                               return null;
                             },
@@ -373,7 +354,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Password',
+                              tr.password,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -384,29 +365,28 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             controller: _passwordController,
                             obscureText: _obscurePassword,
-                            decoration: _fieldDecoration('Enter password')
-                                .copyWith(
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      _obscurePassword
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      size: 20,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _obscurePassword = !_obscurePassword;
-                                      });
-                                    },
-                                  ),
+                            decoration: _fieldDecoration(tr.password).copyWith(
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  size: 20,
+                                  color: Colors.grey.shade500,
                                 ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
+                                return tr.password;
                               }
                               if (value.length < 8) {
-                                return 'Password must be at least 8 characters';
+                                return tr.password8Chars;
                               }
                               return null;
                             },
@@ -417,7 +397,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Confirm Password',
+                              tr.confirmPassword,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -428,7 +408,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             controller: _confirmPasswordController,
                             obscureText: _obscureConfirmPassword,
-                            decoration: _fieldDecoration('Re-enter password')
+                            decoration: _fieldDecoration(tr.reEnterPassword)
                                 .copyWith(
                                   suffixIcon: IconButton(
                                     icon: Icon(
@@ -448,10 +428,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please confirm your password';
+                                return tr.confirmPassword;
                               }
                               if (value != _passwordController.text) {
-                                return 'Passwords do not match';
+                                return tr.passwordsNotMatch;
                               }
                               return null;
                             },
@@ -462,7 +442,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Role',
+                              tr.role,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade700,
@@ -471,16 +451,16 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           const SizedBox(height: 6),
                           DropdownButtonFormField<String>(
-                            decoration: _fieldDecoration('Select your role'),
+                            decoration: _fieldDecoration(tr.selectRole),
                             value: _selectedRole,
-                            items: const [
+                            items: [
                               DropdownMenuItem(
                                 value: 'Farmer',
-                                child: Text('Farmer'),
+                                child: Text(tr.farmer),
                               ),
                               DropdownMenuItem(
                                 value: 'Shopper',
-                                child: Text('Shopper'),
+                                child: Text(tr.shopper),
                               ),
                             ],
                             onChanged: (value) {
@@ -490,7 +470,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please select a role';
+                                return tr.selectRoleError;
                               }
                               return null;
                             },
@@ -509,7 +489,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (value) {
                                     setState(() {
                                       _shareLocation = true;
-                                      _isSubmitting = true; // نخلي زر التسجيل يقفل مؤقتًا
+                                      _isSubmitting =
+                                          true; // نخلي زر التسجيل يقفل مؤقتًا
                                     });
 
                                     await _getCurrentLocation();
@@ -517,10 +498,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                     if (!mounted) return;
                                     setState(() => _isSubmitting = false);
 
-                                    if (_userLatitude == null || _userLongitude == null) {
+                                    if (_userLatitude == null ||
+                                        _userLongitude == null) {
                                       setState(() => _shareLocation = false);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Could not get location. Try again.')),
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Could not get location. Try again.',
+                                          ),
+                                        ),
                                       );
                                     }
                                   } else {
@@ -548,7 +536,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                       const SizedBox(
                                         width: 16,
                                         height: 16,
-                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
                                       ),
                                   ],
                                 ),
@@ -580,9 +570,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                         color: Colors.white,
                                       ),
                                     )
-                                  : const Text(
-                                      'Sign Up',
-                                      style: TextStyle(
+                                  : Text(
+                                      tr.signUp,
+                                      style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -602,10 +592,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Already have an account? ',
-                      style: TextStyle(fontSize: 13),
-                    ),
+                    Text(tr.haveAccount, style: const TextStyle(fontSize: 13)),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushReplacement(
@@ -615,9 +602,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         );
                       },
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
+                      child: Text(
+                        tr.login,
+                        style: const TextStyle(
                           fontSize: 13,
                           color: kGreenBottom,
                           fontWeight: FontWeight.w600,

@@ -9,6 +9,7 @@ import '../../main.dart';
 import '../camera_screen.dart';
 import 'farms_manage_screen.dart';
 import '../../core/auth_manager.dart';
+import '../../l10n/app_localizations.dart';
 
 class FarmerHomePage extends StatefulWidget {
   const FarmerHomePage({Key? key}) : super(key: key);
@@ -36,6 +37,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     if (userData == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
@@ -43,9 +46,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
-      bottomNavigationBar: _buildBottomNavBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //floatingActionButton: _buildCameraButton(),
       floatingActionButton: kIsWeb ? null : _buildCameraButton(),
       body: SingleChildScrollView(
         child: Column(
@@ -70,6 +71,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   // ================= HEADER =================
   Widget _buildHeader() {
+    final tr = AppLocalizations.of(context)!;
+
     return Container(
       height: 220,
       padding: const EdgeInsets.fromLTRB(20, 50, 20, 30),
@@ -109,7 +112,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
               // Username
               Expanded(
                 child: Text(
-                  "Hello ${userData?['name']}",
+                  "${tr.hello} ${userData?['name']}",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -173,6 +176,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   // ================= WEATHER BOX =================
   Widget _buildWeatherBox() {
+    final tr = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -204,7 +209,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'San Francisco, CA',
+                    tr.sampleLocation,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w300,
@@ -389,6 +394,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   // ================= CLASSIFY BOX =================
   Widget _buildClassifyBox() {
+    final tr = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -429,7 +436,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Classify Fruit",
+                    tr.classifyFruit,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -440,7 +447,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "Identify fruit type using AI-powered camera",
+                    tr.classifyFruitDesc,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -462,6 +469,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   // ================= MANAGE FARMS BOX =================
   Widget _buildManageFarmBox() {
+    final tr = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
@@ -510,7 +519,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Manage Farm',
+                      tr.manageFarm,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -521,7 +530,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Manage all your farms from here',
+                      tr.manageFarmDesc,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -544,6 +553,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   // ================= VIEW HISTORY BOX =================
   Widget _buildViewHistoryBox() {
+    final tr = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -584,7 +595,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'View History',
+                    tr.viewHistory,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -595,7 +606,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'View harvest and activity history',
+                    tr.viewHistoryDesc,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -654,101 +665,6 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: const Icon(Icons.camera_alt, size: 26),
-      ),
-    );
-  }
-
-  // ================= BOTTOM NAV BAR =================
-  Widget _buildBottomNavBar() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0D1B2A),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 18,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildNavItem(Icons.grid_view_outlined, Icons.grid_view, 'Home', 0),
-            _buildNavItem(
-              Icons.person_outline,
-              Icons.person,
-              'Profile',
-              2,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ProfilePage(
-                      userData: userData!, // نمرر بيانات المستخدم
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ================= NAV ITEM =================
-  Widget _buildNavItem(
-    IconData iconOutlined,
-    IconData iconFilled,
-    String label,
-    int index, {
-    VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap:
-          onTap ??
-          () {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 36,
-            decoration: BoxDecoration(
-              color: _currentIndex == index
-                  ? Colors.white.withOpacity(0.15)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              _currentIndex == index ? iconFilled : iconOutlined,
-              color: _currentIndex == index ? Colors.amber : Colors.white,
-              size: 20,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-              fontWeight: _currentIndex == index
-                  ? FontWeight.bold
-                  : FontWeight.normal,
-            ),
-          ),
-        ],
       ),
     );
   }

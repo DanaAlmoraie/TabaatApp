@@ -455,6 +455,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import '../../l10n/app_localizations.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -525,9 +526,9 @@ class _CameraScreenState extends State<CameraScreen> {
     } catch (e) {
       setState(() => isScanning = false);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error while scanning: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error while scanning: $e')));
     }
   }
 
@@ -565,9 +566,9 @@ class _CameraScreenState extends State<CameraScreen> {
     } catch (e) {
       setState(() => isScanning = false);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error while uploading: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error while uploading: $e')));
     }
   }
 
@@ -579,8 +580,9 @@ class _CameraScreenState extends State<CameraScreen> {
       await http.MultipartFile.fromPath('file', imageFile.path),
     );
 
-    final streamedResponse =
-        await request.send().timeout(const Duration(seconds: 90));
+    final streamedResponse = await request.send().timeout(
+      const Duration(seconds: 90),
+    );
     final response = await http.Response.fromStream(streamedResponse);
 
     if (response.statusCode == 200) {
@@ -628,10 +630,7 @@ class _CameraScreenState extends State<CameraScreen> {
               const SizedBox(height: 16),
               const Text(
                 "Fruit Condition",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               ),
               const SizedBox(height: 8),
               _conditionRow(Icons.check_circle, "Fruit structure is stable"),
@@ -674,11 +673,7 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
           const SizedBox(width: 6),
           Expanded(
-            child: Text(
-              text,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: Text(text, maxLines: 2, overflow: TextOverflow.ellipsis),
           ),
         ],
       ),
@@ -687,6 +682,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     if (!_isInitialized) {
       return const Scaffold(
         backgroundColor: Colors.black,
