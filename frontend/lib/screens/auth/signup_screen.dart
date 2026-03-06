@@ -6,7 +6,7 @@ import '../farmer/farmer_screen.dart';
 import '../shopper/shoper_screen.dart';
 import 'login_screen.dart';
 
-// ألوان موحدة مع شاشة تسجيل الدخول
+
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
 const Color kPrimaryOrange = Color(0xFFFF9F1C);
@@ -178,7 +178,7 @@ class _SignupScreenState extends State<SignupScreen> {
         'name': name,
         'email': email,
         'role': _selectedRole!,
-        //'token': token, // لو عندك توكن من الـ API
+        //'token': token, 
       };
 
       if (!mounted) return;
@@ -224,7 +224,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // HEADER – نفس ألوان Sign In وبنفس الـ radius
+              
               Container(
                 width: double.infinity,
                 height: 190,

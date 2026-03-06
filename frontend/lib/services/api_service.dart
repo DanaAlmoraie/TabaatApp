@@ -6,8 +6,13 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const String baseUrl = String.fromEnvironment(
     'API_URL',
+<<<<<<< Updated upstream
     defaultValue: 'http://10.0.2.2:8000',
+=======
+    defaultValue: 'http://localhost:5050',
+>>>>>>> Stashed changes
   );
+
   // ============ REGISTER ============
   static Future<Map<String, dynamic>> registerUser({
     required String name,
@@ -25,11 +30,16 @@ class ApiService {
       "email": email,
       "password": password,
       "role": role,
+<<<<<<< Updated upstream
       "location": shareLocation && latitude != null && longitude != null
           ? "$latitude,$longitude"
           : null,
       "latitude": shareLocation ? latitude : null,
       "longitude": shareLocation ? longitude : null,
+=======
+      if (shareLocation && latitude != null && longitude != null)
+        "location": "$latitude,$longitude",
+>>>>>>> Stashed changes
     };
 
     print("REGISTER body => ${jsonEncode(body)}"); // ✅ للتأكد
@@ -91,8 +101,8 @@ class ApiService {
   static Future<Map<String, dynamic>> updateUserProfile({
     required String name,
     required String email,
-    String? password, // اختياري
-    required String token, // لتوثيق المستخدم
+    String? password,
+    required String token,
   }) async {
     final url = Uri.parse('$baseUrl/me');
 
@@ -172,6 +182,7 @@ class ApiService {
     }
   }
 
+<<<<<<< Updated upstream
 
     // ========================== GET MY FARMS (Farmer) ====================
   static Future<List<dynamic>> getMyFarms() async {
@@ -210,3 +221,25 @@ class ApiService {
 
 
 }
+=======
+  // ======================= WEATHER =======================
+  static Future<Map<String, dynamic>> getWeather({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final url = Uri.parse(
+      "$baseUrl/weather?lat=$latitude&lon=$longitude",
+    );
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception(
+        "Failed to load weather: [${response.statusCode}] ${response.body}",
+      );
+    }
+  }
+}
+>>>>>>> Stashed changes
