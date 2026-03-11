@@ -73,16 +73,15 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //floatingActionButton: _buildCameraButton(),
       floatingActionButton: kIsWeb ? null : _buildCameraButton(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             _buildHeader(),
             _buildClassifyBox(context),
-            const SizedBox(height: 25), // مساحة بين البوكسين
+            const SizedBox(height: 25),
             _buildFarmSection(context),
-            const SizedBox(height: 100), // مساحة بين البوكسين
+            const SizedBox(height: 100),
           ],
         ),
       ),
@@ -116,7 +115,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
         children: [
           Row(
             children: [
-              // اللوقو
               Container(
                 width: 48,
                 height: 48,
@@ -131,7 +129,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                 ),
               ),
               const SizedBox(width: 15),
-              // اسم المستخدم
+
               Expanded(
                 child: Text(
                   "${tr.hello} ${userData?['name']}",
@@ -142,7 +140,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                   ),
                 ),
               ),
-              // زر الإشعارات
+
               Container(
                 width: 46,
                 height: 46,
@@ -211,7 +209,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
           children: [
             Row(
               children: [
-                // أيقونة الكاميرا بمربع بخلفية شفافة
                 Container(
                   width: 48,
                   height: 48,
@@ -227,7 +224,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                   ),
                 ),
                 const SizedBox(width: 14),
-                // النصوص
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -251,7 +247,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                 ),
               ],
             ),
-            // السهم البرتقالي
+
             Icon(Icons.arrow_forward_ios, color: Colors.orange[700], size: 20),
           ],
         ),
@@ -291,7 +287,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // العنوان
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -327,7 +322,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
             const SizedBox(height: 12),
 
-            /// إذا ما فيه مزارع
             if (farms.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -352,7 +346,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     );
   }
 
-  /// عنصر المزرعة (ديناميكي)
   Widget _buildFarmListItemDynamic({
     required String name,
     required String location,
@@ -370,7 +363,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
       ),
       child: Row(
         children: [
-          // أيقونة الموقع
           Container(
             width: 48,
             height: 48,
@@ -387,12 +379,10 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
           ),
           const SizedBox(width: 12),
 
-          // النصوص
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // اسم المزرعة
                 Text(
                   name,
                   style: TextStyle(
@@ -403,7 +393,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                 ),
                 const SizedBox(height: 3),
 
-                // الموقع كنص
                 Text(
                   location,
                   style: TextStyle(fontSize: 11, color: Colors.grey[700]),
@@ -413,7 +402,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
                 const SizedBox(height: 6),
 
-                // الفواكه
                 Wrap(
                   spacing: 6,
                   children: fruits.take(3).map((f) {
@@ -443,7 +431,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
           const SizedBox(width: 10),
 
-          // المسافة
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -474,7 +461,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     );
   }
 
-  /// مسافة وهمية مؤقتة (لين نربط GPS)
   String _fakeDistance() {
     final distances = ["1.2 km", "2.5 km", "3.1 km", "4.0 km"];
     distances.shuffle();
@@ -508,7 +494,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
             _currentIndex = 1;
           });
 
-          // ✅ الربط المطلوب: فتح CameraScreen
           Navigator.push(
             context,
             MaterialPageRoute(

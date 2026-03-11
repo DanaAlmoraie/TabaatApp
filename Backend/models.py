@@ -24,13 +24,12 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
 
-
     location = Column(String)
     latitude = Column(Float)
     longitude = Column(Float)
 
     role = Column(String, nullable=False)  # Farmer / Shopper
-    created_at = Column(Date)              # نفس نوع الـ DATE اللي في الجدول
+    created_at = Column(Date)
 
     farms = relationship(
         "Farm",
@@ -47,7 +46,6 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan",
     )
-    
 
 
 # ===========================
@@ -119,7 +117,7 @@ class FruitImage(Base):
     fruit_id = Column(Integer, ForeignKey("fruits.fruit_id"))
 
     ripeness = Column(String)
-    yield_production = Column(String)  
+    yield_production = Column(String)
     image_url = Column(String)
     upload_date = Column(Date)
     is_saved = Column(Boolean, default=False)

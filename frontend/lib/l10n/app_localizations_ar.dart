@@ -210,10 +210,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pickFarmLocation => 'اختر موقع المزرعة';
 
   @override
-  String get open => 'تم الافتتاح';
+  String get retry => 'أعد المحاولة';
 
   @override
-  String get closed => 'تم الإغلاق';
+  String get unableLoadingWeather => 'لا يمكن تحميل بيانات الطقس حاليا.';
+
+  @override
+  String get basedOnYourLocation => 'بناءً على موقعك';
+
+  @override
+  String get farmWeather => 'طقس المزرعة';
+
+  @override
+  String get uvIndex => 'UV';
+
+  @override
+  String get moderate => 'Moderate';
+
+  @override
+  String get humidity => 'Humidity';
+
+  @override
+  String get rain => 'Rain';
+
+  @override
+  String get wind => 'Wind';
+
+  @override
+  String get open => 'مفتوح';
+
+  @override
+  String get closed => 'مغلق';
 
   @override
   String get selected => 'تم الاختيار';

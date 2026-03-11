@@ -76,6 +76,18 @@
   "gps": "GPS:",
   "pickFarmLocation": "Pick Farm Location",
 
+
+  "retry": "Retry",
+  "unableLoadingWeather": "Unable to load weather right now.",
+  "basedOnYourLocation": "Based on your location",
+  "farmWeather": "Farm weather",
+  "uvIndex": "UV",
+  "moderate": "Moderate",
+  "humidity": "Humidity",
+  "rain": "Rain",
+  "wind": "Wind",
+
+
   "open": "Open",
   "closed": "Closed",
   "selected": "Selected",

@@ -12,7 +12,7 @@ import os
 # Paths
 # -------------------------------
 data_dir = "only_Split_Dataset"
-model_name = "yolov8n-cls.pt"     # يمكنك تغييره إلى s-cls / m-cls / l-cls
+model_name = "yolov8n-cls.pt"   
 epochs = 20
 
 # -------------------------------

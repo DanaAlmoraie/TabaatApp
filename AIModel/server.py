@@ -7,7 +7,7 @@ import tempfile, os
 
 app = FastAPI(title="Tabaat AI API")
 
-# (اختياري لكن مهم لو بتجربين من web)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

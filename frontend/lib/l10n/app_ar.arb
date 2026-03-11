@@ -76,8 +76,18 @@
   "gps": "GPS:",
   "pickFarmLocation": "اختر موقع المزرعة",
 
-  "open": "تم الافتتاح",
-  "closed": "تم الإغلاق",
+  "retry": "أعد المحاولة",
+  "unableLoadingWeather": "لا يمكن تحميل بيانات الطقس حاليا.",
+  "basedOnYourLocation": "بناءً على موقعك",
+  "farmWeather": "Farm weather",
+  "farmWeather": "طقس المزرعة",
+  "moderate": "Moderate",
+  "humidity": "Humidity",
+  "rain": "Rain",
+  "wind": "Wind",
+
+  "open": "مفتوح",
+  "closed": "مغلق",
   "selected": "تم الاختيار",
 
   "classifyFruit": "تصنيف الفاكهة",

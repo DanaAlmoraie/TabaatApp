@@ -7,7 +7,9 @@ class ApiService {
   static const String baseUrl = String.fromEnvironment(
     'API_URL',
     defaultValue: 'http://192.168.56.1:8000',
+    //defaultValue: 'http://10.0.2.2:8000',
   );
+
   // ============ REGISTER ============
   static Future<Map<String, dynamic>> registerUser({
     required String name,
@@ -211,6 +213,7 @@ class ApiService {
   }
 
   // ========================== GET MY FARMS (Farmer) ====================
+
   static Future<List<dynamic>> getMyFarms() async {
     final token = UserSession.token;
 
@@ -245,6 +248,24 @@ class ApiService {
 
     if (response.statusCode != 200) {
       throw Exception("Failed to delete farm: ${response.body}");
+    }
+  }
+
+  // ======================= WEATHER =======================
+  static Future<Map<String, dynamic>> getWeather({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final url = Uri.parse("$baseUrl/weather?lat=$latitude&lon=$longitude");
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception(
+        "Failed to load weather: [${response.statusCode}] ${response.body}",
+      );
     }
   }
 }

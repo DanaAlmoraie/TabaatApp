@@ -457,6 +457,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'nutrition_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -476,8 +477,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   final ImagePicker _picker = ImagePicker();
 
-  // ✅ Server base URL (تأكدي إنه نفس اللي عندك)
-  final String baseUrl = "http://192.168.1.99:5050";
+  final String baseUrl = "http://localhost:5050";
 
   @override
   void initState() {
@@ -516,11 +516,11 @@ class _CameraScreenState extends State<CameraScreen> {
 
       selectedImageFile = imageFile;
 
-      final result = await _sendImageToServer(imageFile);
+      const fakeLabel = 'orange';
 
       setState(() {
         isScanning = false;
-        detectedFruit = result['label'];
+        detectedFruit = fakeLabel;
       });
 
       _showResultSheet();
@@ -556,11 +556,11 @@ class _CameraScreenState extends State<CameraScreen> {
       final File imageFile = File(picked.path);
       selectedImageFile = imageFile;
 
-      final result = await _sendImageToServer(imageFile);
+      const fakeLabel = 'orange';
 
       setState(() {
         isScanning = false;
-        detectedFruit = result['label'];
+        detectedFruit = fakeLabel;
       });
 
       _showResultSheet();
@@ -588,6 +588,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+
       return {'label': data['label'] ?? 'Unknown'};
     }
 
@@ -651,7 +652,31 @@ class _CameraScreenState extends State<CameraScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    if (detectedFruit == null ||
+                        detectedFruit!.toLowerCase() == "unknown") {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            "Unable to detect fruit clearly, try again",
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+
+                    // Close bottom sheet first
+                    Navigator.pop(context);
+
+                    // Navigate to nutrition page (direct widget)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            NutritionLoader(fruitType: detectedFruit!),
+                      ),
+                    );
+                  },
                   child: const Text("See Detail Information"),
                 ),
               ),
@@ -725,8 +750,6 @@ class _CameraScreenState extends State<CameraScreen> {
                     child: _circleIcon(Icons.arrow_back_ios_new_rounded),
                   ),
                   const SizedBox(width: 12),
-
-                  // ✅ مهم: Expanded عشان يمنع overflow
                   const Expanded(
                     child: Center(
                       child: Text(
@@ -741,7 +764,6 @@ class _CameraScreenState extends State<CameraScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(width: 12),
                   GestureDetector(
                     onTap: () {

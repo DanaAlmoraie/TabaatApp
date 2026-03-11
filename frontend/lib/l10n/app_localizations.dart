@@ -497,6 +497,60 @@ abstract class AppLocalizations {
   /// **'Pick Farm Location'**
   String get pickFarmLocation;
 
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @unableLoadingWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load weather right now.'**
+  String get unableLoadingWeather;
+
+  /// No description provided for @basedOnYourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on your location'**
+  String get basedOnYourLocation;
+
+  /// No description provided for @farmWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm weather'**
+  String get farmWeather;
+
+  /// No description provided for @uvIndex.
+  ///
+  /// In en, this message translates to:
+  /// **'UV'**
+  String get uvIndex;
+
+  /// No description provided for @moderate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get moderate;
+
+  /// No description provided for @humidity.
+  ///
+  /// In en, this message translates to:
+  /// **'Humidity'**
+  String get humidity;
+
+  /// No description provided for @rain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get rain;
+
+  /// No description provided for @wind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get wind;
+
   /// No description provided for @open.
   ///
   /// In en, this message translates to:

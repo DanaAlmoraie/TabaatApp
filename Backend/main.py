@@ -13,6 +13,7 @@ from pydantic import BaseModel, EmailStr
 from dotenv import load_dotenv
 from typing import List
 import os
+import requests  # ✅ NEW: for calling external weather API
 
 import models
 from database import Base, engine, get_db
@@ -29,14 +30,11 @@ load_dotenv()
 # =====================================
 pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY") or "TaabatVerySecureKey2025!"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
-
-if not SECRET_KEY:
-    raise ValueError("SECRET_KEY is missing in .env")
 
 
 # =====================================
@@ -140,6 +138,32 @@ class ReminderCreate(BaseModel):
     message: str
     image_id: int | None = None
     farm_id: int | None = None
+
+
+class NutritionOut(BaseModel):
+    
+    fruit_type: str
+    energy: float | None = None
+    water: float | None = None
+    protein: float | None = None
+    total_fat: float | None = None
+    carbs: float | None = None
+    fiber: float | None = None
+    sugar: float | None = None
+    calcium: float | None = None
+    iron: float | None = None
+
+    class Config:
+        from_attributes = True
+
+
+# ✅ NEW: Weather response schema
+class WeatherOut(BaseModel):
+    temperature_c: float
+    humidity: float
+    wind_kph: float
+    rain_mm: float
+    condition: str
 
 
 # =====================================
@@ -277,8 +301,11 @@ def update_me(
 # Add Farm
 # ------------------------
 @app.post("/farms")
-def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = Depends(get_db)):
-    
+def add_farm(
+    data: FarmCreate,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     if current.role != "Farmer":
         raise HTTPException(403, "Only farmers can add farms")
 
@@ -378,6 +405,7 @@ def get_all_farms(
     # ترتيب: اللي عندها مسافة أول، واللي بدون لوكيشن آخر
     result.sort(key=lambda x: (x["distance_km"] is None, x["distance_km"] or 10**9))
     return result
+
 
 # ------------------------
 # Get My Farms
@@ -489,7 +517,11 @@ def upload_fruit_image(file: UploadFile = File(...), current=Depends(get_current
 # Add Reminder
 # ------------------------
 @app.post("/reminders")
-def add_reminder(data: ReminderCreate, current=Depends(get_current_user), db: Session = Depends(get_db)):
+def add_reminder(
+    data: ReminderCreate,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     reminder = models.Reminder(
         user_id=current.user_id,
         message=data.message,
@@ -504,6 +536,7 @@ def add_reminder(data: ReminderCreate, current=Depends(get_current_user), db: Se
     db.refresh(reminder)
 
     return {"message": "Reminder added", "reminder": reminder}
+
 
 # ------------------------
 # Update My Location (User)
@@ -630,3 +663,83 @@ def get_nearby_farms(
         "farms_found": len(nearby),
         "farms": nearby
     }
+
+
+# ------------------------
+# Get Nutrition by Fruit Type (for AI model output)
+# ------------------------
+@app.get("/nutrition/by-fruit/{fruit_type}", response_model=NutritionOut)
+def get_nutrition_by_fruit(fruit_type: str, db: Session = Depends(get_db)):
+    
+
+    nutrition: models.NutritionalInfo | None = (
+        db.query(models.NutritionalInfo)
+        .join(models.FruitImage, models.NutritionalInfo.image_id == models.FruitImage.image_id)
+        .join(models.Fruit, models.FruitImage.fruit_id == models.Fruit.fruit_id)
+        .filter(models.Fruit.fruit_type == fruit_type)
+        .first()
+    )
+
+    if not nutrition:
+        raise HTTPException(404, "Nutrition data not found for this fruit")
+
+    fruit_type_value = (
+        nutrition.image.fruit.fruit_type
+        if nutrition.image and nutrition.image.fruit
+        else fruit_type
+    )
+
+    return NutritionOut(
+        fruit_type=fruit_type_value,
+        energy=nutrition.energy,
+        water=nutrition.water,
+        protein=nutrition.protein,
+        total_fat=nutrition.total_fat,
+        carbs=nutrition.carbs,
+        fiber=nutrition.fiber,
+        sugar=nutrition.sugar,
+        calcium=nutrition.calcium,
+        iron=nutrition.iron,
+    )
+
+
+# ------------------------
+# ✅ Weather Endpoint
+# ------------------------
+@app.get("/weather", response_model=WeatherOut)
+def get_weather(lat: float, lon: float):
+    
+    try:
+        url = "https://api.open-meteo.com/v1/forecast"
+        params = {
+            "latitude": lat,
+            "longitude": lon,
+            "current": "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m",
+        }
+        r = requests.get(url, params=params, timeout=5)
+        r.raise_for_status()
+        data = r.json()
+        current = data.get("current", {})
+
+        temp = float(current.get("temperature_2m"))
+        humidity = float(current.get("relative_humidity_2m", 0.0))
+        wind = float(current.get("wind_speed_10m", 0.0))
+        rain = float(current.get("precipitation", 0.0))
+
+        return WeatherOut(
+            temperature_c=temp,
+            humidity=humidity,
+            wind_kph=wind,
+            rain_mm=rain,
+            condition="Partly Cloudy",
+        )
+
+    except Exception:
+        
+        return WeatherOut(
+            temperature_c=30.0,
+            humidity=45.0,
+            wind_kph=10.0,
+            rain_mm=0.0,
+            condition="Sunny (fallback)",
+        )

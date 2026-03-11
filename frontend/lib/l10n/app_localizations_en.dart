@@ -210,6 +210,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickFarmLocation => 'Pick Farm Location';
 
   @override
+  String get retry => 'Retry';
+
+  @override
+  String get unableLoadingWeather => 'Unable to load weather right now.';
+
+  @override
+  String get basedOnYourLocation => 'Based on your location';
+
+  @override
+  String get farmWeather => 'Farm weather';
+
+  @override
+  String get uvIndex => 'UV';
+
+  @override
+  String get moderate => 'Moderate';
+
+  @override
+  String get humidity => 'Humidity';
+
+  @override
+  String get rain => 'Rain';
+
+  @override
+  String get wind => 'Wind';
+
+  @override
   String get open => 'Open';
 
   @override
