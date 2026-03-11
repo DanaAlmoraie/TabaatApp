@@ -177,6 +177,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
         name: name.text.trim(),
         email: email.text.trim(),
         password: password.text.trim().isEmpty ? null : password.text.trim(),
+        token: UserSession.user['token'],
       );
 
       // تحديث السيشن

@@ -32,8 +32,6 @@ class ApiService {
       "longitude": shareLocation ? longitude : null,
     };
 
-    print("REGISTER body => ${jsonEncode(body)}"); // ✅ للتأكد
-
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
@@ -143,8 +141,6 @@ class ApiService {
       "longitude": longitude,
     };
 
-    print("ADD FARM body => ${jsonEncode(body)}");
-
     final response = await http.post(
       url,
       headers: {
@@ -159,13 +155,53 @@ class ApiService {
     }
   }
 
+  // ========================= UPDATE FARM (To: FARMER) ================
+  static Future<void> updateFarm({
+    required int farmId,
+    required String name,
+    required String location,
+    required List<String> fruits,
+    required bool isOpen,
+    required double latitude,
+    required double longitude,
+  }) async {
+    final token = UserSession.token;
+
+    final url = Uri.parse("$baseUrl/farms/$farmId");
+
+    final body = {
+      "name": name,
+      "location": location,
+      "fruits": fruits,
+      "is_open": isOpen,
+      "latitude": latitude,
+      "longitude": longitude,
+    };
+
+    final response = await http.put(
+      url,
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Update farm failed: ${response.body}");
+    }
+  }
+
   // ======================= SHOW FARM (To: SHOPPER) ================
   static Future<List<dynamic>> getAllFarms() async {
     final token = UserSession.token;
 
     final url = Uri.parse("$baseUrl/farms");
 
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -176,7 +212,7 @@ class ApiService {
 
   // ========================== GET MY FARMS (Farmer) ====================
   static Future<List<dynamic>> getMyFarms() async {
-    final token = UserSession.user['token'];
+    final token = UserSession.token;
 
     final url = Uri.parse("$baseUrl/farms/me");
 
@@ -184,6 +220,10 @@ class ApiService {
       url,
       headers: {"Authorization": "Bearer $token"},
     );
+
+    if (token == null) {
+      throw Exception("User not authenticated");
+    }
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as List<dynamic>;
@@ -194,7 +234,7 @@ class ApiService {
 
   // ========================== DELETE FARM (Farmer) ====================
   static Future<void> deleteFarm(int farmId) async {
-    final token = UserSession.user['token'];
+    final token = UserSession.token;
 
     final url = Uri.parse("$baseUrl/farms/$farmId");
 

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../main.dart';
 
@@ -97,55 +99,58 @@ Widget _languageSwitcher(BuildContext context) {
         ),
       ],
     ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // English
-        GestureDetector(
-          onTap: () {
-            TaabatApp.setLocale(context, const Locale('en'));
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: !isArabic ? Colors.orange : Colors.transparent,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Text(
-              "EN",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: !isArabic ? Colors.white : Colors.black54,
+    child: Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // English
+          GestureDetector(
+            onTap: () {
+              TaabatApp.setLocale(context, const Locale('en'));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: !isArabic ? Colors.orange : Colors.transparent,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Text(
+                "EN",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: !isArabic ? Colors.white : Colors.black54,
+                ),
               ),
             ),
           ),
-        ),
 
-        const SizedBox(width: 6),
+          const SizedBox(width: 6),
 
-        // Arabic
-        GestureDetector(
-          onTap: () {
-            TaabatApp.setLocale(context, const Locale('ar'));
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: isArabic ? Colors.orange : Colors.transparent,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Text(
-              "ع",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: isArabic ? Colors.white : Colors.black54,
+          // Arabic
+          GestureDetector(
+            onTap: () {
+              TaabatApp.setLocale(context, const Locale('ar'));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: isArabic ? Colors.orange : Colors.transparent,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Text(
+                "ع",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: isArabic ? Colors.white : Colors.black54,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

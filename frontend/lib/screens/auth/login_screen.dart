@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/core/main_shell.dart';
 import 'package:frontend/core/user_session.dart';
-import 'package:http/http.dart';
+import 'package:frontend/main.dart';
 import '../../../services/api_service.dart';
 import '../auth/signup_screen.dart';
-import '../farmer/farmer_screen.dart';
-import '../shopper/shoper_screen.dart';
 import '../../l10n/app_localizations.dart';
 
 const Color kShopperGreen1 = Color.fromARGB(255, 90, 128, 90);
@@ -13,7 +11,7 @@ const Color kShopperGreen2 = Color.fromARGB(255, 60, 156, 78);
 const Color kPrimaryAccent = Color(0xFFFF9F1C);
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -33,6 +31,34 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Widget _languageButton(BuildContext context) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+
+    return GestureDetector(
+      onTap: () {
+        if (isArabic) {
+          TaabatApp.setLocale(context, const Locale('en'));
+        } else {
+          TaabatApp.setLocale(context, const Locale('ar'));
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          isArabic ? "EN" : "ع",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.orange,
+          ),
+        ),
+      ),
+    );
   }
 
   InputDecoration _fieldDecoration(String hintText) {
@@ -121,9 +147,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   horizontal: 20,
                   vertical: 18,
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Stack(
                   children: [
+                    PositionedDirectional(
+                      top: 10,
+                      end: 10,
+                      child: _languageButton(context),
+                    ),
                     Container(
                       width: 56,
                       height: 56,

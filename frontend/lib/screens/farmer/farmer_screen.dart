@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:frontend/core/user_session.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import '../profile/profile_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:camera/camera.dart';
 import '../../main.dart';
 import '../camera_screen.dart';
 import 'farms_manage_screen.dart';
-import '../../core/auth_manager.dart';
 import '../../l10n/app_localizations.dart';
 
 class FarmerHomePage extends StatefulWidget {
-  const FarmerHomePage({Key? key}) : super(key: key);
+  const FarmerHomePage({super.key});
 
   @override
   State<FarmerHomePage> createState() => _FarmerHomePageState();
@@ -37,12 +34,9 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final tr = AppLocalizations.of(context)!;
-
     if (userData == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final user = AuthManager.user;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),

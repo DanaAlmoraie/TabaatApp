@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 /*import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
@@ -455,7 +457,6 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
-import '../../l10n/app_localizations.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -682,8 +683,6 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tr = AppLocalizations.of(context)!;
-
     if (!_isInitialized) {
       return const Scaffold(
         backgroundColor: Colors.black,

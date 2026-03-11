@@ -25,7 +25,6 @@ class User(Base):
     password = Column(String, nullable=False)
 
 
-    # نفس الأعمدة اللي في SQL
     location = Column(String)
     latitude = Column(Float)
     longitude = Column(Float)
@@ -120,7 +119,7 @@ class FruitImage(Base):
     fruit_id = Column(Integer, ForeignKey("fruits.fruit_id"))
 
     ripeness = Column(String)
-    yield_production = Column(String)  # نفس اسم العمود في SQL
+    yield_production = Column(String)  
     image_url = Column(String)
     upload_date = Column(Date)
     is_saved = Column(Boolean, default=False)

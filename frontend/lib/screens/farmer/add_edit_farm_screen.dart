@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../l10n/app_localizations.dart';
@@ -53,6 +55,9 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
     );
     selectedFruits = widget.farm?.fruits ?? [];
     isOpen = widget.farm?.isOpen ?? true; // default = visible
+
+    _farmLat = widget.farm?.latitude;
+    _farmLng = widget.farm?.longitude;
   }
 
   @override
@@ -98,6 +103,8 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
   }
 
   Future<bool> _ensureLocationPermission() async {
+    final tr = AppLocalizations.of(context)!;
+
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -105,15 +112,16 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
       if (!mounted) return false;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Location permission denied')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(tr.locationPermissionDenied)));
       return false;
     }
     return true;
   }
 
   Future<void> _useCurrentLocationForFarm() async {
+    final tr = AppLocalizations.of(context)!;
     final ok = await _ensureLocationPermission();
     if (!ok) return;
 
@@ -130,22 +138,21 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
         _farmLng = pos.longitude;
       });
 
-      // =============================================== TRANSLATE
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Farm GPS set: ${_farmLat}, ${_farmLng}')),
+        SnackBar(content: Text('${tr.farmGpsSet}: $_farmLat, $_farmLng')),
       );
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not get current location')),
-      );
-      // =============================================== TRANSLATE
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(tr.couldNotGetLocation)));
     } finally {
       if (mounted) setState(() => _gettingLocation = false);
     }
   }
 
   Future<void> _pickLocationFromMap() async {
+    final tr = AppLocalizations.of(context)!;
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const PickLocationMap()),
@@ -155,20 +162,20 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('No Lcation selected')));
+      ).showSnackBar(SnackBar(content: Text(tr.noLocationSelected)));
       return;
     }
 
     // picked المفروض يكون LatLng
     setState(() {
       _farmLat = (result as LatLng).latitude;
-      _farmLng = (result as LatLng).longitude;
+      _farmLng = (result).longitude;
     });
     // =============================================== TRANSLATE
     debugPrint("PICKED FARM => $_farmLat, $_farmLng");
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Farm GPS set: $_farmLat, $_farmLng')),
+      SnackBar(content: Text('${tr.farmGpsSet}: $_farmLat, $_farmLng')),
     );
   }
 
@@ -272,14 +279,13 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Farm Location (GPS) *',
+                    tr.farmLocationGps,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.green[800],
                     ),
                   ),
                 ),
-                // =============================================== TRANSLATE
                 const SizedBox(height: 8),
 
                 Row(
@@ -291,9 +297,8 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                             : _useCurrentLocationForFarm,
                         icon: Icons.my_location,
                         label: _gettingLocation
-                            ? 'Getting...'
-                            : 'Current Location',
-                        // =============================================== TRANSLATE
+                            ? tr.getting
+                            : tr.currentLocation,
                       ),
                     ),
 
@@ -303,8 +308,7 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                       child: gradientButton(
                         onPressed: _pickLocationFromMap,
                         icon: Icons.map,
-                        label: 'Pick on Map',
-                        // =============================================== TRANSLATE                        label: 'Pick on Map',
+                        label: tr.pickOnMap,
                       ),
                     ),
                   ],
@@ -321,13 +325,11 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                     border: Border.all(color: Colors.green.withOpacity(0.3)),
                   ),
                   child: Text(
-                    // =============================================== TRANSLATE
                     _farmLat == null || _farmLng == null
-                        ? 'No GPS selected yet'
-                        : 'Selected: $_farmLat , $_farmLng',
+                        ? tr.noGpsSelected
+                        : '${tr.selected}: $_farmLat , $_farmLng',
                     style: const TextStyle(fontSize: 12),
                   ),
-                  // =============================================== TRANSLATE
                 ),
 
                 const SizedBox(height: 20),
@@ -427,25 +429,33 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                       try {
                         if (_farmLat == null || _farmLng == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Please set farm GPS (Current location or Pick on map)',
-                              ),
-                              // =============================================== TRANSLATE
+                            SnackBar(
+                              content: Text(tr.pleaseSetFarmGps),
                               backgroundColor: Colors.red,
                             ),
                           );
                           return;
                         }
-                        await ApiService.addFarm(
-                          name: nameController.text.trim(),
-                          location: locationController.text
-                              .trim(), // نص وصف للمكان
-                          fruits: selectedFruits,
-                          isOpen: isOpen,
-                          latitude: _farmLat!,
-                          longitude: _farmLng!,
-                        );
+                        if (widget.farm == null) {
+                          await ApiService.addFarm(
+                            name: nameController.text.trim(),
+                            location: locationController.text.trim(),
+                            fruits: selectedFruits,
+                            isOpen: isOpen,
+                            latitude: _farmLat!,
+                            longitude: _farmLng!,
+                          );
+                        } else {
+                          await ApiService.updateFarm(
+                            farmId: widget.farm!.id,
+                            name: nameController.text.trim(),
+                            location: locationController.text.trim(),
+                            fruits: selectedFruits,
+                            isOpen: isOpen,
+                            latitude: _farmLat!,
+                            longitude: _farmLng!,
+                          );
+                        }
 
                         if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(

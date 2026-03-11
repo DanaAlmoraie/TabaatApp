@@ -1,6 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:frontend/moldels/farm_model.dart';
 import 'package:frontend/services/api_service.dart';
+import 'package:frontend/utils/fruit_translator.dart';
 import 'add_edit_farm_screen.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -28,24 +31,50 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
         myFarms = data;
         loading = false;
       });
+      print(data);
     } catch (e) {
       loading = false;
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Failed to load farms: $e")));
+      ).showSnackBar(SnackBar(content: Text('Failed to load Farms $e')));
     }
   }
 
-  void _openAddEditFarm({Farm? farm}) async {
+  void _openAddEditFarm({Map<String, dynamic>? farm}) async {
+    Farm? farmModel;
+
+    if (farm != null) {
+      List<String> fruits = [];
+
+      if (farm['fruits'] != null) {
+        fruits = List<String>.from(
+          (farm['fruits'] as List).map((e) => e.toString()),
+        );
+      }
+
+      farmModel = Farm(
+        id: farm['farm_id'] ?? farm['id'],
+        name: farm['name'],
+        location: farm['location'],
+        fruits: fruits,
+        isOpen: farm['is_open'] ?? true,
+        latitude: (farm['latitude'] as num?)?.toDouble(),
+        longitude: (farm['longitude'] as num?)?.toDouble(),
+      );
+    }
+
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => AddEditFarmScreen(farm: farm)),
+      MaterialPageRoute(builder: (_) => AddEditFarmScreen(farm: farmModel)),
     );
     loadMyFarms();
+    print("OPEN ADD EDIT FARM");
   }
 
-  Future<void> _deleteFarm(dynamic farmId) async {
+  Future<void> _deleteFarm(int farmId) async {
+    final tr = AppLocalizations.of(context)!;
+
     try {
       await ApiService.deleteFarm(farmId);
       loadMyFarms();
@@ -53,7 +82,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Delete failed: $e")));
+      ).showSnackBar(SnackBar(content: Text('${tr.deleteFailed}: $e')));
     }
   }
 
@@ -98,7 +127,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
               itemCount: myFarms.length,
               itemBuilder: (context, index) {
                 final farm = myFarms[index];
-
+                print(farm);
                 final String name = (farm['name'] ?? tr.unnamedFarm).toString();
                 final String location = (farm['location'] ?? tr.noLocation)
                     .toString();
@@ -107,7 +136,15 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                 final double? lat = (farm['latitude'] as num?)?.toDouble();
                 final double? lng = (farm['longitude'] as num?)?.toDouble();
 
-                final List fruits = (farm['fruits'] ?? []) as List;
+                List<String> fruits = [];
+                final rawFruits = farm['fruits'];
+                if (rawFruits != null) {
+                  if (rawFruits is List) {
+                    fruits = rawFruits.map((e) => e.toString()).toList();
+                  } else if (rawFruits is String) {
+                    fruits = rawFruits.split(',');
+                  }
+                }
 
                 return Container(
                   margin: const EdgeInsets.symmetric(
@@ -185,8 +222,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                                           ),
                                           const SizedBox(width: 6),
                                           Text(
-                                            // TRANSLATE ===================================
-                                            isOpen ? 'Open' : 'Closed',
+                                            isOpen ? tr.open : tr.closed,
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700,
@@ -233,7 +269,12 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                                   size: 20,
                                   color: Color.fromARGB(255, 212, 56, 44),
                                 ),
-                                onPressed: () => _deleteFarm(farm['id']),
+                                onPressed: () {
+                                  final farmId = farm['farm_id'] ?? farm['id'];
+                                  if (farmId != null) {
+                                    _deleteFarm(farmId);
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -267,8 +308,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  // TRANSLATE ===================================
-                                  'GPS: $lat , $lng',
+                                  '${tr.gps}: $lat , $lng',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey[800],
@@ -298,8 +338,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                                     borderRadius: BorderRadius.circular(999),
                                   ),
                                   child: Text(
-                                    // TRANSLATE ===================================
-                                    'No fruits added',
+                                    tr.noFruitAdded,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
@@ -319,8 +358,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                                     borderRadius: BorderRadius.circular(999),
                                   ),
                                   child: Text(
-                                    // TRANSLATE ===================================
-                                    f.toString(),
+                                    FruitTranslator.translate(f.toString(), tr),
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,

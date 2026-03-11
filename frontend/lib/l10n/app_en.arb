@@ -60,9 +60,29 @@
   "noFarmsYet": "No farms to manage yet",
   "deleteFailed": "Delete failed",
   "failedLoadingFarms": "Failed to load Farms",
+  "farmLocationGps": "Farm Location (GPS) *",
+  "getting": "Getting...",
+  "currentLocation": "Current Location",
+  "pickOnMap": "Pick on Map",
+  "noLocationSelected": "No location selected",
+  "farmGpsSet": "Farm GPS set",
+  "noGpsSelected": "No GPS selected yet",
+  "pleaseSetFarmGps": "Please set farm GPS (Current location or Pick on map)",
+  "couldNotGetLocation": "Could not get current location",
+  "shareMyGPSLocation":"Share my GPS location to show nearby farms and services.",
+  "locationPermissionDenied": "Location permission denied",
+  "pleaseEnableLocation": "Please enable location permission to continue",
+  "registrationFailed": "Registration failed:",
+  "gps": "GPS:",
+  "pickFarmLocation": "Pick Farm Location",
+
+  "open": "Open",
+  "closed": "Closed",
+  "selected": "Selected",
 
   "classifyFruit": "Classify Fruit",
   "classifyFruitDesc": "Identify fruit type using AI-powered camera",
+  "noFruitAdded": "No fruits added",
   "manageFarm": "Manage Farm",
   "manageFarmDesc": "Manage all your farms from here",
   "viewHistory": "View History",
@@ -89,5 +109,17 @@
   "viewAll": "View All",
   "unknownFarm": "Unknown Farm",
   "unknownLocation": "Unknown location",
-  "distance": "Distance"
+  "distance": "Distance",
+
+
+  "apple": "Apple",
+  "banana": "Banana",
+  "orange": "Orange",
+  "kiwi": "Kiwi",
+  "grapes": "Grapes",
+  "strawberry": "Strawberry",
+  "lemon": "Lemon",
+  "majdoolDates": "Majdool Dates",
+  "asilDates": "Asil Dates",
+  "sukaryDates": "Sukary Dates"
 }

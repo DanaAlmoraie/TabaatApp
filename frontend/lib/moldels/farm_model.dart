@@ -4,6 +4,8 @@ class Farm {
   final String location;
   final List<String> fruits;
   final bool isOpen;
+  final double? latitude;
+  final double? longitude;
 
   Farm({
     required this.id,
@@ -11,6 +13,8 @@ class Farm {
     required this.location,
     required this.fruits,
     required this.isOpen,
+    this.latitude,
+    this.longitude,
   });
 
   factory Farm.fromJson(Map<String, dynamic> json) {
@@ -20,6 +24,8 @@ class Farm {
       location: json['location'],
       fruits: List<String>.from(json['fruits'] ?? []),
       isOpen: json['is_open'] ?? true,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
     );
   }
 }

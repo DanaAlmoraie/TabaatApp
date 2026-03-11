@@ -1,4 +1,4 @@
-import 'dart:math';
+// ignore_for_file: deprecated_member_use, unused_field
 
 import 'package:flutter/material.dart';
 import 'package:frontend/core/user_session.dart';
@@ -6,15 +6,13 @@ import 'package:frontend/services/api_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'farms_screen.dart';
-import '../profile/profile_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:camera/camera.dart';
 import '../../main.dart';
 import '../camera_screen.dart';
 import '../../l10n/app_localizations.dart';
 
 class ShopperHomePage extends StatefulWidget {
-  const ShopperHomePage({Key? key}) : super(key: key);
+  const ShopperHomePage({super.key});
 
   @override
   State<ShopperHomePage> createState() => _ShopperHomePageState();
@@ -158,17 +156,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                       spreadRadius: 1,
                     ),
                   ],
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    // TODO: اضف زر الإشعارات
-                  },
-                  icon: const Icon(
-                    Icons.notifications_none,
-                    color: Color(0xFFFF8C00),
-                    size: 24,
-                  ),
-                  padding: EdgeInsets.zero,
                 ),
               ),
             ],
@@ -496,8 +483,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
   // ================= CAMERA BUTTON =================
   Widget _buildCameraButton() {
-    final tr = AppLocalizations.of(context)!;
-
     return Container(
       width: 60,
       height: 60,

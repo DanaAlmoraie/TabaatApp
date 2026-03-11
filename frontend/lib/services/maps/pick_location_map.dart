@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../l10n/app_localizations.dart';
 
 class PickLocationMap extends StatefulWidget {
   const PickLocationMap({super.key});
@@ -14,8 +15,9 @@ class _PickLocationMapState extends State<PickLocationMap> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text("Pick Farm Location")),
+      appBar: AppBar(title: Text(tr.pickFarmLocation)),
       body: GoogleMap(
         initialCameraPosition: const CameraPosition(
           target: LatLng(21.4858, 39.1925), // جدة كمثال
@@ -24,10 +26,7 @@ class _PickLocationMapState extends State<PickLocationMap> {
         onTap: (LatLng pos) {
           setState(() {
             _picked = pos;
-            _marker = Marker(
-              markerId: const MarkerId("picked"),
-              position: pos,
-            );
+            _marker = Marker(markerId: const MarkerId("picked"), position: pos);
           });
         },
         markers: _marker == null ? {} : {_marker!},
@@ -40,10 +39,9 @@ class _PickLocationMapState extends State<PickLocationMap> {
             onPressed: _picked == null
                 ? null
                 : () {
-                    // ✅ هذا أهم سطر
                     Navigator.pop(context, _picked);
                   },
-            child: const Text("Confirm"),
+            child: Text(tr.confirm),
           ),
         ),
       ),

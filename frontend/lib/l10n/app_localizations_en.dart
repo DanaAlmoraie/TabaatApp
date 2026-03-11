@@ -138,7 +138,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get farmNameRequired => 'Farm name is required';
 
   @override
-  String get location => 'Location';
+  String get location => 'Location description (City, Area, Street) *';
 
   @override
   String get locationRequired => 'Location is required';
@@ -165,10 +165,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String get failedLoadingFarms => 'Failed to load Farms';
 
   @override
+  String get farmLocationGps => 'Farm Location (GPS) *';
+
+  @override
+  String get getting => 'Getting...';
+
+  @override
+  String get currentLocation => 'Current Location';
+
+  @override
+  String get pickOnMap => 'Pick on Map';
+
+  @override
+  String get noLocationSelected => 'No location selected';
+
+  @override
+  String get farmGpsSet => 'Farm GPS set';
+
+  @override
+  String get noGpsSelected => 'No GPS selected yet';
+
+  @override
+  String get pleaseSetFarmGps => 'Please set farm GPS (Current location or Pick on map)';
+
+  @override
+  String get couldNotGetLocation => 'Could not get current location';
+
+  @override
+  String get shareMyGPSLocation => 'Share my GPS location to show nearby farms and services.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied';
+
+  @override
+  String get pleaseEnableLocation => 'Please enable location permission to continue';
+
+  @override
+  String get registrationFailed => 'Registration failed:';
+
+  @override
+  String get gps => 'GPS:';
+
+  @override
+  String get pickFarmLocation => 'Pick Farm Location';
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get closed => 'Closed';
+
+  @override
+  String get selected => 'Selected';
+
+  @override
   String get classifyFruit => 'Classify Fruit';
 
   @override
   String get classifyFruitDesc => 'Identify fruit type using AI-powered camera';
+
+  @override
+  String get noFruitAdded => 'No fruits added';
 
   @override
   String get manageFarm => 'Manage Farm';
@@ -238,4 +295,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get distance => 'Distance';
+
+  @override
+  String get apple => 'Apple';
+
+  @override
+  String get banana => 'Banana';
+
+  @override
+  String get orange => 'Orange';
+
+  @override
+  String get kiwi => 'Kiwi';
+
+  @override
+  String get grapes => 'Grapes';
+
+  @override
+  String get strawberry => 'Strawberry';
+
+  @override
+  String get lemon => 'Lemon';
+
+  @override
+  String get majdoolDates => 'Majdool Dates';
+
+  @override
+  String get asilDates => 'Asil Dates';
+
+  @override
+  String get sukaryDates => 'Sukary Dates';
 }

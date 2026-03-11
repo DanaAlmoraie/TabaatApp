@@ -22,7 +22,6 @@ load_dotenv()
 # =====================================
 # Database Initialization
 # =====================================
-# مهم: تأكدي الجداول تنشأ على Supabase
 # --------------------Base.metadata.create_all(bind=engine)
 
 # =====================================
@@ -129,6 +128,13 @@ class FarmOut(BaseModel):
     class Config:
         from_attributes = True
 
+class FarmUpdate(BaseModel):
+    name: str
+    location: str
+    fruits: List[str]
+    is_open: bool
+    latitude: float | None
+    longitude: float | None
 
 class ReminderCreate(BaseModel):
     message: str
@@ -272,6 +278,7 @@ def update_me(
 # ------------------------
 @app.post("/farms")
 def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = Depends(get_db)):
+    
     if current.role != "Farmer":
         raise HTTPException(403, "Only farmers can add farms")
 
@@ -287,8 +294,28 @@ def add_farm(data: FarmCreate, current=Depends(get_current_user), db: Session = 
     db.add(farm)
     db.commit()
     db.refresh(farm)
+ 
+    if data.fruits:
+        for fruit_name in data.fruits:
+            fruit = db.query(models.Fruit).filter(models.Fruit.fruit_type == fruit_name).first()
 
-    return {"message": "Farm added", "farm": farm}
+            if not fruit:
+                fruit = models.Fruit(fruit_type=fruit_name)
+                db.add(fruit)
+                db.commit()
+                db.refresh(fruit)
+
+            link = models.FarmFruit(
+                farm_id=farm.farm_id,
+                fruit_id=fruit.fruit_id
+            )
+
+            db.add(link)
+
+        db.commit()
+    print("DATA IS 8 RECIVED:",data)
+    return {"message": "Farm added", "farm_id": farm.farm_id}
+
 
 
 from math import radians, cos, sin, asin, sqrt
@@ -317,35 +344,35 @@ def get_all_farms(
     farms = db.query(models.Farm).filter(models.Farm.is_open == True).all()
 
     result = []
-    for farm in farms:
-        # لو المزرعة ما عندها لوكيشن نخليها آخر شيء
-        if farm.latitude is None or farm.longitude is None:
-            result.append({
-                "farm_id": farm.farm_id,
-                "name": farm.name,
-                "location": farm.location,
-                "fruits": getattr(farm, "fruits", []),
-                "is_open": farm.is_open,
-                "latitude": farm.latitude,
-                "longitude": farm.longitude,
-                "distance_km": None
-            })
-            continue
 
-        dist = haversine(
-            current.latitude, current.longitude,
-            farm.latitude, farm.longitude
-        )
+    for farm in farms:
+
+        # نطلع أسماء الفواكه
+        fruits = []
+        for f in farm.fruits:
+            if f.fruit:
+                fruits.append(f.fruit.fruit_type)
+
+        distance = None
+
+        # لو المزرعة ما عندها لوكيشن نخليها آخر شيء
+        if farm.latitude is not None and farm.longitude is not None:
+            distance = haversine(
+                current.latitude,
+                current.longitude,
+                farm.latitude,
+                farm.longitude
+            )
 
         result.append({
             "farm_id": farm.farm_id,
             "name": farm.name,
             "location": farm.location,
-            "fruits": getattr(farm, "fruits", []),
+            "fruits": fruits,
             "is_open": farm.is_open,
             "latitude": farm.latitude,
             "longitude": farm.longitude,
-            "distance_km": round(dist, 2)
+            "distance_km": round(distance, 2) if distance else None
         })
 
     # ترتيب: اللي عندها مسافة أول، واللي بدون لوكيشن آخر
@@ -353,11 +380,101 @@ def get_all_farms(
     return result
 
 # ------------------------
-# Get My Farms (Farmer dashboard)
+# Get My Farms
 # ------------------------
 @app.get("/farms/me")
 def get_my_farms(current=Depends(get_current_user), db: Session = Depends(get_db)):
-    return db.query(models.Farm).filter(models.Farm.user_id == current.user_id).all()
+
+    farms = db.query(models.Farm).filter(models.Farm.user_id == current.user_id).all()
+
+    result = []
+
+    for farm in farms:
+        fruits = [f.fruit.fruit_type for f in farm.fruits]
+
+        result.append({
+            "farm_id": farm.farm_id,
+            "name": farm.name,
+            "location": farm.location,
+            "latitude": farm.latitude,
+            "longitude": farm.longitude,
+            "is_open": farm.is_open,
+            "fruits": fruits
+        })
+
+    return result
+
+
+# ------------------------
+# Update Farm
+# ------------------------
+@app.put("/farms/{farm_id}")
+def update_farm(
+    farm_id: int,
+    data: FarmUpdate,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    farm = db.query(models.Farm).filter(models.Farm.farm_id == farm_id).first()
+
+    if not farm:
+        raise HTTPException(404, "Farm not found")
+
+    if farm.user_id != current.user_id:
+        raise HTTPException(403, "Not your farm")
+
+    farm.name = data.name
+    farm.location = data.location
+    farm.is_open = data.is_open
+    farm.latitude = data.latitude
+    farm.longitude = data.longitude
+
+    db.query(models.FarmFruit).filter(models.FarmFruit.farm_id == farm_id).delete()
+    
+    for fruit_name in data.fruits:
+
+        fruit = db.query(models.Fruit).filter(models.Fruit.fruit_type == fruit_name).first()
+
+        if not fruit:
+            fruit = models.Fruit(fruit_type=fruit_name)
+            db.add(fruit)
+            db.commit()
+            db.refresh(fruit)
+
+        link = models.FarmFruit(
+            farm_id=farm_id,
+            fruit_id=fruit.fruit_id
+        )
+        db.add(link)
+
+    db.commit()
+
+    return {"message": "Farm updated successfully"}
+
+
+# ------------------------
+# Delete Farm
+# ------------------------
+@app.delete("/farms/{farm_id}")
+def delete_farm(
+    farm_id: int,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    farm = db.query(models.Farm).filter(models.Farm.farm_id == farm_id).first()
+
+    if not farm:
+        raise HTTPException(404, "Farm not found")
+
+    if farm.user_id != current.user_id:
+        raise HTTPException(403, "Not your farm")
+
+    db.delete(farm)
+    db.commit()
+
+    return {"message": "Farm deleted"}
 
 
 # ------------------------
@@ -387,10 +504,6 @@ def add_reminder(data: ReminderCreate, current=Depends(get_current_user), db: Se
     db.refresh(reminder)
 
     return {"message": "Reminder added", "reminder": reminder}
-
-# =====================================================
-# LOCATION ENDPOINTS — START (added for location task)
-# =====================================================
 
 # ------------------------
 # Update My Location (User)
@@ -456,7 +569,6 @@ def update_farm_location(
 # ------------------------
 from math import radians, cos, sin, asin, sqrt
 
-
 def haversine(lat1, lon1, lat2, lon2):
     """
     Calculate distance between two points in KM
@@ -518,9 +630,3 @@ def get_nearby_farms(
         "farms_found": len(nearby),
         "farms": nearby
     }
-
-
-# =====================================================
-# LOCATION ENDPOINTS — END
-# =====================================================
-

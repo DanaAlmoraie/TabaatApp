@@ -138,7 +138,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get farmNameRequired => 'اسم المزرعة مطلوب';
 
   @override
-  String get location => 'الموقع';
+  String get location => 'وصف الموقع (المدينة، الحي، الشارع) *';
 
   @override
   String get locationRequired => 'الموقع مطلوب';
@@ -165,10 +165,67 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failedLoadingFarms => 'فشل تحميل المزارع';
 
   @override
+  String get farmLocationGps => 'موقع المزرعة (GPS) *';
+
+  @override
+  String get getting => 'جاري التحديد...';
+
+  @override
+  String get currentLocation => 'موقعي الحالي';
+
+  @override
+  String get pickOnMap => 'تحديد من الخريطة';
+
+  @override
+  String get noLocationSelected => 'لم يتم اختيار موقع';
+
+  @override
+  String get farmGpsSet => 'تم تحديد موقع المزرعة';
+
+  @override
+  String get noGpsSelected => 'لم يتم تحديد موقع GPS بعد';
+
+  @override
+  String get pleaseSetFarmGps => 'يرجى تحديد موقع المزرعة (الموقع الحالي أو اختيار من الخريطة)';
+
+  @override
+  String get couldNotGetLocation => 'تعذر الحصول على الموقع الحالي';
+
+  @override
+  String get shareMyGPSLocation => 'شارك موقعي عبر نظام تحديد المواقع العالمي (GPS) لعرض المزارع والخدمات القريبة.';
+
+  @override
+  String get locationPermissionDenied => 'تم رفض صلاحية الموقع';
+
+  @override
+  String get pleaseEnableLocation => 'يرجى تفعيل إذن الوصول إلى الموقع للمتابعة';
+
+  @override
+  String get registrationFailed => 'فشل التسجيل:';
+
+  @override
+  String get gps => 'GPS:';
+
+  @override
+  String get pickFarmLocation => 'اختر موقع المزرعة';
+
+  @override
+  String get open => 'تم الافتتاح';
+
+  @override
+  String get closed => 'تم الإغلاق';
+
+  @override
+  String get selected => 'تم الاختيار';
+
+  @override
   String get classifyFruit => 'تصنيف الفاكهة';
 
   @override
   String get classifyFruitDesc => 'تعرّف على نوع الفاكهة باستخدام الكاميرا الذكية';
+
+  @override
+  String get noFruitAdded => 'لم تتم إضافة أي فواكه';
 
   @override
   String get manageFarm => 'إدارة المزارع';
@@ -238,4 +295,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get distance => 'المسافة';
+
+  @override
+  String get apple => 'تفاح';
+
+  @override
+  String get banana => 'موز';
+
+  @override
+  String get orange => 'برتقال';
+
+  @override
+  String get kiwi => 'كيوي';
+
+  @override
+  String get grapes => 'عنب';
+
+  @override
+  String get strawberry => 'فراولة';
+
+  @override
+  String get lemon => 'ليمون';
+
+  @override
+  String get majdoolDates => 'تمر مجدول';
+
+  @override
+  String get asilDates => 'تمر أصيل';
+
+  @override
+  String get sukaryDates => 'تمر سكري';
 }

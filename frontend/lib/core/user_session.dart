@@ -20,8 +20,8 @@ class UserSession {
   }
 
   // ---------------- GETTERS ---------------
-  static String get name => user?['name'] ?? '';
-  static String get email => user?['email'] ?? '';
+  static String get name => user['name'] ?? '';
+  static String get email => user['email'] ?? '';
   static String get role {
     if (_currentUser == null) return '';
     return (_currentUser!['role'] ?? '').toString().toLowerCase();

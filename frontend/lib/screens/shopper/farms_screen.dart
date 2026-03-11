@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 import '../../l10n/app_localizations.dart';

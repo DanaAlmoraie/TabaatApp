@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/rendering.dart';
 import 'package:frontend/core/user_session.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/camera_screen.dart';
@@ -36,7 +35,7 @@ class TaabatApp extends StatefulWidget {
 }
 
 class _TaabatAppState extends State<TaabatApp> {
-  Locale _locale = Locale(UserSession.language);
+  Locale _locale = Locale('en');
 
   @override
   void initState() {
@@ -55,7 +54,7 @@ class _TaabatAppState extends State<TaabatApp> {
   }
 
   void setLocale(Locale locale) async {
-    LocaleManager.saveLocale(locale.languageCode);
+    await LocaleManager.saveLocale(locale.languageCode);
 
     setState(() {
       _locale = locale;

@@ -1,7 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
-import 'package:frontend/core/role_router.dart';
-import 'package:frontend/main.dart';
-import 'package:frontend/screens/auth/login_screen.dart';
 import 'package:frontend/widgets/profile_header.dart';
 import 'personal_data_screen.dart';
 import 'permissions_data_screen.dart';
@@ -173,8 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
       borderRadius: BorderRadius.circular(14),
       onTap: _confirmLogout,
       child: Container(
-        width: 130,
-        height: 54,
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           gradient: const LinearGradient(
@@ -189,15 +187,16 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.logout_rounded, color: Colors.white),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Text(
               tr.logout,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -207,46 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _navItem({
-    required IconData icon,
-    required String label,
-    required bool active,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 42,
-            height: 36,
-            decoration: BoxDecoration(
-              color: active
-                  ? Colors.white.withOpacity(0.15)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: active ? Colors.amber : Colors.white,
-              size: 20,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: active ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
+  /*
   // ================= NAV BAR =================
   Widget _buildBottomNavBar() {
     final tr = AppLocalizations.of(context)!;
@@ -291,6 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+*/
 
   @override
   Widget build(BuildContext context) {

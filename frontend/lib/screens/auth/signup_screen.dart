@@ -1,12 +1,12 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:frontend/core/main_shell.dart';
+import 'package:frontend/main.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../../../services/api_service.dart';
-import '../farmer/farmer_screen.dart';
-import '../shopper/shoper_screen.dart';
-import 'login_screen.dart';
 import '../../l10n/app_localizations.dart';
+import '../../../services/api_service.dart';
+import 'login_screen.dart';
 
 // ألوان موحدة مع شاشة تسجيل الدخول
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
@@ -15,7 +15,7 @@ const Color kPrimaryOrange = Color(0xFFFF9F1C);
 const Color kBgColor = Color(0xFFF4F6F8);
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -48,6 +48,34 @@ class _SignupScreenState extends State<SignupScreen> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  Widget _languageButton(BuildContext context) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+
+    return GestureDetector(
+      onTap: () {
+        if (isArabic) {
+          TaabatApp.setLocale(context, const Locale('en'));
+        } else {
+          TaabatApp.setLocale(context, const Locale('ar'));
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          isArabic ? "EN" : "ع",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.orange,
+          ),
+        ),
+      ),
+    );
   }
 
   InputDecoration _fieldDecoration(String hintText) {
@@ -97,6 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<bool> _getCurrentLocation() async {
+    final tr = AppLocalizations.of(context)!;
     final ok = await _ensureLocationPermission();
     if (!ok) return false;
 
@@ -131,18 +160,19 @@ class _SignupScreenState extends State<SignupScreen> {
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Could not get location.')));
+      ).showSnackBar(SnackBar(content: Text(tr.couldNotGetLocation)));
       return false;
     }
   }
 
   Future<void> _submitSignup() async {
+    final tr = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
 
     if (_selectedRole == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Please select your role')));
+      ).showSnackBar(SnackBar(content: Text(tr.selectRoleError)));
       return;
     }
 
@@ -152,10 +182,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
       if (_userLatitude == null || _userLongitude == null) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please enable location to continue.')),
-        );
-        return; // لا تسوي register بدون لوكيشن
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(tr.pleaseEnableLocation)));
+        return;
       }
     }
 
@@ -176,10 +206,7 @@ class _SignupScreenState extends State<SignupScreen> {
         longitude: _userLongitude,
       );
 
-      final roleValue = (userJson['role'] ?? '')
-          .toString()
-          .toLowerCase()
-          .trim();
+      (userJson['role'] ?? '').toString().toLowerCase().trim();
 
       Navigator.pushReplacement(
         context,
@@ -189,7 +216,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Registration failed: $e')));
+      ).showSnackBar(SnackBar(content: Text('${tr.registrationFailed}:$e')));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -223,9 +250,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   horizontal: 20,
                   vertical: 18,
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Stack(
                   children: [
+                    PositionedDirectional(
+                      top: 10,
+                      end: 10,
+                      child: _languageButton(context),
+                    ),
                     Container(
                       width: 56,
                       height: 56,
@@ -504,10 +535,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                       ScaffoldMessenger.of(
                                         context,
                                       ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'Could not get location. Try again.',
-                                          ),
+                                        SnackBar(
+                                          content: Text(tr.couldNotGetLocation),
                                         ),
                                       );
                                     }
@@ -525,7 +554,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        'Share my GPS location to show nearby farms and services.',
+                                        tr.shareMyGPSLocation,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade700,

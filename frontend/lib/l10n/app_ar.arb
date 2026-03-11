@@ -60,9 +60,29 @@
   "noFarmsYet": "لا توجد مزارع حتى الآن",
   "deleteFailed": "فشل الحذف",
   "failedLoadingFarms": "فشل تحميل المزارع",
+  "farmLocationGps": "موقع المزرعة (GPS) *",
+  "getting": "جاري التحديد...",
+  "currentLocation": "موقعي الحالي",
+  "pickOnMap": "تحديد من الخريطة",
+  "noLocationSelected": "لم يتم اختيار موقع",
+  "farmGpsSet": "تم تحديد موقع المزرعة",
+  "noGpsSelected": "لم يتم تحديد موقع GPS بعد",
+  "pleaseSetFarmGps": "يرجى تحديد موقع المزرعة (الموقع الحالي أو اختيار من الخريطة)",
+  "couldNotGetLocation": "تعذر الحصول على الموقع الحالي",
+  "shareMyGPSLocation":"شارك موقعي عبر نظام تحديد المواقع العالمي (GPS) لعرض المزارع والخدمات القريبة.",
+  "locationPermissionDenied": "تم رفض صلاحية الموقع",
+  "pleaseEnableLocation": "يرجى تفعيل إذن الوصول إلى الموقع للمتابعة",
+  "registrationFailed": "فشل التسجيل:",
+  "gps": "GPS:",
+  "pickFarmLocation": "اختر موقع المزرعة",
+
+  "open": "تم الافتتاح",
+  "closed": "تم الإغلاق",
+  "selected": "تم الاختيار",
 
   "classifyFruit": "تصنيف الفاكهة",
   "classifyFruitDesc": "تعرّف على نوع الفاكهة باستخدام الكاميرا الذكية",
+  "noFruitAdded": "لم تتم إضافة أي فواكه",
   "manageFarm": "إدارة المزارع",
   "manageFarmDesc": "قم بإدارة جميع مزارعك من هنا",
   "viewHistory": "عرض السجل",
@@ -89,5 +109,17 @@
   "viewAll": "عرض الكل",
   "unknownFarm": "مزرعة غير معروفة",
   "unknownLocation": "موقع غير معروف",
-  "distance": "المسافة"
+  "distance": "المسافة",
+
+
+  "apple": "تفاح",
+  "banana": "موز",
+  "orange": "برتقال",
+  "kiwi": "كيوي",
+  "grapes": "عنب",
+  "strawberry": "فراولة",
+  "lemon": "ليمون",
+  "majdoolDates": "تمر مجدول",
+  "asilDates": "تمر أصيل",
+  "sukaryDates": "تمر سكري"
 }

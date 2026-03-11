@@ -356,7 +356,7 @@ abstract class AppLocalizations {
   /// No description provided for @location.
   ///
   /// In en, this message translates to:
-  /// **'Location'**
+  /// **'Location description (City, Area, Street) *'**
   String get location;
 
   /// No description provided for @locationRequired.
@@ -407,6 +407,114 @@ abstract class AppLocalizations {
   /// **'Failed to load Farms'**
   String get failedLoadingFarms;
 
+  /// No description provided for @farmLocationGps.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Location (GPS) *'**
+  String get farmLocationGps;
+
+  /// No description provided for @getting.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting...'**
+  String get getting;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get currentLocation;
+
+  /// No description provided for @pickOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick on Map'**
+  String get pickOnMap;
+
+  /// No description provided for @noLocationSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No location selected'**
+  String get noLocationSelected;
+
+  /// No description provided for @farmGpsSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm GPS set'**
+  String get farmGpsSet;
+
+  /// No description provided for @noGpsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No GPS selected yet'**
+  String get noGpsSelected;
+
+  /// No description provided for @pleaseSetFarmGps.
+  ///
+  /// In en, this message translates to:
+  /// **'Please set farm GPS (Current location or Pick on map)'**
+  String get pleaseSetFarmGps;
+
+  /// No description provided for @couldNotGetLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get current location'**
+  String get couldNotGetLocation;
+
+  /// No description provided for @shareMyGPSLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my GPS location to show nearby farms and services.'**
+  String get shareMyGPSLocation;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @pleaseEnableLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable location permission to continue'**
+  String get pleaseEnableLocation;
+
+  /// No description provided for @registrationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration failed:'**
+  String get registrationFailed;
+
+  /// No description provided for @gps.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS:'**
+  String get gps;
+
+  /// No description provided for @pickFarmLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Farm Location'**
+  String get pickFarmLocation;
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get closed;
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selected;
+
   /// No description provided for @classifyFruit.
   ///
   /// In en, this message translates to:
@@ -418,6 +526,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Identify fruit type using AI-powered camera'**
   String get classifyFruitDesc;
+
+  /// No description provided for @noFruitAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'No fruits added'**
+  String get noFruitAdded;
 
   /// No description provided for @manageFarm.
   ///
@@ -556,6 +670,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Distance'**
   String get distance;
+
+  /// No description provided for @apple.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple'**
+  String get apple;
+
+  /// No description provided for @banana.
+  ///
+  /// In en, this message translates to:
+  /// **'Banana'**
+  String get banana;
+
+  /// No description provided for @orange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get orange;
+
+  /// No description provided for @kiwi.
+  ///
+  /// In en, this message translates to:
+  /// **'Kiwi'**
+  String get kiwi;
+
+  /// No description provided for @grapes.
+  ///
+  /// In en, this message translates to:
+  /// **'Grapes'**
+  String get grapes;
+
+  /// No description provided for @strawberry.
+  ///
+  /// In en, this message translates to:
+  /// **'Strawberry'**
+  String get strawberry;
+
+  /// No description provided for @lemon.
+  ///
+  /// In en, this message translates to:
+  /// **'Lemon'**
+  String get lemon;
+
+  /// No description provided for @majdoolDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Majdool Dates'**
+  String get majdoolDates;
+
+  /// No description provided for @asilDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Asil Dates'**
+  String get asilDates;
+
+  /// No description provided for @sukaryDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Sukary Dates'**
+  String get sukaryDates;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
