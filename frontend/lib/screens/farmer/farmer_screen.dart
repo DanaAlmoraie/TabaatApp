@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/core/user_session.dart';
@@ -86,7 +88,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: const Color.fromRGBO(244, 246, 248, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: kIsWeb ? null : _buildCameraButton(),
       body: SingleChildScrollView(
@@ -156,6 +158,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   "${tr.hello} ${userData?['name']}",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+
                   style: const TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -391,7 +394,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
               _buildWeatherDetailCard(
                 icon: Icons.water_drop_outlined,
                 label: tr.humidity,
-                value: '${humidity.toStringAsFixed(0)}%',
+                value: '${humidity.toStringAsFixed(0)} ${tr.percent}',
                 color: Colors.pink.withOpacity(0.12),
                 iconColor: Colors.pink[400]!,
                 textColor: Colors.pink[800]!,
@@ -399,7 +402,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
               _buildWeatherDetailCard(
                 icon: Icons.cloud_outlined,
                 label: tr.rain,
-                value: '${rain.toStringAsFixed(1)} mm',
+                value: '${rain.toStringAsFixed(1)} ${tr.millimeter}',
                 color: Colors.blue.withOpacity(0.12),
                 iconColor: Colors.blue[400]!,
                 textColor: Colors.blue[800]!,
@@ -407,7 +410,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
               _buildWeatherDetailCard(
                 icon: Icons.air_outlined,
                 label: tr.wind,
-                value: '${wind.toStringAsFixed(0)} km/h',
+                value: '${wind.toStringAsFixed(0)} ${tr.kiloMeterPerHour}',
                 color: Colors.teal.withOpacity(0.12),
                 iconColor: Colors.teal[400]!,
                 textColor: Colors.teal[800]!,
@@ -477,39 +480,10 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
           try {
             final cameras = await availableCameras();
 
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tr.classifyFruit,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange[900],
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    tr.classifyFruitDesc,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.orange[700]!.withOpacity(0.9),
-                    ),
-                  ),
-                ],
-              ),
-            );
             if (cameras.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('No camera available on this device'),
-                ),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(tr.noCameraFound)));
               return;
             }
 
@@ -523,7 +497,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
             );
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error accessing camera: $e')),
+              SnackBar(content: Text('${tr.errorAccessingCamera} $e')),
             );
           }
         },
@@ -564,7 +538,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Classify Fruit",
+                      tr.classifyFruit,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -575,7 +549,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Identify fruit type using AI-powered camera",
+                      tr.classifyFruitDesc,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

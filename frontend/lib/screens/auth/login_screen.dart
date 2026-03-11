@@ -45,13 +45,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
-          isArabic ? "EN" : "ع",
+          isArabic ? "EN" : " ع ",
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.orange,
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // HEADER
               Container(
                 width: double.infinity,
-                height: 190,
+                height: 200,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [kShopperGreen1, kShopperGreen2],
@@ -149,25 +149,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Stack(
                   children: [
-                    PositionedDirectional(
+                    Positioned(
                       top: 10,
-                      end: 10,
+                      left: 10,
                       child: _languageButton(context),
                     ),
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Image.asset(
-                        'assets/tabbat_logo.jpg',
-                        fit: BoxFit.contain,
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: Image.asset(
+                          'assets/tabbat_logo.jpg',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 14),
+                    const SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 2),
                         Text(
                           tr.welcomeBack,
                           style: const TextStyle(

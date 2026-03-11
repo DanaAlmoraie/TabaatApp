@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, unused_field
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/core/user_session.dart';
 import 'package:frontend/services/api_service.dart';
@@ -71,14 +72,15 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: const Color.fromRGBO(244, 246, 248, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: kIsWeb ? null : _buildCameraButton(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             _buildHeader(),
-            _buildClassifyBox(context),
+            const SizedBox(height: 12),
+            _buildClassifyBox(),
             const SizedBox(height: 25),
             _buildFarmSection(context),
             const SizedBox(height: 100),
@@ -140,22 +142,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                   ),
                 ),
               ),
-
-              Container(
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.95),
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 6,
-                      spreadRadius: 1,
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           // التاريخ
@@ -182,53 +168,77 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     return dateFormat.format(now);
   }
 
-  // ================= CLASSIFY BOX =================
-  Widget _buildClassifyBox(BuildContext context) {
+  Widget _buildClassifyBox() {
     final tr = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.orange[50],
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 12,
-              spreadRadius: 1,
-              offset: const Offset(0, 3),
-            ),
-          ],
-          border: Border.all(color: Colors.orange[200]!, width: 1),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Colors.orange[100],
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.orange[300]!, width: 1.5),
-                  ),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Colors.orange[800],
-                    size: 24,
-                  ),
+      child: GestureDetector(
+        onTap: () async {
+          try {
+            final cameras = await availableCameras();
+
+            if (cameras.isEmpty) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(tr.noCameraFound)));
+              return;
+            }
+
+            final firstCamera = cameras.first;
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CameraScreen(camera: firstCamera),
+              ),
+            );
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('${tr.errorAccessingCamera} $e')),
+            );
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.orange[50],
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 12,
+                spreadRadius: 1,
+                offset: const Offset(0, 3),
+              ),
+            ],
+            border: Border.all(color: Colors.orange[200]!, width: 1),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.orange[100],
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: Colors.orange[300]!, width: 1.5),
                 ),
-                const SizedBox(width: 14),
-                Column(
+                child: Icon(
+                  Icons.camera_alt_outlined,
+                  color: Colors.orange[800],
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       tr.classifyFruit,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -238,6 +248,8 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                     const SizedBox(height: 4),
                     Text(
                       tr.classifyFruitDesc,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.orange[700]!.withOpacity(0.9),
@@ -245,11 +257,15 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
                     ),
                   ],
                 ),
-              ],
-            ),
-
-            Icon(Icons.arrow_forward_ios, color: Colors.orange[700], size: 20),
-          ],
+              ),
+              const SizedBox(width: 10),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.orange[700],
+                size: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

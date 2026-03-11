@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import '../../widgets/profile_header.dart';
 import '../../core/user_session.dart';
 import '../../l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
@@ -20,20 +20,48 @@ class PermissionsPage extends StatefulWidget {
 }
 
 class _PermissionsPageState extends State<PermissionsPage> {
-  bool camera = true;
-  bool location = true;
-
   late final List<String> avatars;
   late final String role;
+  bool camera = true;
+  bool location = true;
 
   @override
   void initState() {
     super.initState();
     role = widget.userData['role'] ?? 'farmer';
 
+    camera = UserSession.cameraEnabled;
+    location = UserSession.locationEnabled;
+
     avatars = role == 'farmer'
         ? ['assets/Male-Farmer.png', 'assets/Female-Farmer.png']
         : ['assets/Male-Shopper.png', 'assets/Female-Shopper.png'];
+  }
+
+  Future<void> _toggleCamera(bool value) async {
+    if (value) {
+      final status = await Permission.camera.request();
+      if (!status.isGranted) return;
+    }
+
+    await UserSession.setCameraPermission(value);
+
+    setState(() {
+      camera = value;
+    });
+  }
+
+  Future<void> _toggleLocation(bool value) async {
+    if (value) {
+      final status = await Permission.location.request();
+      if (!status.isGranted) return;
+    }
+
+    await UserSession.setLocationPermission(value);
+
+    setState(() {
+      location = value;
+    });
   }
 
   @override
@@ -64,12 +92,12 @@ class _PermissionsPageState extends State<PermissionsPage> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  _permissionTile(tr.cameraAccess, camera, (v) {
-                    setState(() => camera = v);
-                  }),
-                  _permissionTile(tr.locationSharing, location, (v) {
-                    setState(() => location = v);
-                  }),
+                  _permissionTile(tr.cameraAccess, camera, _toggleCamera),
+                  _permissionTile(
+                    tr.locationSharing,
+                    location,
+                    _toggleLocation,
+                  ),
                 ],
               ),
             ),

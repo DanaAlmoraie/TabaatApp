@@ -2,15 +2,16 @@
   "appTitle": "طابت",
   "login": "تسجيل الدخول",
   "signUp": " إنشاء حساب",
-  "welcomeBack": "مرحباً بعودتك إلى تطبيق طابت 🌱",
+  "welcomeBack": "مرحباً بعودتك إلى طابت",
   "hello": "مرحباً",
-  "createAccount": "أنشئ حسابك في تطبيق طابت 🌱",
+  "createAccount": "أنشئ حسابك في طابت",
   "home": "الرئيسية",
 
   "email": "البريد الإلكتروني",
   "emailHint": "name@email.com",
   "enterEmail": "يرجى إدخال البريد الإلكتروني",
   "validEmail": "بريد إلكتروني غير صالح",
+  "emailAlreadyUsed": "البريد الإلكتروني مستخدم بالفعل، حاول استخدام بريد إلكتروني آخر",
 
   "password": "كلمة المرور",
   "enterPassword": "أدخل كلمة المرور",
@@ -32,6 +33,7 @@
   "shopper": "متسوق",
 
   "shareLocation": "مشاركة موقعي لعرض المزارع والخدمات القريبة",
+  "locationSaved": "تم حفظ الموقع",
 
   "noAccount": " ليس لديك حساب؟",
   "haveAccount": "لديك حساب بالفعل؟",
@@ -79,16 +81,18 @@
   "retry": "أعد المحاولة",
   "unableLoadingWeather": "لا يمكن تحميل بيانات الطقس حاليا.",
   "basedOnYourLocation": "بناءً على موقعك",
-  "farmWeather": "Farm weather",
   "farmWeather": "طقس المزرعة",
-  "moderate": "Moderate",
-  "humidity": "Humidity",
-  "rain": "Rain",
-  "wind": "Wind",
+
+  "uvIndex": "أشعة UV",
+  "moderate": "متوسط",
+  "humidity": "الرطوبة",
+  "rain": "الأمطار",
+  "wind": "الرياح",
 
   "open": "مفتوح",
   "closed": "مغلق",
   "selected": "تم الاختيار",
+  "error": "خطأ",
 
   "classifyFruit": "تصنيف الفاكهة",
   "classifyFruitDesc": "تعرّف على نوع الفاكهة باستخدام الكاميرا الذكية",
@@ -131,5 +135,63 @@
   "lemon": "ليمون",
   "majdoolDates": "تمر مجدول",
   "asilDates": "تمر أصيل",
-  "sukaryDates": "تمر سكري"
+  "sukaryDates": "تمر سكري",
+
+  
+  "nutritionInformation": "المعلومات الغذائية · 100 جم",
+  "calories": "السعرات الحرارية",
+  "energyDescription": "الطاقة التقريبية في 100 جم من {fruit}.",
+  "dailyIntake": "{percent}% من الاحتياج اليومي (2000 سعرة حرارية)",
+
+  "macronutrients": "العناصر الغذائية الكبرى",
+
+  "carbs": "الكربوهيدرات",
+  "protein": "البروتين",
+  "totalFat": "الدهون الكلية",
+
+  "carbsDescription": "المصدر الرئيسي للطاقة",
+  "proteinDescription": "يدعم العضلات",
+  "fatDescription": "إجمالي كمية الدهون",
+
+  "fiberSugar": "الألياف والسكريات",
+
+  "fiber": "الألياف",
+  "sugar": "السكر",
+
+  "fiberDescription": "يساعد على الهضم والشعور بالشبع.",
+  "sugarDescription": "السكر الطبيعي الموجود في الفاكهة.",
+
+  "micronutrients": "العناصر الغذائية الدقيقة",
+
+  "water": "الماء",
+  "calcium": "الكالسيوم",
+  "iron": "الحديد",
+
+  "nutritionDisclaimer": "* جميع القيم تقريبية وتعتمد على حصة مقدارها 100 جم.",
+
+  "noNutritionData": "لا توجد بيانات غذائية لـ {fruit}",
+  "loadingError": "حدث خطأ أثناء تحميل البيانات",
+  "gram": "جم",
+  "milligram": "ملجم",
+  "kilocalorie": "سعرة حرارية",
+  "percent": "%",
+  "millimeter": "ملمتر",
+  "kiloMeterPerHour": "كم/ساعة",
+
+  "noCameraFound": "لا توجد كاميرا متاحة في هذا الجهاز",
+  "errorAccessingCamera": "حدث خطأ أثناء الوصول إلى الكاميرا:",
+  "errorWhileScanning": "حدث خطأ أثناء المسح الضوئي",
+  "errorWhileUploading": "حدث خطأ أثناء التحميل",
+  "fruitCondition":"حالة الفاكهة",
+  "spotsFound": "تم اكتشاف بقع صغيرة في الفاكهة",
+  "fruitStructureIsStable": "بنية الفاكهة مستقرة",
+  "unableDetectingFruitClearly": "تعذر تحديد الفاكهة بوضوح؛ حاول مرة أخرى",
+  "seeDetailInformation": "للاطلاع على المعلومات التفصيلية.",
+  "unknown": "غير معروف",
+  "scan": "امسح الفاكهة",
+  "placeFruitInsideFrame": "ضع الفاكهة داخل إطار التصوير.",
+  "scanning": "يتم التقاط الفاكهة...",
+  "upload": "تحميل الصورة",
+  "cameraPermissionDenied": "تم رفض إذن استخدام الكاميرا"
+
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/core/main_shell.dart';
+import 'package:frontend/core/user_session.dart';
 import 'package:frontend/main.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../l10n/app_localizations.dart';
@@ -29,6 +30,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _confirmPasswordController = TextEditingController();
 
   String? _selectedRole; // Farmer / Shopper
+  String? _emailServerError;
+
   bool _shareLocation = false;
   bool _isSubmitting = false;
 
@@ -116,6 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (!mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Location permission denied.')),
+        //============================ TRANSLATE============================
       );
       return false;
     }
@@ -129,6 +133,13 @@ class _SignupScreenState extends State<SignupScreen> {
     if (!ok) return false;
 
     setState(() => _isGettingLocation = true);
+
+    if (!UserSession.locationEnabled) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(tr.locationPermissionDenied)));
+      return false;
+    }
 
     try {
       final position = await Geolocator.getCurrentPosition(
@@ -146,7 +157,7 @@ class _SignupScreenState extends State<SignupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Location saved: (${_userLatitude!.toStringAsFixed(5)}, ${_userLongitude!.toStringAsFixed(5)})',
+            '${tr.locationSaved}: (${_userLatitude!.toStringAsFixed(5)}, ${_userLongitude!.toStringAsFixed(5)})',
           ),
         ),
       );
@@ -175,7 +186,7 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    // ✅ لو اليوزر فعّل مشاركة اللوكيشن وما انحفظت الإحداثيات لسه
+    // لو اليوزر فعّل مشاركة اللوكيشن وما انحفظت الإحداثيات لسه
     if (_shareLocation && (_userLatitude == null || _userLongitude == null)) {
       await _getCurrentLocation(); // حاول يجيبها الآن
 
@@ -195,7 +206,7 @@ class _SignupScreenState extends State<SignupScreen> {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
-      final userJson = await ApiService.registerUser(
+      await ApiService.registerUser(
         name: name,
         email: email,
         password: password,
@@ -205,13 +216,14 @@ class _SignupScreenState extends State<SignupScreen> {
         longitude: _userLongitude,
       );
 
-      (userJson['role'] ?? '').toString().toLowerCase().trim();
-      final userData = {
-        'name': name,
-        'email': email,
-        'role': _selectedRole!,
-        //'token': token,
-      };
+      //أول شيء نسوي تسجيل دخول بعد ما سوينا الحساب الجديد
+      final token = await ApiService.login(email: email, password: password);
+
+      //بعدها رح نجيب بيانات المستخدم
+      final me = await ApiService.getMe(token);
+
+      //وبعدها رح نعمل session
+      UserSession.startSession(userToken: token, userData: me);
 
       Navigator.pushReplacement(
         context,
@@ -219,9 +231,11 @@ class _SignupScreenState extends State<SignupScreen> {
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('${tr.registrationFailed}:$e')));
+      setState(() {
+        if (e.toString().contains('email')) {
+          _emailServerError = tr.emailAlreadyUsed;
+        }
+      });
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -369,7 +383,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            decoration: _fieldDecoration(tr.emailHint),
+                            onChanged: (_) {
+                              if (_emailServerError != null) {
+                                setState(() => _emailServerError = null);
+                              }
+                            },
+                            decoration: _fieldDecoration(
+                              tr.emailHint,
+                            ).copyWith(errorText: _emailServerError),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return tr.enterEmail;
@@ -498,7 +519,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 child: Text(tr.shopper),
                               ),
                             ],
-                            onChanged: (value) {
+                            onChanged: (value) async {
                               setState(() {
                                 _selectedRole = value;
                               });
@@ -524,9 +545,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (value) {
                                     setState(() {
                                       _shareLocation = true;
-                                      _isSubmitting =
-                                          true; // نخلي زر التسجيل يقفل مؤقتًا
+                                      _isSubmitting = true;
                                     });
+                                    await UserSession.setLocationPermission(
+                                      true,
+                                    );
 
                                     await _getCurrentLocation();
 
@@ -536,6 +559,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                     if (_userLatitude == null ||
                                         _userLongitude == null) {
                                       setState(() => _shareLocation = false);
+
+                                      await UserSession.setLocationPermission(
+                                        false,
+                                      );
+
                                       ScaffoldMessenger.of(
                                         context,
                                       ).showSnackBar(
@@ -550,6 +578,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                       _userLatitude = null;
                                       _userLongitude = null;
                                     });
+
+                                    await UserSession.setLocationPermission(
+                                      false,
+                                    );
                                   }
                                 },
                               ),

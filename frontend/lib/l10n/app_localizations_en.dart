@@ -18,13 +18,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signUp => ' Sign Up';
 
   @override
-  String get welcomeBack => 'Welcome back to the Taabat app 🌱';
+  String get welcomeBack => 'Welcome back to Taabat';
 
   @override
   String get hello => 'Hello';
 
   @override
-  String get createAccount => 'Create your Taabat account 🌱';
+  String get createAccount => 'Create your Taabat account';
 
   @override
   String get home => 'Home';
@@ -40,6 +40,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validEmail => 'Please enter a valid email';
+
+  @override
+  String get emailAlreadyUsed => 'Email is already used, try another email';
 
   @override
   String get password => 'Password';
@@ -91,6 +94,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareLocation => 'Share my GPS location to show nearby farms and services.';
+
+  @override
+  String get locationSaved => 'Location saved';
 
   @override
   String get noAccount => 'Don\'t have an account? ';
@@ -246,6 +252,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selected => 'Selected';
 
   @override
+  String get error => 'Error';
+
+  @override
   String get classifyFruit => 'Classify Fruit';
 
   @override
@@ -352,4 +361,142 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sukaryDates => 'Sukary Dates';
+
+  @override
+  String get nutritionInformation => 'Nutrition information · 100 g';
+
+  @override
+  String get calories => 'Calories';
+
+  @override
+  String energyDescription(Object fruit) {
+    return 'Approximate energy in 100 g of $fruit.';
+  }
+
+  @override
+  String dailyIntake(Object percent) {
+    return '$percent% of a 2000 kcal daily intake';
+  }
+
+  @override
+  String get macronutrients => 'Macronutrients';
+
+  @override
+  String get carbs => 'Carbs';
+
+  @override
+  String get protein => 'Protein';
+
+  @override
+  String get totalFat => 'Total Fat';
+
+  @override
+  String get carbsDescription => 'Main energy source';
+
+  @override
+  String get proteinDescription => 'Supports muscles';
+
+  @override
+  String get fatDescription => 'Overall fat amount';
+
+  @override
+  String get fiberSugar => 'Fiber & Sugar';
+
+  @override
+  String get fiber => 'Fiber';
+
+  @override
+  String get sugar => 'Sugar';
+
+  @override
+  String get fiberDescription => 'Helps digestion & satiety.';
+
+  @override
+  String get sugarDescription => 'Natural sugar content.';
+
+  @override
+  String get micronutrients => 'Micronutrients';
+
+  @override
+  String get water => 'Water';
+
+  @override
+  String get calcium => 'Calcium';
+
+  @override
+  String get iron => 'Iron';
+
+  @override
+  String get nutritionDisclaimer => '* All values are approximate and based on a 100 g portion.';
+
+  @override
+  String noNutritionData(Object fruit) {
+    return 'No nutrition data found for $fruit';
+  }
+
+  @override
+  String get loadingError => 'Error loading data';
+
+  @override
+  String get gram => 'g';
+
+  @override
+  String get milligram => 'mg';
+
+  @override
+  String get kilocalorie => 'kcal';
+
+  @override
+  String get percent => '%';
+
+  @override
+  String get millimeter => 'millimeter';
+
+  @override
+  String get kiloMeterPerHour => 'km/h';
+
+  @override
+  String get noCameraFound => 'No camera available on this device';
+
+  @override
+  String get errorAccessingCamera => 'Error accessing camera:';
+
+  @override
+  String get errorWhileScanning => 'Error while scanning';
+
+  @override
+  String get errorWhileUploading => 'Error whilr uploading';
+
+  @override
+  String get fruitCondition => 'Fruit Condition';
+
+  @override
+  String get spotsFound => 'Small spots found near plant';
+
+  @override
+  String get fruitStructureIsStable => 'Fruit structure is stable';
+
+  @override
+  String get unableDetectingFruitClearly => 'Unable to detect fruit clearly, try again';
+
+  @override
+  String get seeDetailInformation => 'See Detail Information';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get scan => 'Scan';
+
+  @override
+  String get scanning => 'Scanning...';
+
+  @override
+  String get placeFruitInsideFrame => 'Place the fruit inside the frame.';
+
+  @override
+  String get upload => 'Upload';
+
+  @override
+  String get cameraPermissionDenied => 'Camera permission denied';
 }

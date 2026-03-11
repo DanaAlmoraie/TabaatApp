@@ -2,15 +2,16 @@
   "appTitle": "Taabat",
   "login": "Login",
   "signUp": " Sign Up",
-  "welcomeBack": "Welcome back to the Taabat app 🌱",
+  "welcomeBack": "Welcome back to Taabat",
   "hello": "Hello",
-  "createAccount": "Create your Taabat account 🌱",
+  "createAccount": "Create your Taabat account",
   "home": "Home",
 
   "email": "Email",
   "emailHint": "name@email.com",
   "enterEmail": "Please enter your email",
   "validEmail": "Please enter a valid email",
+  "emailAlreadyUsed": "Email is already used, try another email",
 
   "password": "Password",
   "enterPassword": "Enter password",
@@ -32,6 +33,7 @@
   "shopper": "Shopper",
 
   "shareLocation": "Share my GPS location to show nearby farms and services.",
+  "locationSaved": "Location saved",
 
   "noAccount": "Don't have an account? ",
   "haveAccount": "Already have an account?",
@@ -81,6 +83,7 @@
   "unableLoadingWeather": "Unable to load weather right now.",
   "basedOnYourLocation": "Based on your location",
   "farmWeather": "Farm weather",
+
   "uvIndex": "UV",
   "moderate": "Moderate",
   "humidity": "Humidity",
@@ -91,6 +94,8 @@
   "open": "Open",
   "closed": "Closed",
   "selected": "Selected",
+  "error": "Error",
+
 
   "classifyFruit": "Classify Fruit",
   "classifyFruitDesc": "Identify fruit type using AI-powered camera",
@@ -133,5 +138,62 @@
   "lemon": "Lemon",
   "majdoolDates": "Majdool Dates",
   "asilDates": "Asil Dates",
-  "sukaryDates": "Sukary Dates"
+  "sukaryDates": "Sukary Dates",
+
+
+  "nutritionInformation": "Nutrition information · 100 g",
+  "calories": "Calories",
+  "energyDescription": "Approximate energy in 100 g of {fruit}.",
+  "dailyIntake": "{percent}% of a 2000 kcal daily intake",
+
+  "macronutrients": "Macronutrients",
+
+  "carbs": "Carbs",
+  "protein": "Protein",
+  "totalFat": "Total Fat",
+
+  "carbsDescription": "Main energy source",
+  "proteinDescription": "Supports muscles",
+  "fatDescription": "Overall fat amount",
+
+  "fiberSugar": "Fiber & Sugar",
+
+  "fiber": "Fiber",
+  "sugar": "Sugar",
+
+  "fiberDescription": "Helps digestion & satiety.",
+  "sugarDescription": "Natural sugar content.",
+
+  "micronutrients": "Micronutrients",
+
+  "water": "Water",
+  "calcium": "Calcium",
+  "iron": "Iron",
+
+  "nutritionDisclaimer": "* All values are approximate and based on a 100 g portion.",
+
+  "noNutritionData": "No nutrition data found for {fruit}",
+  "loadingError": "Error loading data",
+  "gram": "g",
+  "milligram": "mg",
+  "kilocalorie": "kcal",
+  "percent": "%",
+  "millimeter": "millimeter",
+  "kiloMeterPerHour": "km/h",
+
+  "noCameraFound": "No camera available on this device",
+  "errorAccessingCamera": "Error accessing camera:",
+  "errorWhileScanning": "Error while scanning",
+  "errorWhileUploading": "Error whilr uploading",
+  "fruitCondition":"Fruit Condition",
+  "spotsFound": "Small spots found near plant",
+  "fruitStructureIsStable": "Fruit structure is stable",
+  "unableDetectingFruitClearly": "Unable to detect fruit clearly, try again",
+  "seeDetailInformation": "See Detail Information",
+  "unknown": "Unknown",
+  "scan": "Scan",
+  "scanning": "Scanning...",
+  "placeFruitInsideFrame": "Place the fruit inside the frame.",
+  "upload": "Upload",
+  "cameraPermissionDenied": "Camera permission denied"
 }

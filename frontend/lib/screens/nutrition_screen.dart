@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import '../utils/fruit_translator.dart';
 
 class Nutrition {
   final String classKey; // e.g. "banana", "apple", "date_sukkari"
   final String displayName;
-  final double energy; 
-  final double water; 
-  final double protein; 
-  final double totalFat; 
-  final double carbs; 
-  final double fiber; 
-  final double sugar; 
-  final double calcium; 
-  final double iron; 
+  final double energy;
+  final double water;
+  final double protein;
+  final double totalFat;
+  final double carbs;
+  final double fiber;
+  final double sugar;
+  final double calcium;
+  final double iron;
 
   const Nutrition({
     required this.classKey,
@@ -30,14 +31,10 @@ class Nutrition {
   });
 }
 
-
 class NutritionLoader extends StatelessWidget {
-  final String fruitType; // 'Banana', 'Apple', 'Medjool', 'Sukkari', 'Asail'
+  final String fruitType;
 
-  const NutritionLoader({
-    super.key,
-    required this.fruitType,
-  });
+  const NutritionLoader({super.key, required this.fruitType});
 
   Future<Nutrition?> _loadNutrition() async {
     final client = Supabase.instance.client;
@@ -59,7 +56,8 @@ class NutritionLoader extends StatelessWidget {
     final nutRow = await client
         .from('nutritional_info')
         .select(
-            'energy, water, protein, total_fat, carbs, fiber, sugar, calcium, iron')
+          'energy, water, protein, total_fat, carbs, fiber, sugar, calcium, iron',
+        )
         .eq('fruit_id', fruitId)
         .maybeSingle();
 
@@ -71,7 +69,7 @@ class NutritionLoader extends StatelessWidget {
     double toDouble(dynamic v) => (v as num).toDouble();
 
     return Nutrition(
-      classKey: fruitType.toLowerCase(), 
+      classKey: fruitType.toLowerCase(),
       displayName: displayName,
       energy: toDouble(nutRow['energy']),
       water: toDouble(nutRow['water']),
@@ -87,11 +85,12 @@ class NutritionLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     return FutureBuilder<Nutrition?>(
       future: _loadNutrition(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
@@ -101,7 +100,7 @@ class NutritionLoader extends StatelessWidget {
           return Scaffold(
             body: Center(
               child: Text(
-                'Error: ${snapshot.error}',
+                '${tr.error} ${snapshot.error}',
                 style: const TextStyle(color: Colors.red),
               ),
             ),
@@ -111,32 +110,27 @@ class NutritionLoader extends StatelessWidget {
         final nutrition = snapshot.data;
         if (nutrition == null) {
           return Scaffold(
-            body: Center(
-              child: Text('No nutrition data found for $fruitType'),
-            ),
+            body: Center(child: Text(tr.noNutritionData(fruitType))),
           );
         }
 
-        
         return NutritionDetailsPage(nutrition: nutrition);
       },
     );
   }
 }
 
-
 class NutritionDetailsPage extends StatelessWidget {
   final Nutrition nutrition;
 
-  const NutritionDetailsPage({
-    super.key,
-    required this.nutrition,
-  });
+  const NutritionDetailsPage({super.key, required this.nutrition});
 
   static const Color _primary = Color(0xFFFFA000); // Taabat orange
 
   @override
   Widget build(BuildContext context) {
+    final tr = AppLocalizations.of(context)!;
+
     const dailyGoal = 2000.0;
     final kcalRatio = (nutrition.energy / dailyGoal).clamp(0.0, 1.0);
 
@@ -144,7 +138,6 @@ class NutritionDetailsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-         
           Container(
             height: 190,
             decoration: const BoxDecoration(
@@ -157,8 +150,10 @@ class NutritionDetailsPage extends StatelessWidget {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -174,7 +169,10 @@ class NutritionDetailsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            nutrition.displayName,
+                            FruitTranslator.translate(
+                              nutrition.displayName,
+                              tr,
+                            ),
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -183,9 +181,9 @@ class NutritionDetailsPage extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            'Nutrition information · 100 g',
-                            style: TextStyle(
+                          Text(
+                            tr.nutritionInformation,
+                            style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
                             ),
@@ -205,12 +203,13 @@ class NutritionDetailsPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 170),
               child: SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -238,12 +237,11 @@ class NutritionDetailsPage extends StatelessWidget {
                                   child: CircularProgressIndicator(
                                     value: kcalRatio,
                                     strokeWidth: 8,
-                                    backgroundColor:
-                                        _primary.withOpacity(0.15),
+                                    backgroundColor: _primary.withOpacity(0.15),
                                     valueColor:
                                         const AlwaysStoppedAnimation<Color>(
-                                      _primary,
-                                    ),
+                                          _primary,
+                                        ),
                                   ),
                                 ),
                                 Column(
@@ -256,8 +254,8 @@ class NutritionDetailsPage extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const Text(
-                                      'kcal',
+                                    Text(
+                                      tr.kilocalorie,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey,
@@ -273,16 +271,21 @@ class NutritionDetailsPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Calories',
-                                  style: TextStyle(
+                                Text(
+                                  tr.calories,
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
-                                  'Approximate energy in 100 g of ${nutrition.displayName}.',
+                                  tr.energyDescription(
+                                    FruitTranslator.translate(
+                                      nutrition.displayName,
+                                      tr,
+                                    ),
+                                  ),
                                   style: const TextStyle(
                                     fontSize: 13,
                                     color: Colors.grey,
@@ -290,7 +293,9 @@ class NutritionDetailsPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  '${(kcalRatio * 100).toStringAsFixed(1)}% of a 2000 kcal daily intake',
+                                  tr.dailyIntake(
+                                    (kcalRatio * 100).toStringAsFixed(1),
+                                  ),
                                   style: const TextStyle(
                                     fontSize: 11,
                                     color: Colors.grey,
@@ -306,8 +311,8 @@ class NutritionDetailsPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // ---- Macronutrients cards ----
-                    const Text(
-                      'Macronutrients',
+                    Text(
+                      tr.macronutrients,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -319,32 +324,31 @@ class NutritionDetailsPage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _MacroCard(
-                            label: 'Carbs',
+                            label: tr.carbs,
                             value: '${nutrition.carbs.toStringAsFixed(1)} g',
                             barValue: (nutrition.carbs / 80).clamp(0, 1),
                             barColor: _primary,
-                            subtitle: 'Main energy source',
+                            subtitle: tr.carbsDescription,
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: _MacroCard(
-                            label: 'Protein',
-                            value:
-                                '${nutrition.protein.toStringAsFixed(1)} g',
+                            label: tr.protein,
+                            value: '${nutrition.protein.toStringAsFixed(1)} g',
                             barValue: (nutrition.protein / 5).clamp(0, 1),
                             barColor: const Color(0xFF66BB6A),
-                            subtitle: 'Supports muscles',
+                            subtitle: tr.proteinDescription,
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: _MacroCard(
-                            label: 'Total Fat',
+                            label: tr.totalFat,
                             value: '${nutrition.totalFat.toStringAsFixed(2)} g',
                             barValue: (nutrition.totalFat / 5).clamp(0, 1),
                             barColor: const Color(0xFF90A4AE),
-                            subtitle: 'Overall fat amount',
+                            subtitle: tr.fatDescription,
                           ),
                         ),
                       ],
@@ -369,8 +373,8 @@ class NutritionDetailsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Fiber & Sugar',
+                          Text(
+                            tr.fiberSugar,
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
@@ -381,21 +385,20 @@ class NutritionDetailsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: _MiniStat(
-                                  title: 'Fiber',
+                                  title: tr.fiber,
                                   value:
                                       '${nutrition.fiber.toStringAsFixed(1)} g',
-                                  description:
-                                      'Helps digestion & satiety.',
+                                  description: tr.fiberDescription,
                                   icon: Icons.grass_rounded,
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: _MiniStat(
-                                  title: 'Sugar',
+                                  title: tr.sugar,
                                   value:
                                       '${nutrition.sugar.toStringAsFixed(1)} g',
-                                  description: 'Natural sugar content.',
+                                  description: tr.sugarDescription,
                                   icon: Icons.cake_rounded,
                                 ),
                               ),
@@ -408,8 +411,8 @@ class NutritionDetailsPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // ---- Micronutrients grid ----
-                    const Text(
-                      'Micronutrients',
+                    Text(
+                      tr.micronutrients,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -421,18 +424,18 @@ class NutritionDetailsPage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _MicronutrientTile(
-                            label: 'Water',
+                            label: tr.water,
                             value:
-                                '${nutrition.water.toStringAsFixed(1)} g',
+                                '${nutrition.water.toStringAsFixed(1)} ${tr.gram}',
                             icon: Icons.water_drop_rounded,
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: _MicronutrientTile(
-                            label: 'Calcium',
+                            label: tr.calcium,
                             value:
-                                '${nutrition.calcium.toStringAsFixed(0)} mg',
+                                '${nutrition.calcium.toStringAsFixed(0)} ${tr.milligram}',
                             icon: Icons.health_and_safety_rounded,
                           ),
                         ),
@@ -443,26 +446,21 @@ class NutritionDetailsPage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _MicronutrientTile(
-                            label: 'Iron',
+                            label: tr.iron,
                             value:
-                                '${nutrition.iron.toStringAsFixed(2)} mg',
+                                '${nutrition.iron.toStringAsFixed(2)} ${tr.milligram}',
                             icon: Icons.bloodtype_rounded,
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Expanded(
-                          child: SizedBox.shrink(),
-                        ),
+                        const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
 
                     const SizedBox(height: 24),
-                    const Text(
-                      '* All values are approximate and based on a 100 g portion.',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey,
-                      ),
+                    Text(
+                      tr.nutritionDisclaimer,
+                      style: TextStyle(fontSize: 11, color: Colors.grey),
                     ),
                     const SizedBox(height: 16),
                   ],
@@ -513,18 +511,12 @@ class _MacroCard extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           ClipRRect(
@@ -539,10 +531,7 @@ class _MacroCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             subtitle,
-            style: const TextStyle(
-              fontSize: 11,
-              color: Colors.grey,
-            ),
+            style: const TextStyle(fontSize: 11, color: Colors.grey),
           ),
         ],
       ),
@@ -616,16 +605,13 @@ class _MiniStat extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -660,11 +646,7 @@ class _MicronutrientTile extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              size: 18,
-              color: const Color(0xFF90A4AE),
-            ),
+            child: Icon(icon, size: 18, color: const Color(0xFF90A4AE)),
           ),
           const SizedBox(width: 10),
           Column(

@@ -18,13 +18,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signUp => ' إنشاء حساب';
 
   @override
-  String get welcomeBack => 'مرحباً بعودتك إلى تطبيق طابت 🌱';
+  String get welcomeBack => 'مرحباً بعودتك إلى طابت';
 
   @override
   String get hello => 'مرحباً';
 
   @override
-  String get createAccount => 'أنشئ حسابك في تطبيق طابت 🌱';
+  String get createAccount => 'أنشئ حسابك في طابت';
 
   @override
   String get home => 'الرئيسية';
@@ -40,6 +40,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get validEmail => 'بريد إلكتروني غير صالح';
+
+  @override
+  String get emailAlreadyUsed => 'البريد الإلكتروني مستخدم بالفعل، حاول استخدام بريد إلكتروني آخر';
 
   @override
   String get password => 'كلمة المرور';
@@ -91,6 +94,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shareLocation => 'مشاركة موقعي لعرض المزارع والخدمات القريبة';
+
+  @override
+  String get locationSaved => 'تم حفظ الموقع';
 
   @override
   String get noAccount => ' ليس لديك حساب؟';
@@ -222,19 +228,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get farmWeather => 'طقس المزرعة';
 
   @override
-  String get uvIndex => 'UV';
+  String get uvIndex => 'أشعة UV';
 
   @override
-  String get moderate => 'Moderate';
+  String get moderate => 'متوسط';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'الرطوبة';
 
   @override
-  String get rain => 'Rain';
+  String get rain => 'الأمطار';
 
   @override
-  String get wind => 'Wind';
+  String get wind => 'الرياح';
 
   @override
   String get open => 'مفتوح';
@@ -244,6 +250,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selected => 'تم الاختيار';
+
+  @override
+  String get error => 'خطأ';
 
   @override
   String get classifyFruit => 'تصنيف الفاكهة';
@@ -352,4 +361,142 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sukaryDates => 'تمر سكري';
+
+  @override
+  String get nutritionInformation => 'المعلومات الغذائية · 100 جم';
+
+  @override
+  String get calories => 'السعرات الحرارية';
+
+  @override
+  String energyDescription(Object fruit) {
+    return 'الطاقة التقريبية في 100 جم من $fruit.';
+  }
+
+  @override
+  String dailyIntake(Object percent) {
+    return '$percent% من الاحتياج اليومي (2000 سعرة حرارية)';
+  }
+
+  @override
+  String get macronutrients => 'العناصر الغذائية الكبرى';
+
+  @override
+  String get carbs => 'الكربوهيدرات';
+
+  @override
+  String get protein => 'البروتين';
+
+  @override
+  String get totalFat => 'الدهون الكلية';
+
+  @override
+  String get carbsDescription => 'المصدر الرئيسي للطاقة';
+
+  @override
+  String get proteinDescription => 'يدعم العضلات';
+
+  @override
+  String get fatDescription => 'إجمالي كمية الدهون';
+
+  @override
+  String get fiberSugar => 'الألياف والسكريات';
+
+  @override
+  String get fiber => 'الألياف';
+
+  @override
+  String get sugar => 'السكر';
+
+  @override
+  String get fiberDescription => 'يساعد على الهضم والشعور بالشبع.';
+
+  @override
+  String get sugarDescription => 'السكر الطبيعي الموجود في الفاكهة.';
+
+  @override
+  String get micronutrients => 'العناصر الغذائية الدقيقة';
+
+  @override
+  String get water => 'الماء';
+
+  @override
+  String get calcium => 'الكالسيوم';
+
+  @override
+  String get iron => 'الحديد';
+
+  @override
+  String get nutritionDisclaimer => '* جميع القيم تقريبية وتعتمد على حصة مقدارها 100 جم.';
+
+  @override
+  String noNutritionData(Object fruit) {
+    return 'لا توجد بيانات غذائية لـ $fruit';
+  }
+
+  @override
+  String get loadingError => 'حدث خطأ أثناء تحميل البيانات';
+
+  @override
+  String get gram => 'جم';
+
+  @override
+  String get milligram => 'ملجم';
+
+  @override
+  String get kilocalorie => 'سعرة حرارية';
+
+  @override
+  String get percent => '%';
+
+  @override
+  String get millimeter => 'ملمتر';
+
+  @override
+  String get kiloMeterPerHour => 'كم/ساعة';
+
+  @override
+  String get noCameraFound => 'لا توجد كاميرا متاحة في هذا الجهاز';
+
+  @override
+  String get errorAccessingCamera => 'حدث خطأ أثناء الوصول إلى الكاميرا:';
+
+  @override
+  String get errorWhileScanning => 'حدث خطأ أثناء المسح الضوئي';
+
+  @override
+  String get errorWhileUploading => 'حدث خطأ أثناء التحميل';
+
+  @override
+  String get fruitCondition => 'حالة الفاكهة';
+
+  @override
+  String get spotsFound => 'تم اكتشاف بقع صغيرة في الفاكهة';
+
+  @override
+  String get fruitStructureIsStable => 'بنية الفاكهة مستقرة';
+
+  @override
+  String get unableDetectingFruitClearly => 'تعذر تحديد الفاكهة بوضوح؛ حاول مرة أخرى';
+
+  @override
+  String get seeDetailInformation => 'للاطلاع على المعلومات التفصيلية.';
+
+  @override
+  String get unknown => 'غير معروف';
+
+  @override
+  String get scan => 'امسح الفاكهة';
+
+  @override
+  String get scanning => 'يتم التقاط الفاكهة...';
+
+  @override
+  String get placeFruitInsideFrame => 'ضع الفاكهة داخل إطار التصوير.';
+
+  @override
+  String get upload => 'تحميل الصورة';
+
+  @override
+  String get cameraPermissionDenied => 'تم رفض إذن استخدام الكاميرا';
 }
