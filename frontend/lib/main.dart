@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:frontend/core/user_session.dart';
+import 'package:frontend/screens/shopper/statistics_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/camera_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,6 +9,7 @@ import 'l10n/app_localizations.dart';
 import 'core/locale_manager.dart';
 import 'screens/nutrition_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:frontend/screens/shopper/statistics_screen.dart';
 
 late List<CameraDescription> cameras;
 
@@ -110,8 +112,8 @@ class _TaabatAppState extends State<TaabatApp> {
           return NutritionLoader(fruitType: fruitName);
         },
       },
-
-      home: const LoginScreen(),
+      home: StatisticsScreen(),
+      //home: const LoginScreen(),
     );
   }
 }

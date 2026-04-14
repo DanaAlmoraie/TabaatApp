@@ -108,6 +108,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<bool> _ensureLocationPermission() async {
+    final tr = AppLocalizations.of(context)!;
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
@@ -117,10 +118,9 @@ class _SignupScreenState extends State<SignupScreen> {
     if (permission == LocationPermission.deniedForever ||
         permission == LocationPermission.denied) {
       if (!mounted) return false;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Location permission denied.')),
-        //============================ TRANSLATE============================
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(tr.locationPermissionDenied)));
       return false;
     }
 

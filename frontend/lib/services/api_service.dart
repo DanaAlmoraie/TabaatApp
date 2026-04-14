@@ -121,6 +121,26 @@ class ApiService {
     return jsonDecode(response.body);
   }
 
+  // ================= UPDATE USER LOCATION =================
+  static Future<void> updateUserLocation({
+    required double latitude,
+    required double longitude,
+    required String token,
+  }) async {
+    final response = await http.put(
+      Uri.parse("$baseUrl/users/location"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode({"latitude": latitude, "longitude": longitude}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to update location");
+    }
+  }
+
   // ========================== ADD FARM (To: Farmer) ====================
   static Future<void> addFarm({
     required String name,

@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:frontend/services/api_service.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../widgets/profile_header.dart';
 import '../../core/user_session.dart';
 import '../../l10n/app_localizations.dart';
@@ -28,7 +30,7 @@ class _PermissionsPageState extends State<PermissionsPage> {
   @override
   void initState() {
     super.initState();
-    role = widget.userData['role'] ?? 'farmer';
+    role = (widget.userData['role'] ?? 'farmer').toString().toLowerCase();
 
     camera = UserSession.cameraEnabled;
     location = UserSession.locationEnabled;
@@ -39,6 +41,8 @@ class _PermissionsPageState extends State<PermissionsPage> {
   }
 
   Future<void> _toggleCamera(bool value) async {
+    final tr = AppLocalizations.of(context)!;
+
     if (value) {
       final status = await Permission.camera.request();
       if (!status.isGranted) return;
@@ -52,9 +56,43 @@ class _PermissionsPageState extends State<PermissionsPage> {
   }
 
   Future<void> _toggleLocation(bool value) async {
+    final tr = AppLocalizations.of(context)!;
+
     if (value) {
       final status = await Permission.location.request();
       if (!status.isGranted) return;
+
+      try {
+        final postion = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+
+        await ApiService.updateUserLocation(
+          latitude: postion.latitude,
+          longitude: postion.longitude,
+          token: UserSession.token!,
+        );
+
+        await UserSession.setLocationPermission(true);
+
+        setState(() {
+          location = true;
+        });
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(tr.locationSaved)));
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(tr.couldNotGetLocation)));
+      }
+    } else {
+      await UserSession.setLocationPermission(false);
+
+      setState(() {
+        location == false;
+      });
     }
 
     await UserSession.setLocationPermission(value);

@@ -11,6 +11,7 @@ import '../camera_screen.dart';
 import 'farms_manage_screen.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/api_service.dart';
+import '../../utils/weather_translator.dart';
 
 class FarmerHomePage extends StatefulWidget {
   const FarmerHomePage({super.key});
@@ -199,7 +200,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
           Padding(
             padding: const EdgeInsets.only(left: 63),
             child: Text(
-              _getCurrentDate(),
+              _getCurrentDate(context),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -212,9 +213,10 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
     );
   }
 
-  String _getCurrentDate() {
+  String _getCurrentDate(BuildContext context) {
     final now = DateTime.now();
-    final dateFormat = DateFormat('EEEE, dd MMMM yyyy', 'en');
+    final locale = Localizations.localeOf(context).languageCode;
+    final dateFormat = DateFormat('EEEE, dd MMMM yyyy', locale);
     return dateFormat.format(now);
   }
 
@@ -329,7 +331,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      condition,
+                      WeatherTranslator.translate(condition, tr),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -351,7 +353,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.blue[800]!, Colors.blue[900]!],
+                    colors: WeatherTranslator.gradient(condition),
                   ),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.white, width: 3),
@@ -363,8 +365,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.cloud_queue,
+                child: Icon(
+                  WeatherTranslator.icon(condition),
                   size: 45,
                   color: Colors.white,
                 ),
@@ -479,6 +481,10 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
         onTap: () async {
           try {
             final cameras = await availableCameras();
+            final firstCamera = cameras.firstWhere(
+              (camera) => camera.lensDirection == CameraLensDirection.back,
+              orElse: () => cameras.first,
+            );
 
             if (cameras.isEmpty) {
               ScaffoldMessenger.of(
@@ -486,8 +492,6 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
               ).showSnackBar(SnackBar(content: Text(tr.noCameraFound)));
               return;
             }
-
-            final firstCamera = cameras.first;
 
             Navigator.push(
               context,

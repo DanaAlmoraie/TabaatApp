@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/fruit_translator.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../l10n/app_localizations.dart';
 import 'package:frontend/services/api_service.dart';
@@ -26,7 +27,6 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
   double? _farmLng;
   bool _gettingLocation = false;
 
-  // =============================================== TRANSLATE
   // Predefined list of fruits
   final List<String> allFruits = [
     'Apple',
@@ -171,8 +171,6 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
       _farmLat = (result as LatLng).latitude;
       _farmLng = (result).longitude;
     });
-    // =============================================== TRANSLATE
-    debugPrint("PICKED FARM => $_farmLat, $_farmLng");
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('${tr.farmGpsSet}: $_farmLat, $_farmLng')),
@@ -212,9 +210,31 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
     final tr = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
-      appBar: AppBar(
-        title: Text(widget.farm == null ? tr.addFarm : tr.editFarm),
+
+      // ===== AppBar =====
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            title: Text(
+              widget.farm == null ? tr.addFarm : tr.editFarm,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
@@ -350,7 +370,7 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
                     final isSelected = selectedFruits.contains(fruit);
                     return FilterChip(
                       label: Text(
-                        fruit,
+                        FruitTranslator.translate(fruit, tr),
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.green[800],
                         ),

@@ -13,7 +13,7 @@ from pydantic import BaseModel, EmailStr
 from dotenv import load_dotenv
 from typing import List
 import os
-import requests  # ✅ NEW: for calling external weather API
+import requests 
 
 import models
 from database import Base, engine, get_db
@@ -112,6 +112,10 @@ class FarmCreate(BaseModel):
     is_open: bool = False
     latitude: float | None
     longitude: float | None
+
+class LocationUpdate(BaseModel):
+    latitude: float
+    longitude: float
 
 class FarmOut(BaseModel):
     farm_id: int
@@ -297,6 +301,34 @@ def update_me(
 
     return current
 
+
+
+# ------------------------
+#  UPDATE USER LOCATION 
+# ------------------------
+@app.put("/users/location")
+def update_user_location(
+    location: LocationUpdate,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    user = db.query(models.User).filter(models.User.user_id == current_user.user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    user.latitude = location.latitude
+    user.longitude = location.longitude
+
+    db.commit()
+
+    return {
+        "message": "Location updated",
+        "latitude": user.latitude,
+        "longitude": user.longitude
+    }
+
+
 # ------------------------
 # Add Farm
 # ------------------------
@@ -479,7 +511,6 @@ def update_farm(
     db.commit()
 
     return {"message": "Farm updated successfully"}
-
 
 # ------------------------
 # Delete Farm

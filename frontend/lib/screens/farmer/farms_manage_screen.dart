@@ -31,7 +31,6 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
         myFarms = data;
         loading = false;
       });
-      print(data);
     } catch (e) {
       loading = false;
       if (!mounted) return;
@@ -69,7 +68,6 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
       MaterialPageRoute(builder: (_) => AddEditFarmScreen(farm: farmModel)),
     );
     loadMyFarms();
-    print("OPEN ADD EDIT FARM");
   }
 
   Future<void> _deleteFarm(int farmId) async {
@@ -354,16 +352,27 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.green.withOpacity(0.10),
-                                    borderRadius: BorderRadius.circular(999),
-                                  ),
-                                  child: Text(
-                                    FruitTranslator.translate(f.toString(), tr),
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.green[900],
+                                    color: Colors.green.withOpacity(0.08),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: Colors.green.withOpacity(0.15),
                                     ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        FruitTranslator.translate(
+                                          f.toString(),
+                                          tr,
+                                        ),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.green[800],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 );
                               }).toList(),

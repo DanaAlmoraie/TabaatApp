@@ -1,7 +1,7 @@
 {
   "appTitle": "طابت",
-  "login": "تسجيل الدخول",
-  "signUp": " إنشاء حساب",
+  "login": " تسجيل الدخول",
+  "signUp": "  إنشاء حساب",
   "welcomeBack": "مرحباً بعودتك إلى طابت",
   "hello": "مرحباً",
   "createAccount": "أنشئ حسابك في طابت",
@@ -12,6 +12,8 @@
   "enterEmail": "يرجى إدخال البريد الإلكتروني",
   "validEmail": "بريد إلكتروني غير صالح",
   "emailAlreadyUsed": "البريد الإلكتروني مستخدم بالفعل، حاول استخدام بريد إلكتروني آخر",
+  "failedSigningUp": "فشل تسجيل الحساب الجديد",
+  "failedSigningIn": "فشل تسجيل دخول الحساب",
 
   "password": "كلمة المرور",
   "enterPassword": "أدخل كلمة المرور",
@@ -55,6 +57,8 @@
   "farmNameRequired": "اسم المزرعة مطلوب",
   "location": "وصف الموقع (المدينة، الحي، الشارع) *",
   "locationRequired": "الموقع مطلوب",
+  "locationRequiredDesc": "قم بتمكين الوصول إلى الموقع لاكتشاف المزارع.",
+  "openPermissions": "فتح إعدادات الصلاحيات",
   "selectFruits": "اختر الفواكه",
   "visibleToShoppers": "مرئية للمتسوقين",
   "disableArchiveFarm": "إيقافها يؤدي لأرشفة المزرعة",
@@ -82,6 +86,16 @@
   "unableLoadingWeather": "لا يمكن تحميل بيانات الطقس حاليا.",
   "basedOnYourLocation": "بناءً على موقعك",
   "farmWeather": "طقس المزرعة",
+  "sunny": "مشمس",
+  "partlyCloudy": "غائم جزئياً",
+  "cloudy": "غائم",
+  "overcast": "غائم كلياً",
+  "mist": "ضباب",
+  "lightRainPossible": "احتمال أمطار خفيفة",
+  "lightRain": "أمطار خفيفة",
+  "moderateRain": "أمطار متوسطة",
+  "heavyRain": "أمطار غزيرة",
+  "thunderstorm": "عاصفة رعدية",
 
   "uvIndex": "أشعة UV",
   "moderate": "متوسط",
@@ -177,6 +191,8 @@
   "percent": "%",
   "millimeter": "ملمتر",
   "kiloMeterPerHour": "كم/ساعة",
+  "kiloMeter": "كم",
+  "kiloGram": "كجم",
 
   "noCameraFound": "لا توجد كاميرا متاحة في هذا الجهاز",
   "errorAccessingCamera": "حدث خطأ أثناء الوصول إلى الكاميرا:",
@@ -192,6 +208,54 @@
   "placeFruitInsideFrame": "ضع الفاكهة داخل إطار التصوير.",
   "scanning": "يتم التقاط الفاكهة...",
   "upload": "تحميل الصورة",
-  "cameraPermissionDenied": "تم رفض إذن استخدام الكاميرا"
+  "cameraPermissionDenied": "تم رفض إذن استخدام الكاميرا",
 
+  "farmStats": "إحصائيات المزرعة",
+  "farmStatsDesc": "مؤشرات أداء المزرعة",
+
+  "mapView": "عرض الخريطة",
+  "backToFarm": "رجوع للمزرعة",
+  "openInMaps": "افتح في الخريطة",
+
+  "veryFresh": "طازج جداً",
+  "fresh": "طازج",
+  "good": "جيد",
+  "acceptable": "مقبول",
+  "old": "قديم",
+
+  "quantity": "الكمية",
+  "harvestDate": "تاريخ الحصاد",
+  "type": "النوع",
+
+  "cropsQuantity": "كميات المحاصيل المتوفرة (كجم)",
+  "highestQuantity": "الأعلى كمية",
+  "available": "متوفر",
+
+  "availableCrops": "المحاصيل المتوفرة حالياً",
+  "availableCropsDesc": "تفاصيل المحاصيل الطازجة المتاحة",
+
+  "qualityIndicators": "مؤشرات الجودة",
+  "qualityDesc": "معايير التميز",
+
+  "noFarm": "لا توجد مزرعة",
+  "noFarmDesc": "لم يتم العثور على بيانات المزرعة",
+
+  "contactWhatsapp": "تواصل عبر واتساب",
+  "reviews": "تقييم",
+  "founded": "تأسست",
+  "loadingMap": "جاري تحميل الخريطة...",
+
+  "cropTypes": "أنواع المزروعات",
+  "availableCropsLabel": "المحاصيل المتوفرة",
+  "annualProduction": "كمية المحصول السنوية",
+  "farmAge": "عمر المزرعة",
+  "noCrops": "لا توجد محاصيل متوفرة حالياً",
+  "whatsappMessage": "مرحباً، أود الاستفسار عن منتجات",
+  "types": "أنواع",
+  "varietyCropsGrown": "تنوع المحاصيل المزروعة",
+  "crop": "محصول",
+  "availableSlaeNow": "متاح للبيع الآن",
+  "totalProduction": "إجمالي الإنتاج هذا الموسم",
+  "year": "سنة",
+  "fromFoundingUntilNow": "منذ تأسيسها حتى الآن"
 }

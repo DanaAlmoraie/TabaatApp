@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, unused_field
+// ignore_for_file: deprecated_member_use, unused_field, use_build_context_synchronously
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +8,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'farms_screen.dart';
 import 'package:flutter/foundation.dart';
-import '../../main.dart';
 import '../camera_screen.dart';
 import '../../l10n/app_localizations.dart';
+import '../profile/permissions_data_screen.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ShopperHomePage extends StatefulWidget {
   const ShopperHomePage({super.key});
@@ -45,6 +46,14 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
   }
 
   Future<void> loadFarms() async {
+    if (!UserSession.locationEnabled) {
+      setState(() {
+        farms = [];
+        loadingFarms = false;
+      });
+      return;
+    }
+
     setState(() => loadingFarms = true);
 
     try {
@@ -99,10 +108,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
       padding: const EdgeInsets.fromLTRB(20, 50, 20, 30),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Color(0xFFFFD700), // أصفر
-            Color(0xFFFF8C00), // برتقالي
-          ],
+          colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -117,6 +123,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
         children: [
           Row(
             children: [
+              // Logo
               Container(
                 width: 48,
                 height: 48,
@@ -132,6 +139,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
               ),
               const SizedBox(width: 15),
 
+              // Username
               Expanded(
                 child: Text(
                   "${tr.hello} ${userData?['name']}",
@@ -144,7 +152,7 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
               ),
             ],
           ),
-          // التاريخ
+          // Date
           Padding(
             padding: const EdgeInsets.only(left: 63),
             child: Text(
@@ -177,6 +185,10 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
         onTap: () async {
           try {
             final cameras = await availableCameras();
+            final firstCamera = cameras.firstWhere(
+              (camera) => camera.lensDirection == CameraLensDirection.back,
+              orElse: () => cameras.first,
+            );
 
             if (cameras.isEmpty) {
               ScaffoldMessenger.of(
@@ -184,8 +196,6 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
               ).showSnackBar(SnackBar(content: Text(tr.noCameraFound)));
               return;
             }
-
-            final firstCamera = cameras.first;
 
             Navigator.push(
               context,
@@ -275,11 +285,23 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
   Widget _buildFarmSection(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
 
-    // عرض المزارع غير المؤرشفة
+    //if user is not allowing 'share location' permission
+    if (!UserSession.locationEnabled) {
+      return _buildLocationRequiredBox();
+    }
+    // if farms are being loaded
     if (loadingFarms) {
       return const Padding(
         padding: EdgeInsets.all(30),
         child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    //if no farms at all in database
+    if (farms.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Center(child: Text(tr.noFarmsAvailable)),
       );
     }
 
@@ -338,20 +360,19 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
             const SizedBox(height: 12),
 
-            if (farms.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Center(child: Text(tr.noFarmsAvailable)),
-              ),
             Column(
               children: farms.take(3).map<Widget>((farm) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: _buildFarmListItemDynamic(
-                    name: farm['name'] ?? tr.unknownFarm,
-                    location: farm['location'] ?? tr.unknownLocation,
-                    fruits: List<String>.from(farm['fruits'] ?? []),
-                    distance: _fakeDistance(),
+                    name: farm['name']?.toString() ?? tr.unknownFarm,
+                    location:
+                        farm['location']?.toString() ?? tr.unknownLocation,
+                    fruits: (farm['fruits'] as List?)?.cast<String>() ?? [],
+                    distance: _calculateDistance(
+                      farm['latitude']?.toDouble() ?? 0.0,
+                      farm['longitude']?.toDouble() ?? 0.0,
+                    ),
                   ),
                 );
               }).toList(),
@@ -477,10 +498,96 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
     );
   }
 
-  String _fakeDistance() {
-    final distances = ["1.2 km", "2.5 km", "3.1 km", "4.0 km"];
-    distances.shuffle();
-    return distances.first;
+  String _calculateDistance(double farmLat, double farmLng) {
+    final tr = AppLocalizations.of(context)!;
+
+    if (UserSession.user['latitude'] == null ||
+        UserSession.user['longitude'] == null) {
+      return "--";
+    }
+
+    final userLat = UserSession.user['latitude'];
+    final userLng = UserSession.user['longitude'];
+
+    final distanceMeters = Geolocator.distanceBetween(
+      userLat,
+      userLng,
+      farmLat,
+      farmLng,
+    );
+
+    final km = distanceMeters / 1000;
+
+    return '${km.toStringAsFixed(1)} ${tr.kiloMeter}';
+  }
+
+  Widget _buildLocationRequiredBox() {
+    final tr = AppLocalizations.of(context)!;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.orange[50],
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Colors.orange[200]!),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.location_off_rounded,
+              size: 42,
+              color: Colors.orange[700],
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              tr.locationRequired,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 6),
+
+            Text(
+              tr.locationRequiredDesc,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 13),
+            ),
+
+            const SizedBox(height: 14),
+
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+              icon: const Icon(Icons.settings, color: Colors.white),
+              label: Text(
+                tr.openPermissions,
+                style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PermissionsPage(userData: UserSession.user),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // ================= CAMERA BUTTON =================
@@ -505,16 +612,20 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
         ],
       ),
       child: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          final cams = await availableCameras();
+          final firstCmera = cams.firstWhere(
+            (camera) => camera.lensDirection == CameraLensDirection.back,
+            orElse: () => cams.first,
+          );
+
           setState(() {
             _currentIndex = 1;
           });
 
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => CameraScreen(camera: cameras.first),
-            ),
+            MaterialPageRoute(builder: (_) => CameraScreen(camera: firstCmera)),
           );
         },
         backgroundColor: Colors.transparent,

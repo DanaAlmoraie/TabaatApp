@@ -89,6 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
+    final tr = AppLocalizations.of(context)!;
+
     if (!_formKey.currentState!.validate()) return;
 
     try {
@@ -113,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Sign in failed: $e')));
+      ).showSnackBar(SnackBar(content: Text('${tr.failedSigningIn} $e')));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -297,26 +299,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                               return null;
                             },
-                          ),
-                          const SizedBox(height: 10),
-
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: const Size(0, 0),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: Text(
-                                tr.forgotPassword,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: kShopperGreen2,
-                                ),
-                              ),
-                            ),
                           ),
                           const SizedBox(height: 18),
 

@@ -32,7 +32,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
   @override
   void initState() {
     super.initState();
-    role = widget.userData['role'] ?? 'farmer';
+    role = (widget.userData['role'] ?? 'farmer').toString().toLowerCase();
 
     avatars = role == 'farmer'
         ? ['assets/Male-Farmer.png', 'assets/Female-Farmer.png']
@@ -133,7 +133,6 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
 
                     // SAVE BUTTON
                     SizedBox(
-                      width: 100,
                       height: 48,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -149,7 +148,10 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                               )
                             : Text(
                                 tr.saveChanges,
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
                               ),
                       ),
                     ),

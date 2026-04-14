@@ -12,10 +12,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'طابت';
 
   @override
-  String get login => 'تسجيل الدخول';
+  String get login => ' تسجيل الدخول';
 
   @override
-  String get signUp => ' إنشاء حساب';
+  String get signUp => '  إنشاء حساب';
 
   @override
   String get welcomeBack => 'مرحباً بعودتك إلى طابت';
@@ -43,6 +43,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get emailAlreadyUsed => 'البريد الإلكتروني مستخدم بالفعل، حاول استخدام بريد إلكتروني آخر';
+
+  @override
+  String get failedSigningUp => 'فشل تسجيل الحساب الجديد';
+
+  @override
+  String get failedSigningIn => 'فشل تسجيل دخول الحساب';
 
   @override
   String get password => 'كلمة المرور';
@@ -150,6 +156,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locationRequired => 'الموقع مطلوب';
 
   @override
+  String get locationRequiredDesc => 'قم بتمكين الوصول إلى الموقع لاكتشاف المزارع.';
+
+  @override
+  String get openPermissions => 'فتح إعدادات الصلاحيات';
+
+  @override
   String get selectFruits => 'اختر الفواكه';
 
   @override
@@ -226,6 +238,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get farmWeather => 'طقس المزرعة';
+
+  @override
+  String get sunny => 'مشمس';
+
+  @override
+  String get partlyCloudy => 'غائم جزئياً';
+
+  @override
+  String get cloudy => 'غائم';
+
+  @override
+  String get overcast => 'غائم كلياً';
+
+  @override
+  String get mist => 'ضباب';
+
+  @override
+  String get lightRainPossible => 'احتمال أمطار خفيفة';
+
+  @override
+  String get lightRain => 'أمطار خفيفة';
+
+  @override
+  String get moderateRain => 'أمطار متوسطة';
+
+  @override
+  String get heavyRain => 'أمطار غزيرة';
+
+  @override
+  String get thunderstorm => 'عاصفة رعدية';
 
   @override
   String get uvIndex => 'أشعة UV';
@@ -456,6 +498,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get kiloMeterPerHour => 'كم/ساعة';
 
   @override
+  String get kiloMeter => 'كم';
+
+  @override
+  String get kiloGram => 'كجم';
+
+  @override
   String get noCameraFound => 'لا توجد كاميرا متاحة في هذا الجهاز';
 
   @override
@@ -499,4 +547,121 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cameraPermissionDenied => 'تم رفض إذن استخدام الكاميرا';
+
+  @override
+  String get farmStats => 'إحصائيات المزرعة';
+
+  @override
+  String get farmStatsDesc => 'مؤشرات أداء المزرعة';
+
+  @override
+  String get mapView => 'عرض الخريطة';
+
+  @override
+  String get backToFarm => 'رجوع للمزرعة';
+
+  @override
+  String get openInMaps => 'افتح في الخريطة';
+
+  @override
+  String get veryFresh => 'طازج جداً';
+
+  @override
+  String get fresh => 'طازج';
+
+  @override
+  String get good => 'جيد';
+
+  @override
+  String get acceptable => 'مقبول';
+
+  @override
+  String get old => 'قديم';
+
+  @override
+  String get quantity => 'الكمية';
+
+  @override
+  String get harvestDate => 'تاريخ الحصاد';
+
+  @override
+  String get type => 'النوع';
+
+  @override
+  String get cropsQuantity => 'كميات المحاصيل المتوفرة (كجم)';
+
+  @override
+  String get highestQuantity => 'الأعلى كمية';
+
+  @override
+  String get available => 'متوفر';
+
+  @override
+  String get availableCrops => 'المحاصيل المتوفرة حالياً';
+
+  @override
+  String get availableCropsDesc => 'تفاصيل المحاصيل الطازجة المتاحة';
+
+  @override
+  String get qualityIndicators => 'مؤشرات الجودة';
+
+  @override
+  String get qualityDesc => 'معايير التميز';
+
+  @override
+  String get noFarm => 'لا توجد مزرعة';
+
+  @override
+  String get noFarmDesc => 'لم يتم العثور على بيانات المزرعة';
+
+  @override
+  String get contactWhatsapp => 'تواصل عبر واتساب';
+
+  @override
+  String get reviews => 'تقييم';
+
+  @override
+  String get founded => 'تأسست';
+
+  @override
+  String get loadingMap => 'جاري تحميل الخريطة...';
+
+  @override
+  String get cropTypes => 'أنواع المزروعات';
+
+  @override
+  String get availableCropsLabel => 'المحاصيل المتوفرة';
+
+  @override
+  String get annualProduction => 'كمية المحصول السنوية';
+
+  @override
+  String get farmAge => 'عمر المزرعة';
+
+  @override
+  String get noCrops => 'لا توجد محاصيل متوفرة حالياً';
+
+  @override
+  String get whatsappMessage => 'مرحباً، أود الاستفسار عن منتجات';
+
+  @override
+  String get types => 'أنواع';
+
+  @override
+  String get varietyCropsGrown => 'تنوع المحاصيل المزروعة';
+
+  @override
+  String get crop => 'محصول';
+
+  @override
+  String get availableSlaeNow => 'متاح للبيع الآن';
+
+  @override
+  String get totalProduction => 'إجمالي الإنتاج هذا الموسم';
+
+  @override
+  String get year => 'سنة';
+
+  @override
+  String get fromFoundingUntilNow => 'منذ تأسيسها حتى الآن';
 }

@@ -104,7 +104,7 @@ abstract class AppLocalizations {
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
-  /// **'Login'**
+  /// **' Login'**
   String get login;
 
   /// No description provided for @signUp.
@@ -166,6 +166,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email is already used, try another email'**
   String get emailAlreadyUsed;
+
+  /// No description provided for @failedSigningUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Sign Up'**
+  String get failedSigningUp;
+
+  /// No description provided for @failedSigningIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Sign In'**
+  String get failedSigningIn;
 
   /// No description provided for @password.
   ///
@@ -377,6 +389,18 @@ abstract class AppLocalizations {
   /// **'Location is required'**
   String get locationRequired;
 
+  /// No description provided for @locationRequiredDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable location access to discover the farms.'**
+  String get locationRequiredDesc;
+
+  /// No description provided for @openPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Permissions Settings'**
+  String get openPermissions;
+
   /// No description provided for @selectFruits.
   ///
   /// In en, this message translates to:
@@ -532,6 +556,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Farm weather'**
   String get farmWeather;
+
+  /// No description provided for @sunny.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunny'**
+  String get sunny;
+
+  /// No description provided for @partlyCloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly cloudy'**
+  String get partlyCloudy;
+
+  /// No description provided for @cloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloudy'**
+  String get cloudy;
+
+  /// No description provided for @overcast.
+  ///
+  /// In en, this message translates to:
+  /// **'Overcast'**
+  String get overcast;
+
+  /// No description provided for @mist.
+  ///
+  /// In en, this message translates to:
+  /// **'Mist'**
+  String get mist;
+
+  /// No description provided for @lightRainPossible.
+  ///
+  /// In en, this message translates to:
+  /// **'Light rain possible'**
+  String get lightRainPossible;
+
+  /// No description provided for @lightRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Light rain'**
+  String get lightRain;
+
+  /// No description provided for @moderateRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate rain'**
+  String get moderateRain;
+
+  /// No description provided for @heavyRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy rain'**
+  String get heavyRain;
+
+  /// No description provided for @thunderstorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Thunderstorm'**
+  String get thunderstorm;
 
   /// No description provided for @uvIndex.
   ///
@@ -968,7 +1052,7 @@ abstract class AppLocalizations {
   /// No description provided for @millimeter.
   ///
   /// In en, this message translates to:
-  /// **'millimeter'**
+  /// **'mm'**
   String get millimeter;
 
   /// No description provided for @kiloMeterPerHour.
@@ -976,6 +1060,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'km/h'**
   String get kiloMeterPerHour;
+
+  /// No description provided for @kiloMeter.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get kiloMeter;
+
+  /// No description provided for @kiloGram.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get kiloGram;
 
   /// No description provided for @noCameraFound.
   ///
@@ -1066,6 +1162,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Camera permission denied'**
   String get cameraPermissionDenied;
+
+  /// No description provided for @farmStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Statistics'**
+  String get farmStats;
+
+  /// No description provided for @farmStatsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm performance indicators'**
+  String get farmStatsDesc;
+
+  /// No description provided for @mapView.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view map'**
+  String get mapView;
+
+  /// No description provided for @backToFarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Farm'**
+  String get backToFarm;
+
+  /// No description provided for @openInMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get openInMaps;
+
+  /// No description provided for @veryFresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Fresh'**
+  String get veryFresh;
+
+  /// No description provided for @fresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh'**
+  String get fresh;
+
+  /// No description provided for @good.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get good;
+
+  /// No description provided for @acceptable.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptable'**
+  String get acceptable;
+
+  /// No description provided for @old.
+  ///
+  /// In en, this message translates to:
+  /// **'Old'**
+  String get old;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @harvestDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest Date'**
+  String get harvestDate;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @cropsQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Crops Quantity (kg)'**
+  String get cropsQuantity;
+
+  /// No description provided for @highestQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest'**
+  String get highestQuantity;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @availableCrops.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Crops'**
+  String get availableCrops;
+
+  /// No description provided for @availableCropsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Details of fresh crops'**
+  String get availableCropsDesc;
+
+  /// No description provided for @qualityIndicators.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality Indicators'**
+  String get qualityIndicators;
+
+  /// No description provided for @qualityDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellence standards'**
+  String get qualityDesc;
+
+  /// No description provided for @noFarm.
+  ///
+  /// In en, this message translates to:
+  /// **'No Farm'**
+  String get noFarm;
+
+  /// No description provided for @noFarmDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No farm data found'**
+  String get noFarmDesc;
+
+  /// No description provided for @contactWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact via WhatsApp'**
+  String get contactWhatsapp;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'reviews'**
+  String get reviews;
+
+  /// No description provided for @founded.
+  ///
+  /// In en, this message translates to:
+  /// **'Founded'**
+  String get founded;
+
+  /// No description provided for @loadingMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading map...'**
+  String get loadingMap;
+
+  /// No description provided for @cropTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Types'**
+  String get cropTypes;
+
+  /// No description provided for @availableCropsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Crops'**
+  String get availableCropsLabel;
+
+  /// No description provided for @annualProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Production'**
+  String get annualProduction;
+
+  /// No description provided for @farmAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Age'**
+  String get farmAge;
+
+  /// No description provided for @noCrops.
+  ///
+  /// In en, this message translates to:
+  /// **'No crops available now'**
+  String get noCrops;
+
+  /// No description provided for @whatsappMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I would like to inquire about'**
+  String get whatsappMessage;
+
+  /// No description provided for @types.
+  ///
+  /// In en, this message translates to:
+  /// **'Types'**
+  String get types;
+
+  /// No description provided for @varietyCropsGrown.
+  ///
+  /// In en, this message translates to:
+  /// **'Variety of crops grown'**
+  String get varietyCropsGrown;
+
+  /// No description provided for @crop.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop'**
+  String get crop;
+
+  /// No description provided for @availableSlaeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Available for sale now'**
+  String get availableSlaeNow;
+
+  /// No description provided for @totalProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Total production this season'**
+  String get totalProduction;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @fromFoundingUntilNow.
+  ///
+  /// In en, this message translates to:
+  /// **'From founding until now'**
+  String get fromFoundingUntilNow;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

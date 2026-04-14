@@ -1,6 +1,6 @@
 {
   "appTitle": "Taabat",
-  "login": "Login",
+  "login": " Login",
   "signUp": " Sign Up",
   "welcomeBack": "Welcome back to Taabat",
   "hello": "Hello",
@@ -12,6 +12,8 @@
   "enterEmail": "Please enter your email",
   "validEmail": "Please enter a valid email",
   "emailAlreadyUsed": "Email is already used, try another email",
+  "failedSigningUp": "Failed to Sign Up",
+  "failedSigningIn": "Failed to Sign In",
 
   "password": "Password",
   "enterPassword": "Enter password",
@@ -55,6 +57,8 @@
   "farmNameRequired": "Farm name is required",
   "location": "Location description (City, Area, Street) *",
   "locationRequired": "Location is required",
+  "locationRequiredDesc": "Enable location access to discover the farms.",
+  "openPermissions": "Open Permissions Settings",
   "selectFruits": "Select Fruits",
   "visibleToShoppers": "Visible to shoppers",
   "disableArchiveFarm": "Disable to archive the farm",
@@ -83,6 +87,16 @@
   "unableLoadingWeather": "Unable to load weather right now.",
   "basedOnYourLocation": "Based on your location",
   "farmWeather": "Farm weather",
+  "sunny": "Sunny",
+  "partlyCloudy": "Partly cloudy",
+  "cloudy": "Cloudy",
+  "overcast": "Overcast",
+  "mist": "Mist",
+  "lightRainPossible": "Light rain possible",
+  "lightRain": "Light rain",
+  "moderateRain": "Moderate rain",
+  "heavyRain": "Heavy rain",
+  "thunderstorm": "Thunderstorm",
 
   "uvIndex": "UV",
   "moderate": "Moderate",
@@ -178,8 +192,11 @@
   "milligram": "mg",
   "kilocalorie": "kcal",
   "percent": "%",
-  "millimeter": "millimeter",
+  "millimeter": "mm",
   "kiloMeterPerHour": "km/h",
+  "kiloMeter": "km",
+  "kiloGram": "kg",
+
 
   "noCameraFound": "No camera available on this device",
   "errorAccessingCamera": "Error accessing camera:",
@@ -195,5 +212,55 @@
   "scanning": "Scanning...",
   "placeFruitInsideFrame": "Place the fruit inside the frame.",
   "upload": "Upload",
-  "cameraPermissionDenied": "Camera permission denied"
+  "cameraPermissionDenied": "Camera permission denied",
+
+
+  "farmStats": "Farm Statistics",
+  "farmStatsDesc": "Farm performance indicators",
+
+  "mapView": "Tap to view map",
+  "backToFarm": "Back to Farm",
+  "openInMaps": "Open in Maps",
+
+  "veryFresh": "Very Fresh",
+  "fresh": "Fresh",
+  "good": "Good",
+  "acceptable": "Acceptable",
+  "old": "Old",
+
+  "quantity": "Quantity",
+  "harvestDate": "Harvest Date",
+  "type": "Type",
+
+  "cropsQuantity": "Available Crops Quantity (kg)",
+  "highestQuantity": "Highest",
+  "available": "Available",
+
+  "availableCrops": "Available Crops",
+  "availableCropsDesc": "Details of fresh crops",
+
+  "qualityIndicators": "Quality Indicators",
+  "qualityDesc": "Excellence standards",
+
+  "noFarm": "No Farm",
+  "noFarmDesc": "No farm data found",
+
+  "contactWhatsapp": "Contact via WhatsApp",
+  "reviews": "reviews",
+  "founded": "Founded",
+  "loadingMap": "Loading map...",
+
+  "cropTypes": "Crop Types",
+  "availableCropsLabel": "Available Crops",
+  "annualProduction": "Annual Production",
+  "farmAge": "Farm Age",
+  "noCrops": "No crops available now",
+  "whatsappMessage": "Hello, I would like to inquire about",
+  "types": "Types",
+  "varietyCropsGrown": "Variety of crops grown",
+  "crop": "Crop",
+  "availableSlaeNow": "Available for sale now",
+  "totalProduction": "Total production this season",
+  "year": "Year",
+  "fromFoundingUntilNow": "From founding until now"
 }

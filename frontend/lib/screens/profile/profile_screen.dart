@@ -18,12 +18,6 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
-
-  /*
-  void _changeLanguage(BuildContext context, String langCode) {
-    MyApp.setLocale(context, locale(langCode));
-  }
-  */
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -37,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     userName = widget.userData['name'] ?? 'User';
-    role = widget.userData['role'] ?? 'farmer';
+    role = (widget.userData['role'] ?? 'farmer').toString().toLowerCase();
 
     avatars = role == 'farmer'
         ? ['assets/Male-Farmer.png', 'assets/Female-Farmer.png']
@@ -205,53 +199,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-  /*
-  // ================= NAV BAR =================
-  Widget _buildBottomNavBar() {
-    final tr = AppLocalizations.of(context)!;
-
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0D1B2A),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 18,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _navItem(
-              icon: Icons.grid_view_outlined,
-              label: tr.home,
-              active: false,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => getHomeByRole()),
-                );
-              },
-            ),
-            _navItem(
-              icon: Icons.person,
-              label: tr.profile,
-              active: true,
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-*/
 
   @override
   Widget build(BuildContext context) {

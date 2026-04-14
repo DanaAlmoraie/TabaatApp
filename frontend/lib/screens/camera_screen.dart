@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:frontend/core/user_session.dart';
@@ -32,29 +34,52 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
 
-    final tr = AppLocalizations.of(context)!;
-
     if (!UserSession.cameraEnabled) {
-      Future.microtask(() {
-        Navigator.pop(context);
-
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(tr.cameraPermissionDenied)));
-      });
+      _handleCameraDenied();
       return;
     }
 
-    _controller = CameraController(
-      widget.camera,
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
+    _initializeCamera();
+  }
 
-    _controller!.initialize().then((_) {
+  void _handleCameraDenied() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      setState(() => _isInitialized = true);
+
+      final tr = AppLocalizations.of(context)!;
+
+      Navigator.pop(context);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(tr.cameraPermissionDenied)));
     });
+  }
+
+  void _initializeCamera() async {
+    try {
+      _controller = CameraController(
+        widget.camera,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+
+      await _controller!.initialize();
+      if (!mounted) return;
+
+      setState(() {
+        _isInitialized = true;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      final tr = AppLocalizations.of(context)!;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('${tr.errorAccessingCamera} $e')));
+
+      Navigator.pop(context);
+    }
   }
 
   @override

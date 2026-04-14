@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Taabat';
 
   @override
-  String get login => 'Login';
+  String get login => ' Login';
 
   @override
   String get signUp => ' Sign Up';
@@ -43,6 +43,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailAlreadyUsed => 'Email is already used, try another email';
+
+  @override
+  String get failedSigningUp => 'Failed to Sign Up';
+
+  @override
+  String get failedSigningIn => 'Failed to Sign In';
 
   @override
   String get password => 'Password';
@@ -150,6 +156,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationRequired => 'Location is required';
 
   @override
+  String get locationRequiredDesc => 'Enable location access to discover the farms.';
+
+  @override
+  String get openPermissions => 'Open Permissions Settings';
+
+  @override
   String get selectFruits => 'Select Fruits';
 
   @override
@@ -226,6 +238,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get farmWeather => 'Farm weather';
+
+  @override
+  String get sunny => 'Sunny';
+
+  @override
+  String get partlyCloudy => 'Partly cloudy';
+
+  @override
+  String get cloudy => 'Cloudy';
+
+  @override
+  String get overcast => 'Overcast';
+
+  @override
+  String get mist => 'Mist';
+
+  @override
+  String get lightRainPossible => 'Light rain possible';
+
+  @override
+  String get lightRain => 'Light rain';
+
+  @override
+  String get moderateRain => 'Moderate rain';
+
+  @override
+  String get heavyRain => 'Heavy rain';
+
+  @override
+  String get thunderstorm => 'Thunderstorm';
 
   @override
   String get uvIndex => 'UV';
@@ -450,10 +492,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get percent => '%';
 
   @override
-  String get millimeter => 'millimeter';
+  String get millimeter => 'mm';
 
   @override
   String get kiloMeterPerHour => 'km/h';
+
+  @override
+  String get kiloMeter => 'km';
+
+  @override
+  String get kiloGram => 'kg';
 
   @override
   String get noCameraFound => 'No camera available on this device';
@@ -499,4 +547,121 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cameraPermissionDenied => 'Camera permission denied';
+
+  @override
+  String get farmStats => 'Farm Statistics';
+
+  @override
+  String get farmStatsDesc => 'Farm performance indicators';
+
+  @override
+  String get mapView => 'Tap to view map';
+
+  @override
+  String get backToFarm => 'Back to Farm';
+
+  @override
+  String get openInMaps => 'Open in Maps';
+
+  @override
+  String get veryFresh => 'Very Fresh';
+
+  @override
+  String get fresh => 'Fresh';
+
+  @override
+  String get good => 'Good';
+
+  @override
+  String get acceptable => 'Acceptable';
+
+  @override
+  String get old => 'Old';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get harvestDate => 'Harvest Date';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get cropsQuantity => 'Available Crops Quantity (kg)';
+
+  @override
+  String get highestQuantity => 'Highest';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get availableCrops => 'Available Crops';
+
+  @override
+  String get availableCropsDesc => 'Details of fresh crops';
+
+  @override
+  String get qualityIndicators => 'Quality Indicators';
+
+  @override
+  String get qualityDesc => 'Excellence standards';
+
+  @override
+  String get noFarm => 'No Farm';
+
+  @override
+  String get noFarmDesc => 'No farm data found';
+
+  @override
+  String get contactWhatsapp => 'Contact via WhatsApp';
+
+  @override
+  String get reviews => 'reviews';
+
+  @override
+  String get founded => 'Founded';
+
+  @override
+  String get loadingMap => 'Loading map...';
+
+  @override
+  String get cropTypes => 'Crop Types';
+
+  @override
+  String get availableCropsLabel => 'Available Crops';
+
+  @override
+  String get annualProduction => 'Annual Production';
+
+  @override
+  String get farmAge => 'Farm Age';
+
+  @override
+  String get noCrops => 'No crops available now';
+
+  @override
+  String get whatsappMessage => 'Hello, I would like to inquire about';
+
+  @override
+  String get types => 'Types';
+
+  @override
+  String get varietyCropsGrown => 'Variety of crops grown';
+
+  @override
+  String get crop => 'Crop';
+
+  @override
+  String get availableSlaeNow => 'Available for sale now';
+
+  @override
+  String get totalProduction => 'Total production this season';
+
+  @override
+  String get year => 'Year';
+
+  @override
+  String get fromFoundingUntilNow => 'From founding until now';
 }
