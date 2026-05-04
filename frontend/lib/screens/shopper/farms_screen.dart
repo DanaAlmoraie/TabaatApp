@@ -32,7 +32,7 @@ class _FermsPageState extends State<FarmsPage> {
       setState(() => loading = false);
     }
   }
-
+//tr.exploreFarms
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
@@ -40,11 +40,29 @@ class _FermsPageState extends State<FarmsPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
 
-      appBar: AppBar(
-        title: Text(tr.exploreFarms),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFF8C00),
+appBar: PreferredSize(
+  preferredSize: const Size.fromHeight(80),
+  child: Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
       ),
+    ),
+    child: AppBar(
+      toolbarHeight: 80,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        tr.exploreFarms,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  ),
+),
 
       body: loading
           ? const Center(child: CircularProgressIndicator())

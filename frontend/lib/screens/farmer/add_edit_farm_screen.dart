@@ -204,314 +204,305 @@ class _AddEditFarmScreenState extends State<AddEditFarmScreen> {
       ),
     );
   }
-
+//title: Text(tr.addFarm)
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F0),
-
-      // ===== AppBar =====
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
-            ),
-          ),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            title: Text(
-              widget.farm == null ? tr.addFarm : tr.editFarm,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+  return Scaffold(
+appBar: PreferredSize(
+  preferredSize: const Size.fromHeight(80),
+  child: Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
+      ),
+    ),
+    child: AppBar(
+      toolbarHeight: 80,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        tr.addFarm,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
       ),
+    ),
+  ),
+),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
+  // ================= BODY =================
+  body: Padding(
+    padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+    child: SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            // ================= FARM NAME =================
+            TextFormField(
+              controller: nameController,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return tr.farmNameRequired;
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: tr.farmName,
+                labelStyle: TextStyle(color: Colors.green[700]),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // ================= LOCATION =================
+            TextFormField(
+              controller: locationController,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return tr.locationRequired;
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: tr.location,
+                labelStyle: TextStyle(color: Colors.green[700]),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // ================= GPS =================
+            Text(
+              tr.farmLocationGps,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.green[800],
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            Row(
               children: [
-                // ================= FARM NAME =================
-                TextFormField(
-                  controller: nameController,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return tr.farmNameRequired;
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: tr.farmName,
-                    labelStyle: TextStyle(color: Colors.green[700]),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green[800]!),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green[700]!.withOpacity(0.5),
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                Expanded(
+                  child: gradientButton(
+                    onPressed:
+                        _gettingLocation ? null : _useCurrentLocationForFarm,
+                    icon: Icons.my_location,
+                    label:
+                        _gettingLocation ? tr.getting : tr.currentLocation,
                   ),
                 ),
-
-                const SizedBox(height: 12),
-
-                // ================= LOCATION =================
-                TextFormField(
-                  controller: locationController,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return tr.locationRequired;
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: tr.location,
-                    labelStyle: TextStyle(color: Colors.green[700]),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green[800]!),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green[700]!.withOpacity(0.5),
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 14),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    tr.farmLocationGps,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green[800],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: gradientButton(
-                        onPressed: _gettingLocation
-                            ? null
-                            : _useCurrentLocationForFarm,
-                        icon: Icons.my_location,
-                        label: _gettingLocation
-                            ? tr.getting
-                            : tr.currentLocation,
-                      ),
-                    ),
-
-                    const SizedBox(width: 10),
-
-                    Expanded(
-                      child: gradientButton(
-                        onPressed: _pickLocationFromMap,
-                        icon: Icons.map,
-                        label: tr.pickOnMap,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 10),
-
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.green.withOpacity(0.3)),
-                  ),
-                  child: Text(
-                    _farmLat == null || _farmLng == null
-                        ? tr.noGpsSelected
-                        : '${tr.selected}: $_farmLat , $_farmLng',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                // ================= FRUITS =================
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    tr.selectFruits,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  children: allFruits.map((fruit) {
-                    final isSelected = selectedFruits.contains(fruit);
-                    return FilterChip(
-                      label: Text(
-                        FruitTranslator.translate(fruit, tr),
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.green[800],
-                        ),
-                      ),
-                      selected: isSelected,
-                      selectedColor: Colors.green[700],
-                      backgroundColor: Colors.green[50],
-                      checkmarkColor: Colors.white,
-                      onSelected: (val) {
-                        setState(() {
-                          if (val) {
-                            selectedFruits.add(fruit);
-                          } else {
-                            selectedFruits.remove(fruit);
-                          }
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-
-                const SizedBox(height: 24),
-
-                // ================= ARCHIVE SWITCH =================
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          tr.visibleToShoppers,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          tr.disableArchiveFarm,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                    gradientSwitch(
-                      value: isOpen,
-                      onChanged: (val) {
-                        setState(() {
-                          isOpen = val;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 30),
-
-                // ================= SAVE BUTTON =================
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      // Validate form
-                      if (!_formKey.currentState!.validate()) return;
-
-                      // Validate fruits
-                      if (selectedFruits.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(tr.selectAtLeastOneFruit),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                        return;
-                      }
-                      try {
-                        if (_farmLat == null || _farmLng == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(tr.pleaseSetFarmGps),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                          return;
-                        }
-                        if (widget.farm == null) {
-                          await ApiService.addFarm(
-                            name: nameController.text.trim(),
-                            location: locationController.text.trim(),
-                            fruits: selectedFruits,
-                            isOpen: isOpen,
-                            latitude: _farmLat!,
-                            longitude: _farmLng!,
-                          );
-                        } else {
-                          await ApiService.updateFarm(
-                            farmId: widget.farm!.id,
-                            name: nameController.text.trim(),
-                            location: locationController.text.trim(),
-                            fruits: selectedFruits,
-                            isOpen: isOpen,
-                            latitude: _farmLat!,
-                            longitude: _farmLng!,
-                          );
-                        }
-
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(tr.farmAddedSuccess)),
-                        );
-
-                        Navigator.pop(context);
-                      } catch (e) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text("Error: $e")));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[800],
-                      elevation: 6,
-                      shadowColor: Colors.green.withOpacity(0.4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: Text(
-                      tr.saveFarm,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                    ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: gradientButton(
+                    onPressed: _pickLocationFromMap,
+                    icon: Icons.map,
+                    label: tr.pickOnMap,
                   ),
                 ),
               ],
             ),
+
+            const SizedBox(height: 10),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.green.withOpacity(0.3)),
+              ),
+              child: Text(
+                _farmLat == null || _farmLng == null
+                    ? tr.noGpsSelected
+                    : '${tr.selected}: $_farmLat , $_farmLng',
+                style: const TextStyle(fontSize: 12),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // ================= FRUITS =================
+            Text(
+              tr.selectFruits,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 8),
+
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: allFruits.map((fruit) {
+                final isSelected = selectedFruits.contains(fruit);
+
+                return FilterChip(
+                  label: Text(
+                    FruitTranslator.translate(fruit, tr),
+                    style: TextStyle(
+                      color: isSelected
+                          ? Colors.white
+                          : Colors.green[800],
+                    ),
+                  ),
+                  selected: isSelected,
+                  selectedColor: Colors.green[700],
+                  backgroundColor: Colors.green[50],
+                  checkmarkColor: Colors.white,
+                  onSelected: (val) {
+                    setState(() {
+                      if (val) {
+                        selectedFruits.add(fruit);
+                      } else {
+                        selectedFruits.remove(fruit);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+
+            const SizedBox(height: 24),
+
+            // ================= VISIBILITY =================
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tr.visibleToShoppers,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      tr.disableArchiveFarm,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                gradientSwitch(
+                  value: isOpen,
+                  onChanged: (val) {
+                    setState(() {
+                      isOpen = val;
+                    });
+                  },
+                ),
+              ],
+            ),
+
+            // 👇 مهم عشان ما ينغطي المحتوى
+            const SizedBox(height: 90),
+          ],
+        ),
+      ),
+    ),
+  ),
+
+  // ================= SAVE BUTTON =================
+  bottomNavigationBar: SafeArea(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      child: SizedBox(
+        height: 52,
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () async {
+            if (!_formKey.currentState!.validate()) return;
+
+            if (selectedFruits.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(tr.selectAtLeastOneFruit),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              return;
+            }
+
+            try {
+              if (_farmLat == null || _farmLng == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(tr.pleaseSetFarmGps),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                return;
+              }
+
+              if (widget.farm == null) {
+                await ApiService.addFarm(
+                  name: nameController.text.trim(),
+                  location: locationController.text.trim(),
+                  fruits: selectedFruits,
+                  isOpen: isOpen,
+                  latitude: _farmLat!,
+                  longitude: _farmLng!,
+                );
+              } else {
+                await ApiService.updateFarm(
+                  farmId: widget.farm!.id,
+                  name: nameController.text.trim(),
+                  location: locationController.text.trim(),
+                  fruits: selectedFruits,
+                  isOpen: isOpen,
+                  latitude: _farmLat!,
+                  longitude: _farmLng!,
+                );
+              }
+
+              if (!mounted) return;
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(tr.farmAddedSuccess)),
+              );
+
+              Navigator.pop(context);
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Error: $e")),
+              );
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green[800],
+            elevation: 6,
+            shadowColor: Colors.green.withOpacity(0.4),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          child: Text(
+            tr.saveFarm,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

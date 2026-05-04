@@ -112,8 +112,7 @@ class _TaabatAppState extends State<TaabatApp> {
           return NutritionLoader(fruitType: fruitName);
         },
       },
-      home: StatisticsScreen(),
-      //home: const LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }

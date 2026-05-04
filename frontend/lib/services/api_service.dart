@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const String baseUrl = String.fromEnvironment(
     'API_URL',
-    defaultValue: 'http://192.168.56.1:8000',
+    defaultValue: 'http://10.0.2.2:8000',
     //defaultValue: 'http://10.0.2.2:8000',
   );
 

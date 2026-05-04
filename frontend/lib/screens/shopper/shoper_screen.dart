@@ -12,6 +12,7 @@ import '../camera_screen.dart';
 import '../../l10n/app_localizations.dart';
 import '../profile/permissions_data_screen.dart';
 import 'package:geolocator/geolocator.dart';
+import 'statistics_screen.dart';
 
 class ShopperHomePage extends StatefulWidget {
   const ShopperHomePage({super.key});
@@ -25,7 +26,16 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
   Map<String, dynamic>? userData;
   List farms = [];
   bool loadingFarms = true;
+  final TextEditingController _farmSearchController = TextEditingController();
+final Set<String> _selectedFruitFilters = {};
+String _distanceSort = 'none'; // none / nearest / farthest
+bool _showFilters = false;
 
+final Set<int> _selectedStatsFarmIds = {};
+bool _showFarmPicker = false;
+
+String _statsFactor = 'crops'; // crops / freshness / fruitQuantity
+String? _selectedStatsFruit;
   @override
   void initState() {
     super.initState();
@@ -74,6 +84,11 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
       });
     }
   }
+  @override
+  void dispose() {
+   _farmSearchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,12 +102,19 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(),
-            const SizedBox(height: 12),
-            _buildClassifyBox(),
-            const SizedBox(height: 25),
-            _buildFarmSection(context),
-            const SizedBox(height: 100),
+_buildHeader(),
+Transform.translate(
+  offset: const Offset(0, -35),
+  child: Column(
+    children: [
+      _buildFarmComparisonCard(),
+      const SizedBox(height: 14),
+      _buildClassifyBox(),
+      const SizedBox(height: 18),
+      _buildFarmSection(context),
+    ],
+  ),
+),
           ],
         ),
       ),
@@ -280,6 +302,764 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
       ),
     );
   }
+List get _filteredFarms {
+  final query = _farmSearchController.text.trim().toLowerCase();
+
+  List result = farms.where((farm) {
+    final name = (farm['name'] ?? '').toString().toLowerCase();
+    final location = (farm['location'] ?? '').toString().toLowerCase();
+
+    final fruits =
+        (farm['fruits'] as List?)?.map((e) => e.toString()).toList() ?? [];
+
+    final matchesSearch =
+        query.isEmpty || name.contains(query) || location.contains(query);
+
+    final matchesFruits = _selectedFruitFilters.isEmpty ||
+    fruits.any((fruit) => _selectedFruitFilters.contains(fruit));
+
+    return matchesSearch && matchesFruits;
+  }).toList();
+
+  if (_distanceSort == 'nearest') {
+    result.sort((a, b) => _distanceKmValue(a).compareTo(_distanceKmValue(b)));
+  } else if (_distanceSort == 'farthest') {
+    result.sort((a, b) => _distanceKmValue(b).compareTo(_distanceKmValue(a)));
+  }
+
+  return result;
+}
+
+List<String> get _availableFruits {
+  final Set<String> result = {};
+
+  for (final farm in farms) {
+    final fruits = (farm['fruits'] as List?)?.map((e) => e.toString()).toList() ?? [];
+    result.addAll(fruits);
+  }
+
+  return result.toList()..sort();
+}
+
+double _distanceKmValue(dynamic farm) {
+  if (UserSession.user['latitude'] == null ||
+      UserSession.user['longitude'] == null ||
+      farm['latitude'] == null ||
+      farm['longitude'] == null) {
+    return 0.0;
+  }
+
+  final userLat = (UserSession.user['latitude'] as num).toDouble();
+  final userLng = (UserSession.user['longitude'] as num).toDouble();
+  final farmLat = (farm['latitude'] as num).toDouble();
+  final farmLng = (farm['longitude'] as num).toDouble();
+
+  return Geolocator.distanceBetween(userLat, userLng, farmLat, farmLng) / 1000;
+}
+double _statsValue(dynamic farm) {
+  if (_statsFactor == 'crops') {
+    return ((farm['fruits'] as List?)?.length ?? 0).toDouble();
+  }
+
+  if (_statsFactor == 'freshness') {
+    // مؤقتًا لو عندكم freshness_score من الباك اند بيستخدمه
+    // إذا مو موجود يعطي قيمة 0
+    return ((farm['freshness_score'] as num?)?.toDouble() ?? 0.0);
+  }
+
+  if (_statsFactor == 'fruitQuantity') {
+    if (_selectedStatsFruit == null) return 0;
+
+    final fruitCounts = farm['fruit_counts'];
+
+    // لو عندكم fruit_counts في الداتا بيس
+    if (fruitCounts is Map && fruitCounts[_selectedStatsFruit] != null) {
+      return (fruitCounts[_selectedStatsFruit] as num).toDouble();
+    }
+
+    // fallback مؤقت: لو الفاكهة موجودة في farm['fruits'] نحسبها 1
+    final fruits =
+        (farm['fruits'] as List?)?.map((e) => e.toString()).toList() ?? [];
+
+    return fruits.contains(_selectedStatsFruit) ? 1.0 : 0.0;
+  }
+
+  return 0;
+}
+
+String _statsLabel() {
+  if (_statsFactor == 'crops') {
+    return 'Compare farms by the number of available crop types.';
+  }
+
+  if (_statsFactor == 'freshness') {
+    return 'Compare farms by freshness score based on ripeness analysis.';
+  }
+
+  if (_statsFactor == 'fruitQuantity') {
+    return _selectedStatsFruit == null
+        ? 'Select a fruit to compare its quantity across farms.'
+        : 'Compare farms by the quantity of $_selectedStatsFruit.';
+  }
+
+  return '';
+}
+
+String _formatStatsValue(double value) {
+  if (_statsFactor == 'freshness') {
+    return '${value.toStringAsFixed(0)}%';
+  }
+
+  if (_statsFactor == 'fruitQuantity') {
+    return value.toInt().toString();
+  }
+
+  return '${value.toInt()} crops';
+}
+int _farmId(dynamic farm) {
+  return (farm['farm_id'] ?? farm['id'] ?? 0) as int;
+}
+
+List _nearestDefaultFarms() {
+  final sorted = List.from(farms);
+
+  sorted.sort((a, b) => _distanceKmValue(a).compareTo(_distanceKmValue(b)));
+
+  return sorted.take(4).toList();
+}
+
+List _selectedComparisonFarms() {
+  // Default: nearest 4 farms
+  if (_selectedStatsFarmIds.isEmpty) {
+    return _nearestDefaultFarms();
+  }
+
+  return farms.where((farm) {
+    return _selectedStatsFarmIds.contains(_farmId(farm));
+  }).toList();
+}
+
+Widget _buildFarmComparisonCard() {
+  if (!UserSession.locationEnabled || loadingFarms || farms.isEmpty) {
+    return const SizedBox.shrink();
+  }
+
+  final shownFarms = _selectedComparisonFarms();
+  final values = shownFarms.map((farm) => _statsValue(farm)).toList();
+
+  final maxValue = values.isEmpty
+      ? 1.0
+      : values.reduce((a, b) => a > b ? a : b);
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+Row(
+  children: [
+    Container(
+      padding: const EdgeInsets.all(9),
+      decoration: BoxDecoration(
+        color: Colors.orange.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Icon(Icons.bar_chart_rounded,
+          color: Colors.orange[800], size: 22),
+    ),
+
+    const SizedBox(width: 10),
+
+    const Expanded(
+      child: Text(
+        'Farm Statistics',
+        style: TextStyle(
+          fontSize: 21,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    ),
+
+    // 🔥 زر الفلتر الجديد
+    GestureDetector(
+      onTap: () {
+        setState(() {
+          _showFarmPicker = !_showFarmPicker;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.green[50],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.green.withOpacity(0.25)),
+        ),
+        child: Icon(
+          Icons.filter_list_rounded,
+          color: Colors.green[800],
+          size: 22,
+        ),
+      ),
+    ),
+  ],
+),
+
+          const SizedBox(height: 6),
+
+          Text(
+            _statsLabel(),
+            style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Creative filter buttons
+Row(
+  children: [
+    Expanded(
+      child: _statsFilterChip(
+        title: 'Crops',
+        icon: Icons.eco_rounded,
+        value: 'crops',
+      ),
+    ),
+    const SizedBox(width: 8),
+    Expanded(
+      child: _statsFilterChip(
+        title: 'Freshness',
+        icon: Icons.verified_rounded,
+        value: 'freshness',
+      ),
+    ),
+    const SizedBox(width: 8),
+    Expanded(
+      child: _statsFilterChip(
+        title: 'Quantity',
+        icon: Icons.shopping_basket_rounded,
+        value: 'fruitQuantity',
+      ),
+    ),
+  ],
+),
+
+          const SizedBox(height: 18),
+          if (_statsFactor == 'fruitQuantity') ...[
+  const SizedBox(height: 12),
+
+  Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    decoration: BoxDecoration(
+      color: Colors.orange[50],
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: Colors.orange.withOpacity(0.25)),
+    ),
+    child: DropdownButtonHideUnderline(
+      child: DropdownButton<String>(
+        value: _selectedStatsFruit,
+        hint: const Text('Select fruit'),
+        isExpanded: true,
+        icon: Icon(Icons.keyboard_arrow_down, color: Colors.orange[800]),
+        items: _availableFruits.map((fruit) {
+          return DropdownMenuItem<String>(
+            value: fruit,
+            child: Text(fruit),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            _selectedStatsFruit = value;
+          });
+        },
+      ),
+    ),
+  ),
+],
+const SizedBox(height: 12),
+
+
+if (_showFarmPicker) ...[
+  const SizedBox(height: 10),
+  _buildFarmSelectionPanel(),
+],
+
+if (_selectedStatsFarmIds.isNotEmpty && shownFarms.length < 2)
+  Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(14),
+    decoration: BoxDecoration(
+      color: Colors.red[50],
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: Colors.red.withOpacity(0.25)),
+    ),
+    child: const Text(
+      'Please select at least 2 farms to compare.',
+      style: TextStyle(
+        color: Colors.red,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  )
+else
+  Column(
+    children: List.generate(shownFarms.length, (index) {
+      final farm = shownFarms[index];
+      final value = values[index];
+
+      final farmName = (farm['name'] ?? 'Unknown Farm').toString();
+
+      final percent = maxValue == 0 ? 0.0 : value / maxValue;
+
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 13),
+        child: _statisticsBarItem(
+          farmName: farmName,
+          valueText: _formatStatsValue(value),
+          percent: percent,
+          index: index,
+        ),
+      );
+    }),
+  ),
+
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildFarmSelectionPanel() {
+  final sortedFarms = List.from(farms)
+    ..sort((a, b) => _distanceKmValue(a).compareTo(_distanceKmValue(b)));
+
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: Colors.green.withOpacity(0.15)),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Select 2 to 5 farms',
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: Colors.green[900],
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: sortedFarms.map<Widget>((farm) {
+            final id = _farmId(farm);
+            final name = (farm['name'] ?? 'Unknown Farm').toString();
+            final selected = _selectedStatsFarmIds.contains(id);
+
+            return FilterChip(
+              label: Text(name),
+              selected: selected,
+              selectedColor: Colors.green[100],
+              checkmarkColor: Colors.green[900],
+              onSelected: (value) {
+                setState(() {
+                  if (value) {
+                    if (_selectedStatsFarmIds.length >= 5) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('You can compare up to 5 farms only'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    _selectedStatsFarmIds.add(id);
+                  } else {
+                    _selectedStatsFarmIds.remove(id);
+                  }
+                });
+              },
+            );
+          }).toList(),
+        ),
+
+        const SizedBox(height: 10),
+
+        Row(
+          children: [
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  _selectedStatsFarmIds.clear();
+                });
+              },
+              icon: const Icon(Icons.refresh, size: 18),
+              label: const Text('Use nearest 4'),
+            ),
+
+            const Spacer(),
+
+            Text(
+              _selectedStatsFarmIds.isEmpty
+                  ? 'Default'
+                  : '${_selectedStatsFarmIds.length}/5 selected',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[700],
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+
+        if (_selectedStatsFarmIds.isNotEmpty &&
+            _selectedStatsFarmIds.length < 2)
+          const Padding(
+            padding: EdgeInsets.only(top: 6),
+            child: Text(
+              'Select at least 2 farms for comparison.',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+      ],
+    ),
+  );
+}
+Widget _statsFilterChip({
+  required String title,
+  required IconData icon,
+  required String value,
+}) {
+  final bool selected = _statsFactor == value;
+
+  return GestureDetector(
+onTap: () {
+  setState(() {
+    _statsFactor = value;
+
+    if (_statsFactor == 'fruitQuantity' &&
+        _selectedStatsFruit == null &&
+        _availableFruits.isNotEmpty) {
+      _selectedStatsFruit = _availableFruits.first;
+    }
+  });
+},
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        gradient: selected
+            ? const LinearGradient(
+                colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null,
+        color: selected ? null : Colors.grey[100],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: selected ? Colors.orange : Colors.grey.withOpacity(0.25),
+        ),
+        boxShadow: selected
+            ? [
+                BoxShadow(
+                  color: Colors.orange.withOpacity(0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ]
+            : [],
+      ),
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            size: 20,
+            color: selected ? Colors.white : Colors.grey[700],
+          ),
+          const SizedBox(height: 5),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: selected ? Colors.white : Colors.grey[700],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _statisticsBarItem({
+  required String farmName,
+  required String valueText,
+  required double percent,
+  required int index,
+}) {
+  final colors = [
+    Colors.orange,
+    Colors.green,
+    Colors.blue,
+    Colors.pinkAccent,
+    Colors.purple,
+  ];
+
+  final barColor = colors[index % colors.length];
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          Expanded(
+            child: Text(
+              farmName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+            decoration: BoxDecoration(
+              color: barColor.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              valueText,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: barColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+
+      const SizedBox(height: 7),
+
+      Stack(
+        children: [
+          Container(
+            height: 10,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(999),
+            ),
+          ),
+          FractionallySizedBox(
+            widthFactor: percent.clamp(0.05, 1.0),
+            child: Container(
+              height: 10,
+              decoration: BoxDecoration(
+                color: barColor,
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget _buildStatRow(String label, String value, Color color) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 9),
+    child: Row(
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 9),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildFarmFilters() {
+  final fruits = _availableFruits;
+
+  return Column(
+    children: [
+      Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _farmSearchController,
+              onChanged: (_) => setState(() {}),
+              decoration: InputDecoration(
+                hintText: 'Search farms...',
+                prefixIcon: Icon(Icons.search, color: Colors.green[700]),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                filled: true,
+                fillColor: Colors.green[50],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(color: Colors.green.withOpacity(0.2)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(color: Colors.green.withOpacity(0.2)),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showFilters = !_showFilters;
+              });
+            },
+            icon: Icon(Icons.tune, color: Colors.green[800]),
+          ),
+        ],
+      ),
+
+      if (_showFilters) ...[
+        const SizedBox(height: 12),
+
+        // Distance filter
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Sort by distance',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.green[900],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        Wrap(
+          spacing: 8,
+          children: [
+            ChoiceChip(
+              label: const Text('None'),
+              selected: _distanceSort == 'none',
+              selectedColor: Colors.green[100],
+              onSelected: (_) {
+                setState(() => _distanceSort = 'none');
+              },
+            ),
+            ChoiceChip(
+              label: const Text('Nearest first'),
+              selected: _distanceSort == 'nearest',
+              selectedColor: Colors.green[100],
+              onSelected: (_) {
+                setState(() => _distanceSort = 'nearest');
+              },
+            ),
+            ChoiceChip(
+              label: const Text('Farthest first'),
+              selected: _distanceSort == 'farthest',
+              selectedColor: Colors.green[100],
+              onSelected: (_) {
+                setState(() => _distanceSort = 'farthest');
+              },
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 14),
+
+        // Fruit filter
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Filter by available fruits',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.green[900],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ChoiceChip(
+                label: const Text('All'),
+                selected: _selectedFruitFilters.isEmpty,
+                selectedColor: Colors.green[100],
+                onSelected: (_) {
+                  setState(() => _selectedFruitFilters.clear());
+                },
+              ),
+              ...fruits.map((fruit) {
+                final selected = _selectedFruitFilters.contains(fruit);
+
+                return FilterChip(
+                  label: Text(fruit),
+                  selected: selected,
+                  selectedColor: Colors.green[100],
+                  checkmarkColor: Colors.green[900],
+                  onSelected: (value) {
+                    setState(() {
+                      if (value) {
+                        _selectedFruitFilters.add(fruit);
+                      } else {
+                        _selectedFruitFilters.remove(fruit);
+                      }
+                    });
+                  },
+                );
+              }),
+            ],
+          ),
+        ),
+      ],
+    ],
+  );
+}
 
   // ================= FARM SECTION =================
   Widget _buildFarmSection(BuildContext context) {
@@ -360,35 +1140,51 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
             const SizedBox(height: 12),
 
-            Column(
-              children: farms.take(3).map<Widget>((farm) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: _buildFarmListItemDynamic(
-                    name: farm['name']?.toString() ?? tr.unknownFarm,
-                    location:
-                        farm['location']?.toString() ?? tr.unknownLocation,
-                    fruits: (farm['fruits'] as List?)?.cast<String>() ?? [],
-                    distance: _calculateDistance(
-                      farm['latitude']?.toDouble() ?? 0.0,
-                      farm['longitude']?.toDouble() ?? 0.0,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
+_buildFarmFilters(),
+
+const SizedBox(height: 12),
+
+if (_filteredFarms.isEmpty)
+  Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20),
+    child: Center(
+      child: Text(
+        'No farms match your filters',
+        style: TextStyle(color: Colors.grey[700]),
+      ),
+    ),
+  )
+else
+  Column(
+    children: _filteredFarms.take(3).map<Widget>((farm) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+child: _buildFarmListItemDynamic(
+  farm: farm,
+  name: farm['name']?.toString() ?? tr.unknownFarm,
+  location: farm['location']?.toString() ?? tr.unknownLocation,
+  fruits: (farm['fruits'] as List?)?.map((e) => e.toString()).toList() ?? [],
+  distance: _calculateDistance(
+    (farm['latitude'] as num?)?.toDouble() ?? 0.0,
+    (farm['longitude'] as num?)?.toDouble() ?? 0.0,
+  ),
+),
+      );
+    }).toList(),
+  ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFarmListItemDynamic({
-    required String name,
-    required String location,
-    required List<String> fruits,
-    required String distance,
-  }) {
+Widget _buildFarmListItemDynamic({
+  required dynamic farm,
+  required String name,
+  required String location,
+  required List<String> fruits,
+  required String distance,
+}) {
     final tr = AppLocalizations.of(context)!;
 
     return Container(
@@ -468,31 +1264,60 @@ class _ShopperHomePageState extends State<ShopperHomePage> {
 
           const SizedBox(width: 10),
 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  distance,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green[900],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                tr.distance,
-                style: TextStyle(fontSize: 10, color: Colors.green[700]),
-              ),
-            ],
+Column(
+  crossAxisAlignment: CrossAxisAlignment.end,
+  children: [
+    Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.green.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Text(
+        distance,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: Colors.green[900],
+        ),
+      ),
+    ),
+
+    const SizedBox(height: 2),
+
+    Text(
+      tr.distance,
+      style: TextStyle(fontSize: 10, color: Colors.green[700]),
+    ),
+
+    const SizedBox(height: 8),
+
+    InkWell(
+      borderRadius: BorderRadius.circular(999),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>StatisticsScreen()
           ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.orange.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: Colors.orange.withOpacity(0.25)),
+        ),
+        child: Icon(
+          Icons.dashboard_rounded,
+          size: 17,
+          color: Colors.orange[800],
+        ),
+      ),
+    ),
+  ],
+),
         ],
       ),
     );

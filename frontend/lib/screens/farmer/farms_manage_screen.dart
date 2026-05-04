@@ -92,28 +92,29 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
       backgroundColor: const Color(0xFFF0F0F0),
 
       // ===== AppBar =====
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
-            ),
-          ),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            title: Text(
-              tr.manageFarm,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+appBar: PreferredSize(
+  preferredSize: const Size.fromHeight(80),
+  child: Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
+      ),
+    ),
+    child: AppBar(
+      toolbarHeight: 80,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        tr.manageFarm,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
       ),
+    ),
+  ),
+),
 
       // ===== Body =====
       body: loading
@@ -385,7 +386,7 @@ class _FarmsManageScreenState extends State<FarmsManageScreen> {
 
       // ===== Bottom Button =====
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(12),
+padding: const EdgeInsets.fromLTRB(12, 0, 12, 40),
         child: SizedBox(
           height: 50,
           width: double.infinity,
