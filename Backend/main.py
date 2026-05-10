@@ -14,6 +14,9 @@ from dotenv import load_dotenv
 from typing import List
 import os
 import requests 
+import random
+import smtplib
+from email.message import EmailMessage
 
 import models
 from database import Base, engine, get_db
@@ -53,7 +56,50 @@ def create_access_token(data: dict):
     data.update({"exp": expire})
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
+# =====================================
+# Forgot Password Setup
+# =====================================
+RESET_CODES = {}
 
+SMTP_EMAIL = "taabatproject@gmail.com"
+SMTP_APP_PASSWORD = "onnhmfgbuxhdugpd"
+
+
+def generate_reset_code():
+    return str(random.randint(100000, 999999))
+
+
+def send_reset_email(to_email: str, code: str):
+    if not SMTP_EMAIL or not SMTP_APP_PASSWORD:
+        raise HTTPException(500, "SMTP email settings are missing")
+
+    msg = EmailMessage()
+    msg["Subject"] = "Taabat Password Reset Code"
+    msg["From"] = SMTP_EMAIL
+    msg["To"] = to_email
+
+    msg.set_content(
+        f"""
+Hello,
+
+Your Taabat password reset code is:
+
+{code}
+
+This code will expire in 10 minutes.
+
+If you did not request this, please ignore this email.
+
+Taabat Team
+"""
+    )
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(SMTP_EMAIL, SMTP_APP_PASSWORD)
+            smtp.send_message(msg)
+    except Exception as e:
+        raise HTTPException(500, f"Failed to send email: {str(e)}")
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -76,10 +122,29 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 # =====================================
 # Pydantic Schemas
 # =====================================
+class SupabaseLoginRequest(BaseModel):
+    supabase_uid: str
+    email: EmailStr
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class VerifyResetCodeRequest(BaseModel):
+    email: EmailStr
+    code: str
+
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    code: str
+    new_password: str
+
 class UserBase(BaseModel):
+    supabase_uid: str | None = None
     name: str
     email: EmailStr
-    password: str
+    password: str | None = None
     location: str | None = None
     latitude: float | None = None
     longitude: float | None = None
@@ -88,6 +153,7 @@ class UserBase(BaseModel):
 
 class UserOut(BaseModel):
     user_id: int
+    supabase_uid: str | None
     name: str
     email: EmailStr
     location: str | None
@@ -216,16 +282,15 @@ def root():
 # ------------------------
 @app.post("/register", response_model=UserOut)
 def register_user(user: UserBase, db: Session = Depends(get_db)):
-    exists = db.query(models.User).filter(models.User.email == user.email).first()
+    exists = db.query(models.User).filter(models.User.email == user.email.lower()).first()
     if exists:
         raise HTTPException(400, "Email already exists")
 
-    hashed_pw = get_password_hash(user.password)
-
     db_user = models.User(
+        supabase_uid=user.supabase_uid,
         name=user.name,
-        email=user.email,
-        password=hashed_pw,
+        email=user.email.lower(),
+        password=get_password_hash(user.password) if user.password else None,
         location=user.location,
         latitude=user.latitude,
         longitude=user.longitude,
@@ -238,7 +303,6 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
     db.refresh(db_user)
 
     return db_user
-
 
 # ------------------------
 # Login
@@ -254,6 +318,118 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     token = create_access_token({"sub": str(user.user_id)})
     return {"access_token": token, "token_type": "bearer"}
 
+# -----------------------------------------------------------------------------------------------+
+
+
+@app.post("/auth/supabase-login", response_model=Token)
+def supabase_login(data: SupabaseLoginRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(
+        models.User.supabase_uid == data.supabase_uid
+    ).first()
+
+    if not user:
+        user = db.query(models.User).filter(
+            models.User.email == data.email.lower()
+        ).first()
+
+    if not user:
+        raise HTTPException(404, "User profile not found")
+
+    if not user.supabase_uid:
+        user.supabase_uid = data.supabase_uid
+        db.commit()
+        db.refresh(user)
+
+    token = create_access_token({"sub": str(user.user_id)})
+    return {"access_token": token, "token_type": "bearer"}
+
+
+# ------------------------
+# Forgot Password - Send Code
+# ------------------------
+@app.post("/forgot-password/send-code")
+def forgot_password_send_code(
+    data: ForgotPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    email = data.email.lower()
+
+    user = db.query(models.User).filter(models.User.email == email).first()
+
+    if not user:
+        raise HTTPException(404, "Email not found")
+
+    code = generate_reset_code()
+
+    RESET_CODES[email] = {
+        "code": code,
+        "expires_at": datetime.utcnow() + timedelta(minutes=10),
+        "verified": False,
+    }
+
+    send_reset_email(email, code)
+
+    return {"message": "Verification code sent to email"}
+
+
+# ------------------------
+# Forgot Password - Verify Code
+# ------------------------
+@app.post("/forgot-password/verify-code")
+def forgot_password_verify_code(data: VerifyResetCodeRequest):
+    email = data.email.lower()
+
+    record = RESET_CODES.get(email)
+
+    if not record:
+        raise HTTPException(400, "No reset code requested")
+
+    if datetime.utcnow() > record["expires_at"]:
+        RESET_CODES.pop(email, None)
+        raise HTTPException(400, "Verification code expired")
+
+    if data.code != record["code"]:
+        raise HTTPException(400, "Invalid verification code")
+
+    record["verified"] = True
+
+    return {"message": "Code verified successfully"}
+
+
+# ------------------------
+# Forgot Password - Reset Password
+# ------------------------
+@app.post("/forgot-password/reset")
+def forgot_password_reset(
+    data: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    email = data.email.lower()
+
+    record = RESET_CODES.get(email)
+
+    if not record:
+        raise HTTPException(400, "No reset request found")
+
+    if datetime.utcnow() > record["expires_at"]:
+        RESET_CODES.pop(email, None)
+        raise HTTPException(400, "Verification code expired")
+
+    if data.code != record["code"] or record["verified"] is not True:
+        raise HTTPException(400, "Code is not verified")
+
+    user = db.query(models.User).filter(models.User.email == email).first()
+
+    if not user:
+        raise HTTPException(404, "User not found")
+
+    user.password = get_password_hash(data.new_password)
+
+    db.commit()
+
+    RESET_CODES.pop(email, None)
+
+    return {"message": "Password reset successfully"}
 
 # ------------------------
 # My Profile

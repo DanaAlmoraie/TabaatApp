@@ -12,10 +12,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Taabat';
 
   @override
-  String get login => ' Login';
+  String get login => 'Login';
 
   @override
-  String get signUp => ' Sign Up';
+  String get signUp => 'Sign Up';
 
   @override
   String get welcomeBack => 'Welcome back to Taabat';
@@ -30,13 +30,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
+  String get loginTitle => 'Login';
+
+  @override
+  String get loginSubtitle => 'Welcome back to Taabat';
+
+  @override
   String get email => 'Email';
+
+  @override
+  String get emailAddress => 'Email Address';
 
   @override
   String get emailHint => 'name@email.com';
 
   @override
   String get enterEmail => 'Please enter your email';
+
+  @override
+  String get enterYourEmail => 'Enter your email';
 
   @override
   String get validEmail => 'Please enter a valid email';
@@ -75,6 +87,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reEnterPassword => 'Re-enter password';
 
   @override
+  String get forgotPasswordTitle => 'Forgot Password';
+
+  @override
+  String get forgotPasswordSubtitle => 'Recover your Taabat account';
+
+  @override
+  String get resetYourPassword => 'Reset Your Password';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get backToLogin => 'Back to Login';
+
+  @override
+  String get checkInboxReset => 'Check your email inbox and open the reset link.';
+
+  @override
+  String get enterEmailToReceive => 'Enter your email address to receive a password reset link.';
+
+  @override
+  String get resetPasswordTitle => 'Reset Password';
+
+  @override
+  String get resetPasswordSubtitle => 'Create a new secure password';
+
+  @override
+  String get setNewPassword => 'Set New Password';
+
+  @override
+  String get enterConfirmPassword => 'Enter and confirm your new password below.';
+
+  @override
+  String get updatePassword => 'Update Password';
+
+  @override
+  String get passwordRequirements => 'Password Requirements';
+
+  @override
+  String get atLeast8Chars => 'At least 8 characters';
+
+  @override
+  String get uppercaseRequirement => 'At least one uppercase letter';
+
+  @override
+  String get lowercaseRequirement => 'At least one lowercase letter';
+
+  @override
+  String get numberRequirement => 'At least one number';
+
+  @override
   String get fullName => 'Full Name';
 
   @override
@@ -105,7 +168,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationSaved => 'Location saved';
 
   @override
-  String get noAccount => 'Don\'t have an account? ';
+  String get noAccount => 'Don\'t have an account?';
 
   @override
   String get haveAccount => 'Already have an account?';
@@ -303,6 +366,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classifyFruitDesc => 'Identify fruit type using AI-powered camera';
 
   @override
+  String get classifyDescription => 'Identify fruit type using AI & Camera';
+
+  @override
   String get noFruitAdded => 'No fruits added';
 
   @override
@@ -360,9 +426,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noLocation => 'No location';
 
   @override
-  String get classifyDescription => 'Identify fruit type using AI & Camera';
-
-  @override
   String get viewAll => 'View All';
 
   @override
@@ -373,6 +436,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get distance => 'Distance';
+
+  @override
+  String get farmComparison => 'Farm Comparison';
+
+  @override
+  String get compareBasedLocation => 'Based on your location';
+
+  @override
+  String get compareFarmsDescription => 'Compare farms based on selected factors';
+
+  @override
+  String get cropCount => 'Crop Count';
+
+  @override
+  String get freshness => 'Freshness';
+
+  @override
+  String get fruitAvailability => 'Fruit Availability';
+
+  @override
+  String get selectedFarms => 'Selected Farms';
+
+  @override
+  String get statisticsFilter => 'Statistics Filter';
 
   @override
   String get apple => 'Apple';
@@ -405,156 +492,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sukaryDates => 'Sukary Dates';
 
   @override
-  String get nutritionInformation => 'Nutrition information · 100 g';
-
-  @override
-  String get calories => 'Calories';
-
-  @override
-  String energyDescription(Object fruit) {
-    return 'Approximate energy in 100 g of $fruit.';
-  }
-
-  @override
-  String dailyIntake(Object percent) {
-    return '$percent% of a 2000 kcal daily intake';
-  }
-
-  @override
-  String get macronutrients => 'Macronutrients';
-
-  @override
-  String get carbs => 'Carbs';
-
-  @override
-  String get protein => 'Protein';
-
-  @override
-  String get totalFat => 'Total Fat';
-
-  @override
-  String get carbsDescription => 'Main energy source';
-
-  @override
-  String get proteinDescription => 'Supports muscles';
-
-  @override
-  String get fatDescription => 'Overall fat amount';
-
-  @override
-  String get fiberSugar => 'Fiber & Sugar';
-
-  @override
-  String get fiber => 'Fiber';
-
-  @override
-  String get sugar => 'Sugar';
-
-  @override
-  String get fiberDescription => 'Helps digestion & satiety.';
-
-  @override
-  String get sugarDescription => 'Natural sugar content.';
-
-  @override
-  String get micronutrients => 'Micronutrients';
-
-  @override
-  String get water => 'Water';
-
-  @override
-  String get calcium => 'Calcium';
-
-  @override
-  String get iron => 'Iron';
-
-  @override
-  String get nutritionDisclaimer => '* All values are approximate and based on a 100 g portion.';
-
-  @override
-  String noNutritionData(Object fruit) {
-    return 'No nutrition data found for $fruit';
-  }
-
-  @override
-  String get loadingError => 'Error loading data';
-
-  @override
-  String get gram => 'g';
-
-  @override
-  String get milligram => 'mg';
-
-  @override
-  String get kilocalorie => 'kcal';
-
-  @override
-  String get percent => '%';
-
-  @override
-  String get millimeter => 'mm';
-
-  @override
-  String get kiloMeterPerHour => 'km/h';
-
-  @override
-  String get kiloMeter => 'km';
-
-  @override
-  String get kiloGram => 'kg';
-
-  @override
-  String get noCameraFound => 'No camera available on this device';
-
-  @override
-  String get errorAccessingCamera => 'Error accessing camera:';
-
-  @override
-  String get errorWhileScanning => 'Error while scanning';
-
-  @override
-  String get errorWhileUploading => 'Error whilr uploading';
-
-  @override
-  String get fruitCondition => 'Fruit Condition';
-
-  @override
-  String get spotsFound => 'Small spots found near plant';
-
-  @override
-  String get fruitStructureIsStable => 'Fruit structure is stable';
-
-  @override
-  String get unableDetectingFruitClearly => 'Unable to detect fruit clearly, try again';
-
-  @override
-  String get seeDetailInformation => 'See Detail Information';
-
-  @override
-  String get unknown => 'Unknown';
-
-  @override
-  String get scan => 'Scan';
-
-  @override
-  String get scanning => 'Scanning...';
-
-  @override
-  String get placeFruitInsideFrame => 'Place the fruit inside the frame.';
-
-  @override
-  String get upload => 'Upload';
-
-  @override
-  String get cameraPermissionDenied => 'Camera permission denied';
-
-  @override
-  String get farmStats => 'Farm Statistics';
-
-  @override
-  String get farmStatsDesc => 'Farm performance indicators';
-
-  @override
   String get mapView => 'Tap to view map';
 
   @override
@@ -562,6 +499,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openInMaps => 'Open in Maps';
+
+  @override
+  String get reviews => 'reviews';
+
+  @override
+  String get founded => 'Founded';
+
+  @override
+  String get loadingMap => 'Loading map...';
+
+  @override
+  String get cropTypes => 'Crop Types';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get varietyCropsGrown => 'Variety of crops grown';
+
+  @override
+  String get availableCropsLabel => 'Available Crops';
+
+  @override
+  String get crop => 'Crop';
+
+  @override
+  String get availableSlaeNow => 'Available for sale now';
+
+  @override
+  String get annualProduction => 'Annual Production';
+
+  @override
+  String get kiloGram => 'kg';
+
+  @override
+  String get totalProduction => 'Total production this season';
+
+  @override
+  String get farmAge => 'Farm Age';
+
+  @override
+  String get year => 'Year';
+
+  @override
+  String get fromFoundingUntilNow => 'From founding until now';
+
+  @override
+  String get cropsQuantity => 'Available Crops Quantity (kg)';
+
+  @override
+  String get highestQuantity => 'Highest';
+
+  @override
+  String get available => 'Available';
 
   @override
   String get veryFresh => 'Very Fresh';
@@ -585,22 +576,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get harvestDate => 'Harvest Date';
 
   @override
-  String get type => 'Type';
+  String get contactWhatsapp => 'Contact via WhatsApp';
 
   @override
-  String get cropsQuantity => 'Available Crops Quantity (kg)';
+  String get whatsappMessage => 'Hello, I would like to inquire about';
 
   @override
-  String get highestQuantity => 'Highest';
+  String get farmStats => 'Farm Statistics';
 
   @override
-  String get available => 'Available';
+  String get farmStatsDesc => 'Farm performance indicators';
 
   @override
   String get availableCrops => 'Available Crops';
 
   @override
   String get availableCropsDesc => 'Details of fresh crops';
+
+  @override
+  String get noCrops => 'No crops available now';
 
   @override
   String get qualityIndicators => 'Quality Indicators';
@@ -615,53 +609,184 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noFarmDesc => 'No farm data found';
 
   @override
-  String get contactWhatsapp => 'Contact via WhatsApp';
+  String get cameraPermissionDenied => 'Camera permission denied';
 
   @override
-  String get reviews => 'reviews';
+  String get errorAccessingCamera => 'Error accessing camera:';
 
   @override
-  String get founded => 'Founded';
+  String get errorWhileScanning => 'Error while scanning';
 
   @override
-  String get loadingMap => 'Loading map...';
+  String get errorWhileUploading => 'Error while uploading';
 
   @override
-  String get cropTypes => 'Crop Types';
+  String get unknown => 'Unknown';
 
   @override
-  String get availableCropsLabel => 'Available Crops';
+  String get fruitCondition => 'Fruit Condition';
 
   @override
-  String get annualProduction => 'Annual Production';
+  String get fruitStructureIsStable => 'Fruit structure is stable';
 
   @override
-  String get farmAge => 'Farm Age';
+  String get spotsFound => 'Small spots found in the fruit';
 
   @override
-  String get noCrops => 'No crops available now';
+  String get seeDetailInformation => 'See detail information';
 
   @override
-  String get whatsappMessage => 'Hello, I would like to inquire about';
+  String get unableDetectingFruitClearly => 'Unable to detect fruit clearly, try again';
 
   @override
-  String get types => 'Types';
+  String get scan => 'Scan';
 
   @override
-  String get varietyCropsGrown => 'Variety of crops grown';
+  String get scanning => 'Scanning...';
 
   @override
-  String get crop => 'Crop';
+  String get placeFruitInsideFrame => 'Place the fruit inside the frame.';
 
   @override
-  String get availableSlaeNow => 'Available for sale now';
+  String get upload => 'Upload';
 
   @override
-  String get totalProduction => 'Total production this season';
+  String get nutritionInformation => 'Nutrition information · 100 g';
 
   @override
-  String get year => 'Year';
+  String get kilocalorie => 'kcal';
 
   @override
-  String get fromFoundingUntilNow => 'From founding until now';
+  String get calories => 'Calories';
+
+  @override
+  String get macronutrients => 'Macronutrients';
+
+  @override
+  String get carbs => 'Carbs';
+
+  @override
+  String get carbsDescription => 'Main energy source';
+
+  @override
+  String get protein => 'Protein';
+
+  @override
+  String get proteinDescription => 'Supports muscles';
+
+  @override
+  String get totalFat => 'Total Fat';
+
+  @override
+  String get fatDescription => 'Overall fat amount';
+
+  @override
+  String get fiberSugar => 'Fiber & Sugar';
+
+  @override
+  String get fiber => 'Fiber';
+
+  @override
+  String get fiberDescription => 'Helps digestion and satiety.';
+
+  @override
+  String get sugar => 'Sugar';
+
+  @override
+  String get sugarDescription => 'Natural sugar content.';
+
+  @override
+  String get micronutrients => 'Micronutrients';
+
+  @override
+  String get water => 'Water';
+
+  @override
+  String get gram => 'g';
+
+  @override
+  String get calcium => 'Calcium';
+
+  @override
+  String get milligram => 'mg';
+
+  @override
+  String get iron => 'Iron';
+
+  @override
+  String get nutritionDisclaimer => '* All values are approximate and based on a 100 g portion.';
+
+  @override
+  String get percent => '%';
+
+  @override
+  String get millimeter => 'mm';
+
+  @override
+  String get kiloMeterPerHour => 'km/h';
+
+  @override
+  String get kiloMeter => 'km';
+
+  @override
+  String get noCameraFound => 'No camera available on this device';
+
+  @override
+  String get selectedFarmss => 'Select 2 to 5 farms';
+
+  @override
+  String get searchFarms => 'Search farms...';
+
+  @override
+  String get sortByDistance => 'Sort by distance';
+
+  @override
+  String get none => 'None';
+
+  @override
+  String get nearestFirst => 'Nearest first';
+
+  @override
+  String get farthestFirst => 'Farthest first';
+
+  @override
+  String get filterByAvailableFruits => 'Filter by available fruits';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get noFarmsMatchFilters => 'No farms match your filters';
+
+  @override
+  String get useNearest4 => 'Use nearest 4';
+
+  @override
+  String get defaultSelection => 'Default';
+
+  @override
+  String selectedOutOfFive(Object count) {
+    return '$count/5 selected';
+  }
+
+  @override
+  String get compareUpTo5 => 'You can compare up to 5 farms only';
+
+  @override
+  String get selectAtLeast2Farms => 'Select at least 2 farms for comparison.';
+
+  @override
+  String noNutritionData(Object fruit) {
+    return 'No nutrition data found for $fruit';
+  }
+
+  @override
+  String energyDescription(Object fruit) {
+    return 'Approximate energy in 100 g of $fruit.';
+  }
+
+  @override
+  String dailyIntake(Object percent) {
+    return '$percent% of a 2000 kcal daily intake';
+  }
 }

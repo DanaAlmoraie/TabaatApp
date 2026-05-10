@@ -12,10 +12,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'طابت';
 
   @override
-  String get login => ' تسجيل الدخول';
+  String get login => 'تسجيل الدخول';
 
   @override
-  String get signUp => '  إنشاء حساب';
+  String get signUp => 'إنشاء حساب';
 
   @override
   String get welcomeBack => 'مرحباً بعودتك إلى طابت';
@@ -30,13 +30,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home => 'الرئيسية';
 
   @override
+  String get loginTitle => 'تسجيل الدخول';
+
+  @override
+  String get loginSubtitle => 'مرحبًا بعودتك إلى طابت';
+
+  @override
   String get email => 'البريد الإلكتروني';
+
+  @override
+  String get emailAddress => 'البريد الإلكتروني';
 
   @override
   String get emailHint => 'name@email.com';
 
   @override
   String get enterEmail => 'يرجى إدخال البريد الإلكتروني';
+
+  @override
+  String get enterYourEmail => 'أدخل بريدك الإلكتروني';
 
   @override
   String get validEmail => 'بريد إلكتروني غير صالح';
@@ -75,6 +87,57 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reEnterPassword => 'أعد إدخال كلمة المرور';
 
   @override
+  String get forgotPasswordTitle => 'نسيت كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle => 'استرجاع حساب تابات';
+
+  @override
+  String get resetYourPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get sendResetLink => 'إرسال رابط التعيين';
+
+  @override
+  String get backToLogin => 'العودة لتسجيل الدخول';
+
+  @override
+  String get checkInboxReset => 'تحقق من بريدك الإلكتروني وافتح رابط إعادة التعيين.';
+
+  @override
+  String get enterEmailToReceive => 'أدخل بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.';
+
+  @override
+  String get resetPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetPasswordSubtitle => 'قم بإنشاء كلمة مرور جديدة وآمنة';
+
+  @override
+  String get setNewPassword => 'تعيين كلمة مرور جديدة';
+
+  @override
+  String get enterConfirmPassword => 'أدخل كلمة المرور الجديدة وقم بتأكيدها.';
+
+  @override
+  String get updatePassword => 'تحديث كلمة المرور';
+
+  @override
+  String get passwordRequirements => 'متطلبات كلمة المرور';
+
+  @override
+  String get atLeast8Chars => '8 أحرف على الأقل';
+
+  @override
+  String get uppercaseRequirement => 'حرف كبير واحد على الأقل';
+
+  @override
+  String get lowercaseRequirement => 'حرف صغير واحد على الأقل';
+
+  @override
+  String get numberRequirement => 'رقم واحد على الأقل';
+
+  @override
   String get fullName => 'الاسم الكامل';
 
   @override
@@ -105,7 +168,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locationSaved => 'تم حفظ الموقع';
 
   @override
-  String get noAccount => ' ليس لديك حساب؟';
+  String get noAccount => 'ليس لديك حساب؟';
 
   @override
   String get haveAccount => 'لديك حساب بالفعل؟';
@@ -303,6 +366,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get classifyFruitDesc => 'تعرّف على نوع الفاكهة باستخدام الكاميرا الذكية';
 
   @override
+  String get classifyDescription => 'التعرف على نوع الفاكهة باستخدام الكاميرا والذكاء الاصطناعي';
+
+  @override
   String get noFruitAdded => 'لم تتم إضافة أي فواكه';
 
   @override
@@ -360,9 +426,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noLocation => 'لا يوجد موقع';
 
   @override
-  String get classifyDescription => 'التعرف على نوع الفاكهة باستخدام الكاميرا والذكاء الاصطناعي';
-
-  @override
   String get viewAll => 'عرض الكل';
 
   @override
@@ -373,6 +436,30 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get distance => 'المسافة';
+
+  @override
+  String get farmComparison => 'مقارنة المزارع';
+
+  @override
+  String get compareBasedLocation => 'بناءً على موقعك';
+
+  @override
+  String get compareFarmsDescription => 'قارن بين المزارع حسب العوامل المحددة';
+
+  @override
+  String get cropCount => 'عدد المحاصيل';
+
+  @override
+  String get freshness => 'اعلى مستوى نضج';
+
+  @override
+  String get fruitAvailability => 'توفر الفواكه';
+
+  @override
+  String get selectedFarms => 'المزارع المحددة';
+
+  @override
+  String get statisticsFilter => 'فلترة الإحصائيات';
 
   @override
   String get apple => 'تفاح';
@@ -405,163 +492,67 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sukaryDates => 'تمر سكري';
 
   @override
-  String get nutritionInformation => 'المعلومات الغذائية · 100 جم';
-
-  @override
-  String get calories => 'السعرات الحرارية';
-
-  @override
-  String energyDescription(Object fruit) {
-    return 'الطاقة التقريبية في 100 جم من $fruit.';
-  }
-
-  @override
-  String dailyIntake(Object percent) {
-    return '$percent% من الاحتياج اليومي (2000 سعرة حرارية)';
-  }
-
-  @override
-  String get macronutrients => 'العناصر الغذائية الكبرى';
-
-  @override
-  String get carbs => 'الكربوهيدرات';
-
-  @override
-  String get protein => 'البروتين';
-
-  @override
-  String get totalFat => 'الدهون الكلية';
-
-  @override
-  String get carbsDescription => 'المصدر الرئيسي للطاقة';
-
-  @override
-  String get proteinDescription => 'يدعم العضلات';
-
-  @override
-  String get fatDescription => 'إجمالي كمية الدهون';
-
-  @override
-  String get fiberSugar => 'الألياف والسكريات';
-
-  @override
-  String get fiber => 'الألياف';
-
-  @override
-  String get sugar => 'السكر';
-
-  @override
-  String get fiberDescription => 'يساعد على الهضم والشعور بالشبع.';
-
-  @override
-  String get sugarDescription => 'السكر الطبيعي الموجود في الفاكهة.';
-
-  @override
-  String get micronutrients => 'العناصر الغذائية الدقيقة';
-
-  @override
-  String get water => 'الماء';
-
-  @override
-  String get calcium => 'الكالسيوم';
-
-  @override
-  String get iron => 'الحديد';
-
-  @override
-  String get nutritionDisclaimer => '* جميع القيم تقريبية وتعتمد على حصة مقدارها 100 جم.';
-
-  @override
-  String noNutritionData(Object fruit) {
-    return 'لا توجد بيانات غذائية لـ $fruit';
-  }
-
-  @override
-  String get loadingError => 'حدث خطأ أثناء تحميل البيانات';
-
-  @override
-  String get gram => 'جم';
-
-  @override
-  String get milligram => 'ملجم';
-
-  @override
-  String get kilocalorie => 'سعرة حرارية';
-
-  @override
-  String get percent => '%';
-
-  @override
-  String get millimeter => 'ملمتر';
-
-  @override
-  String get kiloMeterPerHour => 'كم/ساعة';
-
-  @override
-  String get kiloMeter => 'كم';
-
-  @override
-  String get kiloGram => 'كجم';
-
-  @override
-  String get noCameraFound => 'لا توجد كاميرا متاحة في هذا الجهاز';
-
-  @override
-  String get errorAccessingCamera => 'حدث خطأ أثناء الوصول إلى الكاميرا:';
-
-  @override
-  String get errorWhileScanning => 'حدث خطأ أثناء المسح الضوئي';
-
-  @override
-  String get errorWhileUploading => 'حدث خطأ أثناء التحميل';
-
-  @override
-  String get fruitCondition => 'حالة الفاكهة';
-
-  @override
-  String get spotsFound => 'تم اكتشاف بقع صغيرة في الفاكهة';
-
-  @override
-  String get fruitStructureIsStable => 'بنية الفاكهة مستقرة';
-
-  @override
-  String get unableDetectingFruitClearly => 'تعذر تحديد الفاكهة بوضوح؛ حاول مرة أخرى';
-
-  @override
-  String get seeDetailInformation => 'للاطلاع على المعلومات التفصيلية.';
-
-  @override
-  String get unknown => 'غير معروف';
-
-  @override
-  String get scan => 'امسح الفاكهة';
-
-  @override
-  String get scanning => 'يتم التقاط الفاكهة...';
-
-  @override
-  String get placeFruitInsideFrame => 'ضع الفاكهة داخل إطار التصوير.';
-
-  @override
-  String get upload => 'تحميل الصورة';
-
-  @override
-  String get cameraPermissionDenied => 'تم رفض إذن استخدام الكاميرا';
-
-  @override
-  String get farmStats => 'إحصائيات المزرعة';
-
-  @override
-  String get farmStatsDesc => 'مؤشرات أداء المزرعة';
-
-  @override
-  String get mapView => 'عرض الخريطة';
+  String get mapView => 'اضغط لعرض الخريطة';
 
   @override
   String get backToFarm => 'رجوع للمزرعة';
 
   @override
   String get openInMaps => 'افتح في الخريطة';
+
+  @override
+  String get reviews => 'تقييم';
+
+  @override
+  String get founded => 'تأسست';
+
+  @override
+  String get loadingMap => 'جاري تحميل الخريطة...';
+
+  @override
+  String get cropTypes => 'أنواع المزروعات';
+
+  @override
+  String get type => 'النوع';
+
+  @override
+  String get varietyCropsGrown => 'تنوع المحاصيل المزروعة';
+
+  @override
+  String get availableCropsLabel => 'المحاصيل المتوفرة';
+
+  @override
+  String get crop => 'محصول';
+
+  @override
+  String get availableSlaeNow => 'متاح للبيع الآن';
+
+  @override
+  String get annualProduction => 'كمية المحصول السنوية';
+
+  @override
+  String get kiloGram => 'كجم';
+
+  @override
+  String get totalProduction => 'إجمالي الإنتاج هذا الموسم';
+
+  @override
+  String get farmAge => 'عمر المزرعة';
+
+  @override
+  String get year => 'سنة';
+
+  @override
+  String get fromFoundingUntilNow => 'منذ تأسيسها حتى الآن';
+
+  @override
+  String get cropsQuantity => 'كميات المحاصيل المتوفرة (كجم)';
+
+  @override
+  String get highestQuantity => 'الأعلى كمية';
+
+  @override
+  String get available => 'متوفر';
 
   @override
   String get veryFresh => 'طازج جداً';
@@ -585,22 +576,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get harvestDate => 'تاريخ الحصاد';
 
   @override
-  String get type => 'النوع';
+  String get contactWhatsapp => 'تواصل عبر واتساب';
 
   @override
-  String get cropsQuantity => 'كميات المحاصيل المتوفرة (كجم)';
+  String get whatsappMessage => 'مرحباً، أود الاستفسار عن منتجات';
 
   @override
-  String get highestQuantity => 'الأعلى كمية';
+  String get farmStats => 'إحصائيات المزرعة';
 
   @override
-  String get available => 'متوفر';
+  String get farmStatsDesc => 'مؤشرات أداء المزرعة';
 
   @override
-  String get availableCrops => 'المحاصيل المتوفرة حالياً';
+  String get availableCrops => 'المحاصيل المتوفرة';
 
   @override
   String get availableCropsDesc => 'تفاصيل المحاصيل الطازجة المتاحة';
+
+  @override
+  String get noCrops => 'لا توجد محاصيل متوفرة حالياً';
 
   @override
   String get qualityIndicators => 'مؤشرات الجودة';
@@ -615,53 +609,184 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noFarmDesc => 'لم يتم العثور على بيانات المزرعة';
 
   @override
-  String get contactWhatsapp => 'تواصل عبر واتساب';
+  String get cameraPermissionDenied => 'تم رفض إذن استخدام الكاميرا';
 
   @override
-  String get reviews => 'تقييم';
+  String get errorAccessingCamera => 'حدث خطأ أثناء الوصول إلى الكاميرا:';
 
   @override
-  String get founded => 'تأسست';
+  String get errorWhileScanning => 'حدث خطأ أثناء المسح الضوئي';
 
   @override
-  String get loadingMap => 'جاري تحميل الخريطة...';
+  String get errorWhileUploading => 'حدث خطأ أثناء التحميل';
 
   @override
-  String get cropTypes => 'أنواع المزروعات';
+  String get unknown => 'غير معروف';
 
   @override
-  String get availableCropsLabel => 'المحاصيل المتوفرة';
+  String get fruitCondition => 'حالة الفاكهة';
 
   @override
-  String get annualProduction => 'كمية المحصول السنوية';
+  String get fruitStructureIsStable => 'بنية الفاكهة مستقرة';
 
   @override
-  String get farmAge => 'عمر المزرعة';
+  String get spotsFound => 'تم اكتشاف بقع صغيرة في الفاكهة';
 
   @override
-  String get noCrops => 'لا توجد محاصيل متوفرة حالياً';
+  String get seeDetailInformation => 'للاطلاع على المعلومات التفصيلية';
 
   @override
-  String get whatsappMessage => 'مرحباً، أود الاستفسار عن منتجات';
+  String get unableDetectingFruitClearly => 'تعذر تحديد الفاكهة بوضوح؛ حاول مرة أخرى';
 
   @override
-  String get types => 'أنواع';
+  String get scan => 'امسح';
 
   @override
-  String get varietyCropsGrown => 'تنوع المحاصيل المزروعة';
+  String get scanning => 'يتم المسح...';
 
   @override
-  String get crop => 'محصول';
+  String get placeFruitInsideFrame => 'ضع الفاكهة داخل إطار التصوير.';
 
   @override
-  String get availableSlaeNow => 'متاح للبيع الآن';
+  String get upload => 'تحميل';
 
   @override
-  String get totalProduction => 'إجمالي الإنتاج هذا الموسم';
+  String get nutritionInformation => 'المعلومات الغذائية · 100 جم';
 
   @override
-  String get year => 'سنة';
+  String get kilocalorie => 'سعرة حرارية';
 
   @override
-  String get fromFoundingUntilNow => 'منذ تأسيسها حتى الآن';
+  String get calories => 'السعرات الحرارية';
+
+  @override
+  String get macronutrients => 'العناصر الغذائية الكبرى';
+
+  @override
+  String get carbs => 'الكربوهيدرات';
+
+  @override
+  String get carbsDescription => 'المصدر الرئيسي للطاقة';
+
+  @override
+  String get protein => 'البروتين';
+
+  @override
+  String get proteinDescription => 'يدعم العضلات';
+
+  @override
+  String get totalFat => 'الدهون الكلية';
+
+  @override
+  String get fatDescription => 'إجمالي كمية الدهون';
+
+  @override
+  String get fiberSugar => 'الألياف والسكريات';
+
+  @override
+  String get fiber => 'الألياف';
+
+  @override
+  String get fiberDescription => 'يساعد على الهضم والشعور بالشبع.';
+
+  @override
+  String get sugar => 'السكر';
+
+  @override
+  String get sugarDescription => 'السكر الطبيعي الموجود في الفاكهة.';
+
+  @override
+  String get micronutrients => 'العناصر الغذائية الدقيقة';
+
+  @override
+  String get water => 'الماء';
+
+  @override
+  String get gram => 'جم';
+
+  @override
+  String get calcium => 'الكالسيوم';
+
+  @override
+  String get milligram => 'ملجم';
+
+  @override
+  String get iron => 'الحديد';
+
+  @override
+  String get nutritionDisclaimer => '* جميع القيم تقريبية وتعتمد على حصة مقدارها 100 جم.';
+
+  @override
+  String get percent => '%';
+
+  @override
+  String get millimeter => 'ملمتر';
+
+  @override
+  String get kiloMeterPerHour => 'كم/ساعة';
+
+  @override
+  String get kiloMeter => 'كم';
+
+  @override
+  String get noCameraFound => 'لا توجد كاميرا متاحة في هذا الجهاز';
+
+  @override
+  String get selectedFarmss => 'اختر من 2 إلى 5 مزارع';
+
+  @override
+  String get searchFarms => 'ابحث عن المزارع...';
+
+  @override
+  String get sortByDistance => 'الترتيب حسب المسافة';
+
+  @override
+  String get none => 'بدون';
+
+  @override
+  String get nearestFirst => 'الأقرب أولاً';
+
+  @override
+  String get farthestFirst => 'الأبعد أولاً';
+
+  @override
+  String get filterByAvailableFruits => 'فلترة حسب الفواكه المتوفرة';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get noFarmsMatchFilters => 'لا توجد مزارع تطابق الفلاتر';
+
+  @override
+  String get useNearest4 => 'استخدم أقرب 4';
+
+  @override
+  String get defaultSelection => 'افتراضي';
+
+  @override
+  String selectedOutOfFive(Object count) {
+    return '$count/5 محددة';
+  }
+
+  @override
+  String get compareUpTo5 => 'يمكنك مقارنة 5 مزارع فقط';
+
+  @override
+  String get selectAtLeast2Farms => 'اختر مزرعتين على الأقل للمقارنة';
+
+  @override
+  String noNutritionData(Object fruit) {
+    return 'لا توجد بيانات غذائية لـ $fruit';
+  }
+
+  @override
+  String energyDescription(Object fruit) {
+    return 'الطاقة التقريبية في 100 جم من $fruit.';
+  }
+
+  @override
+  String dailyIntake(Object percent) {
+    return '$percent% من الاحتياج اليومي 2000 سعرة حرارية';
+  }
 }

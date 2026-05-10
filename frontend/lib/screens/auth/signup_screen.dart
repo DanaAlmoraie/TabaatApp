@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../l10n/app_localizations.dart';
 import '../../../services/api_service.dart';
 import 'login_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 const Color kGreenTop = Color.fromARGB(255, 90, 128, 90);
 const Color kGreenBottom = Color.fromARGB(255, 60, 156, 78);
@@ -175,71 +176,89 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  Future<void> _submitSignup() async {
-    final tr = AppLocalizations.of(context)!;
-    if (!_formKey.currentState!.validate()) return;
+Future<void> _submitSignup() async {
+  final tr = AppLocalizations.of(context)!;
+  if (!_formKey.currentState!.validate()) return;
 
-    if (_selectedRole == null) {
+  if (_selectedRole == null) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(tr.selectRoleError)));
+    return;
+  }
+
+  if (_shareLocation && (_userLatitude == null || _userLongitude == null)) {
+    await _getCurrentLocation();
+
+    if (_userLatitude == null || _userLongitude == null) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(tr.selectRoleError)));
+      ).showSnackBar(SnackBar(content: Text(tr.pleaseEnableLocation)));
       return;
     }
-
-    // لو اليوزر فعّل مشاركة اللوكيشن وما انحفظت الإحداثيات لسه
-    if (_shareLocation && (_userLatitude == null || _userLongitude == null)) {
-      await _getCurrentLocation(); // حاول يجيبها الآن
-
-      if (_userLatitude == null || _userLongitude == null) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(tr.pleaseEnableLocation)));
-        return;
-      }
-    }
-
-    setState(() => _isSubmitting = true);
-
-    try {
-      final name = _nameController.text.trim();
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
-
-      await ApiService.registerUser(
-        name: name,
-        email: email,
-        password: password,
-        role: _selectedRole!,
-        shareLocation: _shareLocation,
-        latitude: _userLatitude,
-        longitude: _userLongitude,
-      );
-
-      //أول شيء نسوي تسجيل دخول بعد ما سوينا الحساب الجديد
-      final token = await ApiService.login(email: email, password: password);
-
-      //بعدها رح نجيب بيانات المستخدم
-      final me = await ApiService.getMe(token);
-
-      //وبعدها رح نعمل session
-      UserSession.startSession(userToken: token, userData: me);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => MainShell()),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        if (e.toString().contains('email')) {
-          _emailServerError = tr.emailAlreadyUsed;
-        }
-      });
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
-    }
   }
+
+  setState(() => _isSubmitting = true);
+
+  try {
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim().toLowerCase();
+    final password = _passwordController.text.trim();
+
+    final authResponse = await Supabase.instance.client.auth.signUp(
+      email: email,
+      password: password,
+    );
+
+    final supabaseUser = authResponse.user;
+
+    if (supabaseUser == null) {
+      throw Exception('Could not create Supabase account');
+    }
+
+    await ApiService.registerUser(
+      supabaseUid: supabaseUser.id,
+      name: name,
+      email: email,
+      role: _selectedRole!,
+      shareLocation: _shareLocation,
+      latitude: _userLatitude,
+      longitude: _userLongitude,
+    );
+
+    final backendToken = await ApiService.loginWithSupabase(
+      supabaseUid: supabaseUser.id,
+      email: email,
+    );
+
+    final me = await ApiService.getMe(backendToken);
+
+    UserSession.startSession(userToken: backendToken, userData: me);
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => MainShell()),
+    );
+  } catch (e) {
+    if (!mounted) return;
+
+    setState(() {
+      if (e.toString().toLowerCase().contains('email') ||
+          e.toString().toLowerCase().contains('already')) {
+        _emailServerError = tr.emailAlreadyUsed;
+      }
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Sign up failed: $e')),
+    );
+  } finally {
+    if (mounted) setState(() => _isSubmitting = false);
+  }
+}
 
   @override
   Widget build(BuildContext context) {

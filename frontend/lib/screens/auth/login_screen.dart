@@ -5,6 +5,9 @@ import 'package:frontend/main.dart';
 import '../../../services/api_service.dart';
 import '../auth/signup_screen.dart';
 import '../../l10n/app_localizations.dart';
+import 'forgot_password_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../l10n/app_localizations.dart';
 
 const Color kShopperGreen1 = Color.fromARGB(255, 90, 128, 90);
 const Color kShopperGreen2 = Color.fromARGB(255, 60, 156, 78);
@@ -88,38 +91,52 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _handleLogin() async {
-    final tr = AppLocalizations.of(context)!;
+Future<void> _handleLogin() async {
+  final tr = AppLocalizations.of(context)!;
 
-    if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-    try {
-      setState(() => _isSubmitting = true);
+  try {
+    setState(() => _isSubmitting = true);
 
-      final email = _emailController.text.trim();
-      final password = _passwordController.text;
+    final email = _emailController.text.trim().toLowerCase();
+    final password = _passwordController.text;
 
-      final token = await ApiService.login(email: email, password: password);
+    final authResponse = await Supabase.instance.client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
 
-      final me = await ApiService.getMe(token);
+    final supabaseUser = authResponse.user;
 
-      UserSession.startSession(userToken: token, userData: me);
-
-      if (!mounted) return;
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => MainShell()),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('${tr.failedSigningIn} $e')));
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
+    if (supabaseUser == null) {
+      throw Exception('Supabase login failed');
     }
+
+    final backendToken = await ApiService.loginWithSupabase(
+      supabaseUid: supabaseUser.id,
+      email: email,
+    );
+
+    final me = await ApiService.getMe(backendToken);
+
+    UserSession.startSession(userToken: backendToken, userData: me);
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => MainShell()),
+    );
+  } catch (e) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('${tr.failedSigningIn} $e')));
+  } finally {
+    if (mounted) setState(() => _isSubmitting = false);
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -300,8 +317,31 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                           ),
-                          const SizedBox(height: 18),
+const SizedBox(height: 8),
 
+Align(
+  alignment: Alignment.centerRight,
+  child: GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const ForgotPasswordScreen(),
+        ),
+      );
+    },
+    child: Text(
+      tr.forgotPassword,
+      style: TextStyle(
+        fontSize: 13,
+        color: kShopperGreen2,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ),
+),
+
+const SizedBox(height: 18),
                           SizedBox(
                             width: double.infinity,
                             height: 46,

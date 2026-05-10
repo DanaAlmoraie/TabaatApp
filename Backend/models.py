@@ -20,15 +20,17 @@ class User(Base):
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    supabase_uid = Column(String, unique=True, index=True, nullable=True)
+
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
-    password = Column(String, nullable=False)
+    password = Column(String, nullable=True)
 
     location = Column(String)
     latitude = Column(Float)
     longitude = Column(Float)
 
-    role = Column(String, nullable=False)  # Farmer / Shopper
+    role = Column(String, nullable=False)
     created_at = Column(Date)
 
     farms = relationship(

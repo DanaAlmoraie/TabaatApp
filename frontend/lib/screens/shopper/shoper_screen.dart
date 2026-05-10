@@ -13,6 +13,7 @@ import '../../l10n/app_localizations.dart';
 import '../profile/permissions_data_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'statistics_screen.dart';
+import '../../l10n/app_localizations.dart';
 
 class ShopperHomePage extends StatefulWidget {
   const ShopperHomePage({super.key});
@@ -388,24 +389,28 @@ double _statsValue(dynamic farm) {
 }
 
 String _statsLabel() {
+  final tr = AppLocalizations.of(context)!;
+
   if (_statsFactor == 'crops') {
-    return 'Compare farms by the number of available crop types.';
+    return tr.compareFarmsDescription;
   }
 
   if (_statsFactor == 'freshness') {
-    return 'Compare farms by freshness score based on ripeness analysis.';
+    return tr.freshness;
   }
 
   if (_statsFactor == 'fruitQuantity') {
     return _selectedStatsFruit == null
-        ? 'Select a fruit to compare its quantity across farms.'
-        : 'Compare farms by the quantity of $_selectedStatsFruit.';
+        ? tr.selectFruits
+        : '${tr.fruitAvailability}: $_selectedStatsFruit';
   }
 
   return '';
 }
 
 String _formatStatsValue(double value) {
+  final tr = AppLocalizations.of(context)!;
+
   if (_statsFactor == 'freshness') {
     return '${value.toStringAsFixed(0)}%';
   }
@@ -414,8 +419,10 @@ String _formatStatsValue(double value) {
     return value.toInt().toString();
   }
 
-  return '${value.toInt()} crops';
+  return '${tr.cropCount} ${value.toInt()}';
 }
+
+
 int _farmId(dynamic farm) {
   return (farm['farm_id'] ?? farm['id'] ?? 0) as int;
 }
@@ -440,6 +447,7 @@ List _selectedComparisonFarms() {
 }
 
 Widget _buildFarmComparisonCard() {
+  final tr = AppLocalizations.of(context)!;
   if (!UserSession.locationEnabled || loadingFarms || farms.isEmpty) {
     return const SizedBox.shrink();
   }
@@ -484,10 +492,10 @@ Row(
 
     const SizedBox(width: 10),
 
-    const Expanded(
+    Expanded(
       child: Text(
-        'Farm Statistics',
-        style: TextStyle(
+        tr.farmComparison,
+        style: const TextStyle(
           fontSize: 21,
           fontWeight: FontWeight.w800,
         ),
@@ -532,7 +540,7 @@ Row(
   children: [
     Expanded(
       child: _statsFilterChip(
-        title: 'Crops',
+        title: tr.cropCount,
         icon: Icons.eco_rounded,
         value: 'crops',
       ),
@@ -540,7 +548,7 @@ Row(
     const SizedBox(width: 8),
     Expanded(
       child: _statsFilterChip(
-        title: 'Freshness',
+        title: tr.freshness,
         icon: Icons.verified_rounded,
         value: 'freshness',
       ),
@@ -548,7 +556,7 @@ Row(
     const SizedBox(width: 8),
     Expanded(
       child: _statsFilterChip(
-        title: 'Quantity',
+        title: tr.fruitAvailability,
         icon: Icons.shopping_basket_rounded,
         value: 'fruitQuantity',
       ),
@@ -570,7 +578,7 @@ Row(
     child: DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         value: _selectedStatsFruit,
-        hint: const Text('Select fruit'),
+        hint: Text(tr.selectFruits),
         isExpanded: true,
         icon: Icon(Icons.keyboard_arrow_down, color: Colors.orange[800]),
         items: _availableFruits.map((fruit) {
@@ -605,9 +613,9 @@ if (_selectedStatsFarmIds.isNotEmpty && shownFarms.length < 2)
       borderRadius: BorderRadius.circular(14),
       border: Border.all(color: Colors.red.withOpacity(0.25)),
     ),
-    child: const Text(
-      'Please select at least 2 farms to compare.',
-      style: TextStyle(
+    child: Text(
+      tr.selectedFarms,
+      style: const TextStyle(
         color: Colors.red,
         fontWeight: FontWeight.w600,
       ),
@@ -642,6 +650,7 @@ else
 }
 
 Widget _buildFarmSelectionPanel() {
+  final tr = AppLocalizations.of(context)!;
   final sortedFarms = List.from(farms)
     ..sort((a, b) => _distanceKmValue(a).compareTo(_distanceKmValue(b)));
 
@@ -657,7 +666,7 @@ Widget _buildFarmSelectionPanel() {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Select 2 to 5 farms',
+          tr.selectedFarms,
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.bold,
@@ -672,7 +681,7 @@ Widget _buildFarmSelectionPanel() {
           runSpacing: 8,
           children: sortedFarms.map<Widget>((farm) {
             final id = _farmId(farm);
-            final name = (farm['name'] ?? 'Unknown Farm').toString();
+            final name = (farm['name'] ?? tr.unknownFarm).toString();
             final selected = _selectedStatsFarmIds.contains(id);
 
             return FilterChip(
@@ -685,8 +694,8 @@ Widget _buildFarmSelectionPanel() {
                   if (value) {
                     if (_selectedStatsFarmIds.length >= 5) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('You can compare up to 5 farms only'),
+                        SnackBar(
+                          content: Text(tr.compareUpTo5),
                         ),
                       );
                       return;
@@ -713,15 +722,15 @@ Widget _buildFarmSelectionPanel() {
                 });
               },
               icon: const Icon(Icons.refresh, size: 18),
-              label: const Text('Use nearest 4'),
+              label: Text(tr.useNearest4),
             ),
 
             const Spacer(),
 
             Text(
               _selectedStatsFarmIds.isEmpty
-                  ? 'Default'
-                  : '${_selectedStatsFarmIds.length}/5 selected',
+                  ? tr.defaultSelection
+                  :tr.selectedOutOfFive(_selectedStatsFarmIds.length.toString()),
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[700],
@@ -733,11 +742,11 @@ Widget _buildFarmSelectionPanel() {
 
         if (_selectedStatsFarmIds.isNotEmpty &&
             _selectedStatsFarmIds.length < 2)
-          const Padding(
-            padding: EdgeInsets.only(top: 6),
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
             child: Text(
-              'Select at least 2 farms for comparison.',
-              style: TextStyle(
+              tr.selectAtLeast2Farms,
+              style: const TextStyle(
                 fontSize: 12,
                 color: Colors.red,
                 fontWeight: FontWeight.w500,

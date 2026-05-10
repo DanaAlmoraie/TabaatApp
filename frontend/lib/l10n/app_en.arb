@@ -1,17 +1,23 @@
 {
   "appTitle": "Taabat",
-  "login": " Login",
-  "signUp": " Sign Up",
+  "login": "Login",
+  "signUp": "Sign Up",
   "welcomeBack": "Welcome back to Taabat",
   "hello": "Hello",
   "createAccount": "Create your Taabat account",
   "home": "Home",
 
+  "loginTitle": "Login",
+  "loginSubtitle": "Welcome back to Taabat",
+
   "email": "Email",
+  "emailAddress": "Email Address",
   "emailHint": "name@email.com",
   "enterEmail": "Please enter your email",
+  "enterYourEmail": "Enter your email",
   "validEmail": "Please enter a valid email",
   "emailAlreadyUsed": "Email is already used, try another email",
+
   "failedSigningUp": "Failed to Sign Up",
   "failedSigningIn": "Failed to Sign In",
 
@@ -23,6 +29,26 @@
   "password8Chars": "Password must be at least 8 characters",
   "forgotPassword": "Forgot Password?",
   "reEnterPassword": "Re-enter password",
+
+  "forgotPasswordTitle": "Forgot Password",
+  "forgotPasswordSubtitle": "Recover your Taabat account",
+  "resetYourPassword": "Reset Your Password",
+  "sendResetLink": "Send Reset Link",
+  "backToLogin": "Back to Login",
+  "checkInboxReset": "Check your email inbox and open the reset link.",
+  "enterEmailToReceive": "Enter your email address to receive a password reset link.",
+
+  "resetPasswordTitle": "Reset Password",
+  "resetPasswordSubtitle": "Create a new secure password",
+  "setNewPassword": "Set New Password",
+  "enterConfirmPassword": "Enter and confirm your new password below.",
+  "updatePassword": "Update Password",
+
+  "passwordRequirements": "Password Requirements",
+  "atLeast8Chars": "At least 8 characters",
+  "uppercaseRequirement": "At least one uppercase letter",
+  "lowercaseRequirement": "At least one lowercase letter",
+  "numberRequirement": "At least one number",
 
   "fullName": "Full Name",
   "enterFullName": "Enter your full name",
@@ -37,7 +63,7 @@
   "shareLocation": "Share my GPS location to show nearby farms and services.",
   "locationSaved": "Location saved",
 
-  "noAccount": "Don't have an account? ",
+  "noAccount": "Don't have an account?",
   "haveAccount": "Already have an account?",
 
   "logout": "Log out",
@@ -49,23 +75,27 @@
   "saveChanges": "Save Changes",
   "language": "Language",
 
-  "addFarm": "Add Farm",  
+  "addFarm": "Add Farm",
   "farmAddedSuccess": "Adding Farm Successfully",
   "editFarm": "Edit Farm",
   "saveFarm": "Save Farm",
   "farmName": "Farm Name",
   "farmNameRequired": "Farm name is required",
+
   "location": "Location description (City, Area, Street) *",
   "locationRequired": "Location is required",
   "locationRequiredDesc": "Enable location access to discover the farms.",
   "openPermissions": "Open Permissions Settings",
+
   "selectFruits": "Select Fruits",
   "visibleToShoppers": "Visible to shoppers",
   "disableArchiveFarm": "Disable to archive the farm",
   "selectAtLeastOneFruit": "Please select at least one fruit",
+
   "noFarmsYet": "No farms to manage yet",
   "deleteFailed": "Delete failed",
   "failedLoadingFarms": "Failed to load Farms",
+
   "farmLocationGps": "Farm Location (GPS) *",
   "getting": "Getting...",
   "currentLocation": "Current Location",
@@ -75,18 +105,21 @@
   "noGpsSelected": "No GPS selected yet",
   "pleaseSetFarmGps": "Please set farm GPS (Current location or Pick on map)",
   "couldNotGetLocation": "Could not get current location",
-  "shareMyGPSLocation":"Share my GPS location to show nearby farms and services.",
+
+  "shareMyGPSLocation": "Share my GPS location to show nearby farms and services.",
   "locationPermissionDenied": "Location permission denied",
   "pleaseEnableLocation": "Please enable location permission to continue",
+
   "registrationFailed": "Registration failed:",
   "gps": "GPS:",
   "pickFarmLocation": "Pick Farm Location",
 
-
   "retry": "Retry",
   "unableLoadingWeather": "Unable to load weather right now.",
+
   "basedOnYourLocation": "Based on your location",
   "farmWeather": "Farm weather",
+
   "sunny": "Sunny",
   "partlyCloudy": "Partly cloudy",
   "cloudy": "Cloudy",
@@ -104,30 +137,37 @@
   "rain": "Rain",
   "wind": "Wind",
 
-
   "open": "Open",
   "closed": "Closed",
   "selected": "Selected",
   "error": "Error",
 
-
   "classifyFruit": "Classify Fruit",
   "classifyFruitDesc": "Identify fruit type using AI-powered camera",
+  "classifyDescription": "Identify fruit type using AI & Camera",
+
   "noFruitAdded": "No fruits added",
+
   "manageFarm": "Manage Farm",
   "manageFarmDesc": "Manage all your farms from here",
+
   "viewHistory": "View History",
   "viewHistoryDesc": "View harvest and activity history",
+
   "sampleLocation": "Your City",
 
   "cancel": "Cancel",
   "confirm": "Confirm",
   "chooseAvatar": "Choose Avatar",
+
   "name": "Name",
   "nameTooShort": "Name must be at least 3 characters",
+
   "newPasswordOptional": "New Password (optional)",
+
   "cameraAccess": "Camera Access",
   "locationSharing": "Location Sharing",
+
   "profileupdatedsuccess": "Profile updated Successfully",
 
   "exploreFarms": "Explore Farms",
@@ -135,13 +175,22 @@
   "unnamedFarm": "Unnamed Farm",
   "noLocation": "No location",
 
-  "classifyFruit": "Classify Fruit",
-  "classifyDescription": "Identify fruit type using AI & Camera",
   "viewAll": "View All",
+
   "unknownFarm": "Unknown Farm",
   "unknownLocation": "Unknown location",
+
   "distance": "Distance",
 
+  "farmComparison": "Farm Comparison",
+  "compareBasedLocation": "Based on your location",
+  "compareFarmsDescription": "Compare farms based on selected factors",
+
+  "cropCount": "Crop Count",
+  "freshness": "Freshness",
+  "fruitAvailability": "Fruit Availability",
+  "selectedFarms": "Selected Farms",
+  "statisticsFilter": "Statistics Filter",
 
   "apple": "Apple",
   "banana": "Banana",
@@ -154,113 +203,128 @@
   "asilDates": "Asil Dates",
   "sukaryDates": "Sukary Dates",
 
-
-  "nutritionInformation": "Nutrition information · 100 g",
-  "calories": "Calories",
-  "energyDescription": "Approximate energy in 100 g of {fruit}.",
-  "dailyIntake": "{percent}% of a 2000 kcal daily intake",
-
-  "macronutrients": "Macronutrients",
-
-  "carbs": "Carbs",
-  "protein": "Protein",
-  "totalFat": "Total Fat",
-
-  "carbsDescription": "Main energy source",
-  "proteinDescription": "Supports muscles",
-  "fatDescription": "Overall fat amount",
-
-  "fiberSugar": "Fiber & Sugar",
-
-  "fiber": "Fiber",
-  "sugar": "Sugar",
-
-  "fiberDescription": "Helps digestion & satiety.",
-  "sugarDescription": "Natural sugar content.",
-
-  "micronutrients": "Micronutrients",
-
-  "water": "Water",
-  "calcium": "Calcium",
-  "iron": "Iron",
-
-  "nutritionDisclaimer": "* All values are approximate and based on a 100 g portion.",
-
-  "noNutritionData": "No nutrition data found for {fruit}",
-  "loadingError": "Error loading data",
-  "gram": "g",
-  "milligram": "mg",
-  "kilocalorie": "kcal",
-  "percent": "%",
-  "millimeter": "mm",
-  "kiloMeterPerHour": "km/h",
-  "kiloMeter": "km",
-  "kiloGram": "kg",
-
-
-  "noCameraFound": "No camera available on this device",
-  "errorAccessingCamera": "Error accessing camera:",
-  "errorWhileScanning": "Error while scanning",
-  "errorWhileUploading": "Error whilr uploading",
-  "fruitCondition":"Fruit Condition",
-  "spotsFound": "Small spots found near plant",
-  "fruitStructureIsStable": "Fruit structure is stable",
-  "unableDetectingFruitClearly": "Unable to detect fruit clearly, try again",
-  "seeDetailInformation": "See Detail Information",
-  "unknown": "Unknown",
-  "scan": "Scan",
-  "scanning": "Scanning...",
-  "placeFruitInsideFrame": "Place the fruit inside the frame.",
-  "upload": "Upload",
-  "cameraPermissionDenied": "Camera permission denied",
-
-
-  "farmStats": "Farm Statistics",
-  "farmStatsDesc": "Farm performance indicators",
-
   "mapView": "Tap to view map",
-  "backToFarm": "Back to Farm",
-  "openInMaps": "Open in Maps",
+"backToFarm": "Back to Farm",
+"openInMaps": "Open in Maps",
+"reviews": "reviews",
+"founded": "Founded",
+"loadingMap": "Loading map..."
 
-  "veryFresh": "Very Fresh",
-  "fresh": "Fresh",
-  "good": "Good",
-  "acceptable": "Acceptable",
-  "old": "Old",
+,
+"cropTypes": "Crop Types",
+"type": "Type",
+"varietyCropsGrown": "Variety of crops grown",
+"availableCropsLabel": "Available Crops",
+"crop": "Crop",
+"availableSlaeNow": "Available for sale now",
+"annualProduction": "Annual Production",
+"kiloGram": "kg",
+"totalProduction": "Total production this season",
+"farmAge": "Farm Age",
+"year": "Year",
+"fromFoundingUntilNow": "From founding until now",
+"cropsQuantity": "Available Crops Quantity (kg)",
+"highestQuantity": "Highest",
+"available": "Available",
+"veryFresh": "Very Fresh",
+"fresh": "Fresh",
+"good": "Good",
+"acceptable": "Acceptable",
+"old": "Old",
+"quantity": "Quantity",
+"harvestDate": "Harvest Date",
+"contactWhatsapp": "Contact via WhatsApp",
+"whatsappMessage": "Hello, I would like to inquire about",
+"farmStats": "Farm Statistics",
+"farmStatsDesc": "Farm performance indicators",
+"availableCrops": "Available Crops",
+"availableCropsDesc": "Details of fresh crops",
+"noCrops": "No crops available now",
+"qualityIndicators": "Quality Indicators",
+"qualityDesc": "Excellence standards",
+"noFarm": "No Farm",
+"noFarmDesc": "No farm data found",
 
-  "quantity": "Quantity",
-  "harvestDate": "Harvest Date",
-  "type": "Type",
+"cameraPermissionDenied": "Camera permission denied",
+"errorAccessingCamera": "Error accessing camera:",
+"errorWhileScanning": "Error while scanning",
+"errorWhileUploading": "Error while uploading",
+"unknown": "Unknown",
+"fruitCondition": "Fruit Condition",
+"fruitStructureIsStable": "Fruit structure is stable",
+"spotsFound": "Small spots found in the fruit",
+"seeDetailInformation": "See detail information",
+"unableDetectingFruitClearly": "Unable to detect fruit clearly, try again",
+"scan": "Scan",
+"scanning": "Scanning...",
+"placeFruitInsideFrame": "Place the fruit inside the frame.",
+"upload": "Upload",
 
-  "cropsQuantity": "Available Crops Quantity (kg)",
-  "highestQuantity": "Highest",
-  "available": "Available",
+"nutritionInformation": "Nutrition information · 100 g",
+"kilocalorie": "kcal",
+"calories": "Calories",
+"macronutrients": "Macronutrients",
+"carbs": "Carbs",
+"carbsDescription": "Main energy source",
+"protein": "Protein",
+"proteinDescription": "Supports muscles",
+"totalFat": "Total Fat",
+"fatDescription": "Overall fat amount",
+"fiberSugar": "Fiber & Sugar",
+"fiber": "Fiber",
+"fiberDescription": "Helps digestion and satiety.",
+"sugar": "Sugar",
+"sugarDescription": "Natural sugar content.",
+"micronutrients": "Micronutrients",
+"water": "Water",
+"gram": "g",
+"calcium": "Calcium",
+"milligram": "mg",
+"iron": "Iron",
+"nutritionDisclaimer": "* All values are approximate and based on a 100 g portion.",
 
-  "availableCrops": "Available Crops",
-  "availableCropsDesc": "Details of fresh crops",
+"percent": "%",
+"millimeter": "mm",
+"kiloMeterPerHour": "km/h",
+"kiloMeter": "km",
+"noCameraFound": "No camera available on this device",
+"selectedFarmss": "Select 2 to 5 farms",
 
-  "qualityIndicators": "Quality Indicators",
-  "qualityDesc": "Excellence standards",
+"searchFarms": "Search farms...",
+"sortByDistance": "Sort by distance",
+"none": "None",
+"nearestFirst": "Nearest first",
+"farthestFirst": "Farthest first",
+"filterByAvailableFruits": "Filter by available fruits",
+"all": "All",
+"noFarmsMatchFilters": "No farms match your filters",
+"useNearest4": "Use nearest 4",
+"defaultSelection": "Default",
+"selectedOutOfFive": "{count}/5 selected",
+"@selectedOutOfFive": {
+  "placeholders": {
+    "count": {}
+  }
+},
+"compareUpTo5": "You can compare up to 5 farms only",
+"selectAtLeast2Farms": "Select at least 2 farms for comparison.",
 
-  "noFarm": "No Farm",
-  "noFarmDesc": "No farm data found",
-
-  "contactWhatsapp": "Contact via WhatsApp",
-  "reviews": "reviews",
-  "founded": "Founded",
-  "loadingMap": "Loading map...",
-
-  "cropTypes": "Crop Types",
-  "availableCropsLabel": "Available Crops",
-  "annualProduction": "Annual Production",
-  "farmAge": "Farm Age",
-  "noCrops": "No crops available now",
-  "whatsappMessage": "Hello, I would like to inquire about",
-  "types": "Types",
-  "varietyCropsGrown": "Variety of crops grown",
-  "crop": "Crop",
-  "availableSlaeNow": "Available for sale now",
-  "totalProduction": "Total production this season",
-  "year": "Year",
-  "fromFoundingUntilNow": "From founding until now"
+"noNutritionData": "No nutrition data found for {fruit}",
+"@noNutritionData": {
+  "placeholders": {
+    "fruit": {}
+  }
+},
+"energyDescription": "Approximate energy in 100 g of {fruit}.",
+"@energyDescription": {
+  "placeholders": {
+    "fruit": {}
+  }
+},
+"dailyIntake": "{percent}% of a 2000 kcal daily intake",
+"@dailyIntake": {
+  "placeholders": {
+    "percent": {}
+  }
+}
 }

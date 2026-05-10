@@ -104,13 +104,13 @@ abstract class AppLocalizations {
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
-  /// **' Login'**
+  /// **'Login'**
   String get login;
 
   /// No description provided for @signUp.
   ///
   /// In en, this message translates to:
-  /// **' Sign Up'**
+  /// **'Sign Up'**
   String get signUp;
 
   /// No description provided for @welcomeBack.
@@ -137,11 +137,29 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back to Taabat'**
+  String get loginSubtitle;
+
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
   /// **'Email'**
   String get email;
+
+  /// No description provided for @emailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddress;
 
   /// No description provided for @emailHint.
   ///
@@ -154,6 +172,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your email'**
   String get enterEmail;
+
+  /// No description provided for @enterYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get enterYourEmail;
 
   /// No description provided for @validEmail.
   ///
@@ -227,6 +251,108 @@ abstract class AppLocalizations {
   /// **'Re-enter password'**
   String get reEnterPassword;
 
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover your Taabat account'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @resetYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Your Password'**
+  String get resetYourPassword;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get backToLogin;
+
+  /// No description provided for @checkInboxReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email inbox and open the reset link.'**
+  String get checkInboxReset;
+
+  /// No description provided for @enterEmailToReceive.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address to receive a password reset link.'**
+  String get enterEmailToReceive;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new secure password'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @setNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Set New Password'**
+  String get setNewPassword;
+
+  /// No description provided for @enterConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter and confirm your new password below.'**
+  String get enterConfirmPassword;
+
+  /// No description provided for @updatePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get updatePassword;
+
+  /// No description provided for @passwordRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Requirements'**
+  String get passwordRequirements;
+
+  /// No description provided for @atLeast8Chars.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get atLeast8Chars;
+
+  /// No description provided for @uppercaseRequirement.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one uppercase letter'**
+  String get uppercaseRequirement;
+
+  /// No description provided for @lowercaseRequirement.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one lowercase letter'**
+  String get lowercaseRequirement;
+
+  /// No description provided for @numberRequirement.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one number'**
+  String get numberRequirement;
+
   /// No description provided for @fullName.
   ///
   /// In en, this message translates to:
@@ -290,7 +416,7 @@ abstract class AppLocalizations {
   /// No description provided for @noAccount.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t have an account? '**
+  /// **'Don\'t have an account?'**
   String get noAccount;
 
   /// No description provided for @haveAccount.
@@ -683,6 +809,12 @@ abstract class AppLocalizations {
   /// **'Identify fruit type using AI-powered camera'**
   String get classifyFruitDesc;
 
+  /// No description provided for @classifyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Identify fruit type using AI & Camera'**
+  String get classifyDescription;
+
   /// No description provided for @noFruitAdded.
   ///
   /// In en, this message translates to:
@@ -797,12 +929,6 @@ abstract class AppLocalizations {
   /// **'No location'**
   String get noLocation;
 
-  /// No description provided for @classifyDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Identify fruit type using AI & Camera'**
-  String get classifyDescription;
-
   /// No description provided for @viewAll.
   ///
   /// In en, this message translates to:
@@ -826,6 +952,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Distance'**
   String get distance;
+
+  /// No description provided for @farmComparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Comparison'**
+  String get farmComparison;
+
+  /// No description provided for @compareBasedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on your location'**
+  String get compareBasedLocation;
+
+  /// No description provided for @compareFarmsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare farms based on selected factors'**
+  String get compareFarmsDescription;
+
+  /// No description provided for @cropCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Count'**
+  String get cropCount;
+
+  /// No description provided for @freshness.
+  ///
+  /// In en, this message translates to:
+  /// **'Freshness'**
+  String get freshness;
+
+  /// No description provided for @fruitAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Fruit Availability'**
+  String get fruitAvailability;
+
+  /// No description provided for @selectedFarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Farms'**
+  String get selectedFarms;
+
+  /// No description provided for @statisticsFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics Filter'**
+  String get statisticsFilter;
 
   /// No description provided for @apple.
   ///
@@ -887,294 +1061,6 @@ abstract class AppLocalizations {
   /// **'Sukary Dates'**
   String get sukaryDates;
 
-  /// No description provided for @nutritionInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'Nutrition information · 100 g'**
-  String get nutritionInformation;
-
-  /// No description provided for @calories.
-  ///
-  /// In en, this message translates to:
-  /// **'Calories'**
-  String get calories;
-
-  /// No description provided for @energyDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Approximate energy in 100 g of {fruit}.'**
-  String energyDescription(Object fruit);
-
-  /// No description provided for @dailyIntake.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent}% of a 2000 kcal daily intake'**
-  String dailyIntake(Object percent);
-
-  /// No description provided for @macronutrients.
-  ///
-  /// In en, this message translates to:
-  /// **'Macronutrients'**
-  String get macronutrients;
-
-  /// No description provided for @carbs.
-  ///
-  /// In en, this message translates to:
-  /// **'Carbs'**
-  String get carbs;
-
-  /// No description provided for @protein.
-  ///
-  /// In en, this message translates to:
-  /// **'Protein'**
-  String get protein;
-
-  /// No description provided for @totalFat.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Fat'**
-  String get totalFat;
-
-  /// No description provided for @carbsDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Main energy source'**
-  String get carbsDescription;
-
-  /// No description provided for @proteinDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Supports muscles'**
-  String get proteinDescription;
-
-  /// No description provided for @fatDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Overall fat amount'**
-  String get fatDescription;
-
-  /// No description provided for @fiberSugar.
-  ///
-  /// In en, this message translates to:
-  /// **'Fiber & Sugar'**
-  String get fiberSugar;
-
-  /// No description provided for @fiber.
-  ///
-  /// In en, this message translates to:
-  /// **'Fiber'**
-  String get fiber;
-
-  /// No description provided for @sugar.
-  ///
-  /// In en, this message translates to:
-  /// **'Sugar'**
-  String get sugar;
-
-  /// No description provided for @fiberDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Helps digestion & satiety.'**
-  String get fiberDescription;
-
-  /// No description provided for @sugarDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Natural sugar content.'**
-  String get sugarDescription;
-
-  /// No description provided for @micronutrients.
-  ///
-  /// In en, this message translates to:
-  /// **'Micronutrients'**
-  String get micronutrients;
-
-  /// No description provided for @water.
-  ///
-  /// In en, this message translates to:
-  /// **'Water'**
-  String get water;
-
-  /// No description provided for @calcium.
-  ///
-  /// In en, this message translates to:
-  /// **'Calcium'**
-  String get calcium;
-
-  /// No description provided for @iron.
-  ///
-  /// In en, this message translates to:
-  /// **'Iron'**
-  String get iron;
-
-  /// No description provided for @nutritionDisclaimer.
-  ///
-  /// In en, this message translates to:
-  /// **'* All values are approximate and based on a 100 g portion.'**
-  String get nutritionDisclaimer;
-
-  /// No description provided for @noNutritionData.
-  ///
-  /// In en, this message translates to:
-  /// **'No nutrition data found for {fruit}'**
-  String noNutritionData(Object fruit);
-
-  /// No description provided for @loadingError.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading data'**
-  String get loadingError;
-
-  /// No description provided for @gram.
-  ///
-  /// In en, this message translates to:
-  /// **'g'**
-  String get gram;
-
-  /// No description provided for @milligram.
-  ///
-  /// In en, this message translates to:
-  /// **'mg'**
-  String get milligram;
-
-  /// No description provided for @kilocalorie.
-  ///
-  /// In en, this message translates to:
-  /// **'kcal'**
-  String get kilocalorie;
-
-  /// No description provided for @percent.
-  ///
-  /// In en, this message translates to:
-  /// **'%'**
-  String get percent;
-
-  /// No description provided for @millimeter.
-  ///
-  /// In en, this message translates to:
-  /// **'mm'**
-  String get millimeter;
-
-  /// No description provided for @kiloMeterPerHour.
-  ///
-  /// In en, this message translates to:
-  /// **'km/h'**
-  String get kiloMeterPerHour;
-
-  /// No description provided for @kiloMeter.
-  ///
-  /// In en, this message translates to:
-  /// **'km'**
-  String get kiloMeter;
-
-  /// No description provided for @kiloGram.
-  ///
-  /// In en, this message translates to:
-  /// **'kg'**
-  String get kiloGram;
-
-  /// No description provided for @noCameraFound.
-  ///
-  /// In en, this message translates to:
-  /// **'No camera available on this device'**
-  String get noCameraFound;
-
-  /// No description provided for @errorAccessingCamera.
-  ///
-  /// In en, this message translates to:
-  /// **'Error accessing camera:'**
-  String get errorAccessingCamera;
-
-  /// No description provided for @errorWhileScanning.
-  ///
-  /// In en, this message translates to:
-  /// **'Error while scanning'**
-  String get errorWhileScanning;
-
-  /// No description provided for @errorWhileUploading.
-  ///
-  /// In en, this message translates to:
-  /// **'Error whilr uploading'**
-  String get errorWhileUploading;
-
-  /// No description provided for @fruitCondition.
-  ///
-  /// In en, this message translates to:
-  /// **'Fruit Condition'**
-  String get fruitCondition;
-
-  /// No description provided for @spotsFound.
-  ///
-  /// In en, this message translates to:
-  /// **'Small spots found near plant'**
-  String get spotsFound;
-
-  /// No description provided for @fruitStructureIsStable.
-  ///
-  /// In en, this message translates to:
-  /// **'Fruit structure is stable'**
-  String get fruitStructureIsStable;
-
-  /// No description provided for @unableDetectingFruitClearly.
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to detect fruit clearly, try again'**
-  String get unableDetectingFruitClearly;
-
-  /// No description provided for @seeDetailInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'See Detail Information'**
-  String get seeDetailInformation;
-
-  /// No description provided for @unknown.
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown'**
-  String get unknown;
-
-  /// No description provided for @scan.
-  ///
-  /// In en, this message translates to:
-  /// **'Scan'**
-  String get scan;
-
-  /// No description provided for @scanning.
-  ///
-  /// In en, this message translates to:
-  /// **'Scanning...'**
-  String get scanning;
-
-  /// No description provided for @placeFruitInsideFrame.
-  ///
-  /// In en, this message translates to:
-  /// **'Place the fruit inside the frame.'**
-  String get placeFruitInsideFrame;
-
-  /// No description provided for @upload.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload'**
-  String get upload;
-
-  /// No description provided for @cameraPermissionDenied.
-  ///
-  /// In en, this message translates to:
-  /// **'Camera permission denied'**
-  String get cameraPermissionDenied;
-
-  /// No description provided for @farmStats.
-  ///
-  /// In en, this message translates to:
-  /// **'Farm Statistics'**
-  String get farmStats;
-
-  /// No description provided for @farmStatsDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Farm performance indicators'**
-  String get farmStatsDesc;
-
   /// No description provided for @mapView.
   ///
   /// In en, this message translates to:
@@ -1192,6 +1078,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open in Maps'**
   String get openInMaps;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'reviews'**
+  String get reviews;
+
+  /// No description provided for @founded.
+  ///
+  /// In en, this message translates to:
+  /// **'Founded'**
+  String get founded;
+
+  /// No description provided for @loadingMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading map...'**
+  String get loadingMap;
+
+  /// No description provided for @cropTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Types'**
+  String get cropTypes;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @varietyCropsGrown.
+  ///
+  /// In en, this message translates to:
+  /// **'Variety of crops grown'**
+  String get varietyCropsGrown;
+
+  /// No description provided for @availableCropsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Crops'**
+  String get availableCropsLabel;
+
+  /// No description provided for @crop.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop'**
+  String get crop;
+
+  /// No description provided for @availableSlaeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Available for sale now'**
+  String get availableSlaeNow;
+
+  /// No description provided for @annualProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Production'**
+  String get annualProduction;
+
+  /// No description provided for @kiloGram.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get kiloGram;
+
+  /// No description provided for @totalProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Total production this season'**
+  String get totalProduction;
+
+  /// No description provided for @farmAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm Age'**
+  String get farmAge;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @fromFoundingUntilNow.
+  ///
+  /// In en, this message translates to:
+  /// **'From founding until now'**
+  String get fromFoundingUntilNow;
+
+  /// No description provided for @cropsQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Crops Quantity (kg)'**
+  String get cropsQuantity;
+
+  /// No description provided for @highestQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest'**
+  String get highestQuantity;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
 
   /// No description provided for @veryFresh.
   ///
@@ -1235,29 +1229,29 @@ abstract class AppLocalizations {
   /// **'Harvest Date'**
   String get harvestDate;
 
-  /// No description provided for @type.
+  /// No description provided for @contactWhatsapp.
   ///
   /// In en, this message translates to:
-  /// **'Type'**
-  String get type;
+  /// **'Contact via WhatsApp'**
+  String get contactWhatsapp;
 
-  /// No description provided for @cropsQuantity.
+  /// No description provided for @whatsappMessage.
   ///
   /// In en, this message translates to:
-  /// **'Available Crops Quantity (kg)'**
-  String get cropsQuantity;
+  /// **'Hello, I would like to inquire about'**
+  String get whatsappMessage;
 
-  /// No description provided for @highestQuantity.
+  /// No description provided for @farmStats.
   ///
   /// In en, this message translates to:
-  /// **'Highest'**
-  String get highestQuantity;
+  /// **'Farm Statistics'**
+  String get farmStats;
 
-  /// No description provided for @available.
+  /// No description provided for @farmStatsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Available'**
-  String get available;
+  /// **'Farm performance indicators'**
+  String get farmStatsDesc;
 
   /// No description provided for @availableCrops.
   ///
@@ -1270,6 +1264,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Details of fresh crops'**
   String get availableCropsDesc;
+
+  /// No description provided for @noCrops.
+  ///
+  /// In en, this message translates to:
+  /// **'No crops available now'**
+  String get noCrops;
 
   /// No description provided for @qualityIndicators.
   ///
@@ -1295,107 +1295,353 @@ abstract class AppLocalizations {
   /// **'No farm data found'**
   String get noFarmDesc;
 
-  /// No description provided for @contactWhatsapp.
+  /// No description provided for @cameraPermissionDenied.
   ///
   /// In en, this message translates to:
-  /// **'Contact via WhatsApp'**
-  String get contactWhatsapp;
+  /// **'Camera permission denied'**
+  String get cameraPermissionDenied;
 
-  /// No description provided for @reviews.
+  /// No description provided for @errorAccessingCamera.
   ///
   /// In en, this message translates to:
-  /// **'reviews'**
-  String get reviews;
+  /// **'Error accessing camera:'**
+  String get errorAccessingCamera;
 
-  /// No description provided for @founded.
+  /// No description provided for @errorWhileScanning.
   ///
   /// In en, this message translates to:
-  /// **'Founded'**
-  String get founded;
+  /// **'Error while scanning'**
+  String get errorWhileScanning;
 
-  /// No description provided for @loadingMap.
+  /// No description provided for @errorWhileUploading.
   ///
   /// In en, this message translates to:
-  /// **'Loading map...'**
-  String get loadingMap;
+  /// **'Error while uploading'**
+  String get errorWhileUploading;
 
-  /// No description provided for @cropTypes.
+  /// No description provided for @unknown.
   ///
   /// In en, this message translates to:
-  /// **'Crop Types'**
-  String get cropTypes;
+  /// **'Unknown'**
+  String get unknown;
 
-  /// No description provided for @availableCropsLabel.
+  /// No description provided for @fruitCondition.
   ///
   /// In en, this message translates to:
-  /// **'Available Crops'**
-  String get availableCropsLabel;
+  /// **'Fruit Condition'**
+  String get fruitCondition;
 
-  /// No description provided for @annualProduction.
+  /// No description provided for @fruitStructureIsStable.
   ///
   /// In en, this message translates to:
-  /// **'Annual Production'**
-  String get annualProduction;
+  /// **'Fruit structure is stable'**
+  String get fruitStructureIsStable;
 
-  /// No description provided for @farmAge.
+  /// No description provided for @spotsFound.
   ///
   /// In en, this message translates to:
-  /// **'Farm Age'**
-  String get farmAge;
+  /// **'Small spots found in the fruit'**
+  String get spotsFound;
 
-  /// No description provided for @noCrops.
+  /// No description provided for @seeDetailInformation.
   ///
   /// In en, this message translates to:
-  /// **'No crops available now'**
-  String get noCrops;
+  /// **'See detail information'**
+  String get seeDetailInformation;
 
-  /// No description provided for @whatsappMessage.
+  /// No description provided for @unableDetectingFruitClearly.
   ///
   /// In en, this message translates to:
-  /// **'Hello, I would like to inquire about'**
-  String get whatsappMessage;
+  /// **'Unable to detect fruit clearly, try again'**
+  String get unableDetectingFruitClearly;
 
-  /// No description provided for @types.
+  /// No description provided for @scan.
   ///
   /// In en, this message translates to:
-  /// **'Types'**
-  String get types;
+  /// **'Scan'**
+  String get scan;
 
-  /// No description provided for @varietyCropsGrown.
+  /// No description provided for @scanning.
   ///
   /// In en, this message translates to:
-  /// **'Variety of crops grown'**
-  String get varietyCropsGrown;
+  /// **'Scanning...'**
+  String get scanning;
 
-  /// No description provided for @crop.
+  /// No description provided for @placeFruitInsideFrame.
   ///
   /// In en, this message translates to:
-  /// **'Crop'**
-  String get crop;
+  /// **'Place the fruit inside the frame.'**
+  String get placeFruitInsideFrame;
 
-  /// No description provided for @availableSlaeNow.
+  /// No description provided for @upload.
   ///
   /// In en, this message translates to:
-  /// **'Available for sale now'**
-  String get availableSlaeNow;
+  /// **'Upload'**
+  String get upload;
 
-  /// No description provided for @totalProduction.
+  /// No description provided for @nutritionInformation.
   ///
   /// In en, this message translates to:
-  /// **'Total production this season'**
-  String get totalProduction;
+  /// **'Nutrition information · 100 g'**
+  String get nutritionInformation;
 
-  /// No description provided for @year.
+  /// No description provided for @kilocalorie.
   ///
   /// In en, this message translates to:
-  /// **'Year'**
-  String get year;
+  /// **'kcal'**
+  String get kilocalorie;
 
-  /// No description provided for @fromFoundingUntilNow.
+  /// No description provided for @calories.
   ///
   /// In en, this message translates to:
-  /// **'From founding until now'**
-  String get fromFoundingUntilNow;
+  /// **'Calories'**
+  String get calories;
+
+  /// No description provided for @macronutrients.
+  ///
+  /// In en, this message translates to:
+  /// **'Macronutrients'**
+  String get macronutrients;
+
+  /// No description provided for @carbs.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get carbs;
+
+  /// No description provided for @carbsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Main energy source'**
+  String get carbsDescription;
+
+  /// No description provided for @protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get protein;
+
+  /// No description provided for @proteinDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports muscles'**
+  String get proteinDescription;
+
+  /// No description provided for @totalFat.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Fat'**
+  String get totalFat;
+
+  /// No description provided for @fatDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall fat amount'**
+  String get fatDescription;
+
+  /// No description provided for @fiberSugar.
+  ///
+  /// In en, this message translates to:
+  /// **'Fiber & Sugar'**
+  String get fiberSugar;
+
+  /// No description provided for @fiber.
+  ///
+  /// In en, this message translates to:
+  /// **'Fiber'**
+  String get fiber;
+
+  /// No description provided for @fiberDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Helps digestion and satiety.'**
+  String get fiberDescription;
+
+  /// No description provided for @sugar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sugar'**
+  String get sugar;
+
+  /// No description provided for @sugarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Natural sugar content.'**
+  String get sugarDescription;
+
+  /// No description provided for @micronutrients.
+  ///
+  /// In en, this message translates to:
+  /// **'Micronutrients'**
+  String get micronutrients;
+
+  /// No description provided for @water.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get water;
+
+  /// No description provided for @gram.
+  ///
+  /// In en, this message translates to:
+  /// **'g'**
+  String get gram;
+
+  /// No description provided for @calcium.
+  ///
+  /// In en, this message translates to:
+  /// **'Calcium'**
+  String get calcium;
+
+  /// No description provided for @milligram.
+  ///
+  /// In en, this message translates to:
+  /// **'mg'**
+  String get milligram;
+
+  /// No description provided for @iron.
+  ///
+  /// In en, this message translates to:
+  /// **'Iron'**
+  String get iron;
+
+  /// No description provided for @nutritionDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'* All values are approximate and based on a 100 g portion.'**
+  String get nutritionDisclaimer;
+
+  /// No description provided for @percent.
+  ///
+  /// In en, this message translates to:
+  /// **'%'**
+  String get percent;
+
+  /// No description provided for @millimeter.
+  ///
+  /// In en, this message translates to:
+  /// **'mm'**
+  String get millimeter;
+
+  /// No description provided for @kiloMeterPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'km/h'**
+  String get kiloMeterPerHour;
+
+  /// No description provided for @kiloMeter.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get kiloMeter;
+
+  /// No description provided for @noCameraFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No camera available on this device'**
+  String get noCameraFound;
+
+  /// No description provided for @selectedFarmss.
+  ///
+  /// In en, this message translates to:
+  /// **'Select 2 to 5 farms'**
+  String get selectedFarmss;
+
+  /// No description provided for @searchFarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Search farms...'**
+  String get searchFarms;
+
+  /// No description provided for @sortByDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by distance'**
+  String get sortByDistance;
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @nearestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest first'**
+  String get nearestFirst;
+
+  /// No description provided for @farthestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Farthest first'**
+  String get farthestFirst;
+
+  /// No description provided for @filterByAvailableFruits.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by available fruits'**
+  String get filterByAvailableFruits;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @noFarmsMatchFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'No farms match your filters'**
+  String get noFarmsMatchFilters;
+
+  /// No description provided for @useNearest4.
+  ///
+  /// In en, this message translates to:
+  /// **'Use nearest 4'**
+  String get useNearest4;
+
+  /// No description provided for @defaultSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get defaultSelection;
+
+  /// No description provided for @selectedOutOfFive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}/5 selected'**
+  String selectedOutOfFive(Object count);
+
+  /// No description provided for @compareUpTo5.
+  ///
+  /// In en, this message translates to:
+  /// **'You can compare up to 5 farms only'**
+  String get compareUpTo5;
+
+  /// No description provided for @selectAtLeast2Farms.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least 2 farms for comparison.'**
+  String get selectAtLeast2Farms;
+
+  /// No description provided for @noNutritionData.
+  ///
+  /// In en, this message translates to:
+  /// **'No nutrition data found for {fruit}'**
+  String noNutritionData(Object fruit);
+
+  /// No description provided for @energyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate energy in 100 g of {fruit}.'**
+  String energyDescription(Object fruit);
+
+  /// No description provided for @dailyIntake.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of a 2000 kcal daily intake'**
+  String dailyIntake(Object percent);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

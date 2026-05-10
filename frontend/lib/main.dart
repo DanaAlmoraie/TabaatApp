@@ -10,9 +10,12 @@ import 'core/locale_manager.dart';
 import 'screens/nutrition_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:frontend/screens/shopper/statistics_screen.dart';
+import 'package:frontend/screens/auth/reset_password_screen.dart';
 
 late List<CameraDescription> cameras;
 
+final GlobalKey<NavigatorState> navigatorKey =
+    GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -48,11 +51,13 @@ class TaabatApp extends StatefulWidget {
 class _TaabatAppState extends State<TaabatApp> {
   Locale _locale = Locale('en');
 
-  @override
-  void initState() {
-    super.initState();
-    _loadSavedLanguage();
-  }
+@override
+void initState() {
+  super.initState();
+
+  _loadSavedLanguage();
+  _setupPasswordRecoveryListener();
+}
 
   Future<void> _loadSavedLanguage() async {
     final savedLang = await LocaleManager.getSavedLocale();
@@ -76,6 +81,7 @@ class _TaabatAppState extends State<TaabatApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
 
       locale: _locale,
@@ -115,4 +121,21 @@ class _TaabatAppState extends State<TaabatApp> {
       home: const LoginScreen(),
     );
   }
+  void _setupPasswordRecoveryListener() {
+  Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+    final event = data.event;
+
+    print("AUTH EVENT => $event");
+
+    if (event == AuthChangeEvent.passwordRecovery) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (_) => const ResetPasswordScreen(),
+          ),
+        );
+      });
+    }
+  });
+}
 }

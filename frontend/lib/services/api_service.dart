@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:frontend/core/user_session.dart';
 import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApiService {
   static const String baseUrl = String.fromEnvironment(
@@ -11,43 +12,71 @@ class ApiService {
   );
 
   // ============ REGISTER ============
-  static Future<Map<String, dynamic>> registerUser({
-    required String name,
-    required String email,
-    required String password,
-    required String role,
-    bool shareLocation = false,
-    double? latitude,
-    double? longitude,
-  }) async {
-    final url = Uri.parse('$baseUrl/register');
+static Future<Map<String, dynamic>> registerUser({
+  required String supabaseUid,
+  required String name,
+  required String email,
+  required String role,
+  bool shareLocation = false,
+  double? latitude,
+  double? longitude,
+}) async {
+  final url = Uri.parse('$baseUrl/register');
 
-    final Map<String, dynamic> body = {
-      "name": name,
-      "email": email,
-      "password": password,
-      "role": role,
-      "location": shareLocation && latitude != null && longitude != null
-          ? "$latitude,$longitude"
-          : null,
-      "latitude": shareLocation ? latitude : null,
-      "longitude": shareLocation ? longitude : null,
-    };
+  final Map<String, dynamic> body = {
+    "supabase_uid": supabaseUid,
+    "name": name,
+    "email": email,
+    "role": role,
+    "location": shareLocation && latitude != null && longitude != null
+        ? "$latitude,$longitude"
+        : null,
+    "latitude": shareLocation ? latitude : null,
+    "longitude": shareLocation ? longitude : null,
+  };
 
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(body),
+  final response = await http.post(
+    url,
+    headers: {"Content-Type": "application/json"},
+    body: jsonEncode(body),
+  );
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  } else {
+    throw Exception(
+      "Register failed [${response.statusCode}]: ${response.body}",
     );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    } else {
-      throw Exception(
-        "Register failed [${response.statusCode}]: ${response.body}",
-      );
-    }
   }
+}
+
+  // ============ LOGIN with supabase ============
+
+
+static Future<String> loginWithSupabase({
+  required String supabaseUid,
+  required String email,
+}) async {
+  final url = Uri.parse("$baseUrl/auth/supabase-login");
+
+  final response = await http.post(
+    url,
+    headers: {"Content-Type": "application/json"},
+    body: jsonEncode({
+      "supabase_uid": supabaseUid,
+      "email": email,
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception(
+      "Supabase backend login failed [${response.statusCode}]: ${response.body}",
+    );
+  }
+
+  final Map<String, dynamic> data = jsonDecode(response.body);
+  return data['access_token'];
+}
 
   // ============ LOGIN ============
   static Future<String> login({

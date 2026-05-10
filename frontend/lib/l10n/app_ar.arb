@@ -1,17 +1,23 @@
 {
   "appTitle": "طابت",
-  "login": " تسجيل الدخول",
-  "signUp": "  إنشاء حساب",
+  "login": "تسجيل الدخول",
+  "signUp": "إنشاء حساب",
   "welcomeBack": "مرحباً بعودتك إلى طابت",
   "hello": "مرحباً",
   "createAccount": "أنشئ حسابك في طابت",
   "home": "الرئيسية",
 
+  "loginTitle": "تسجيل الدخول",
+  "loginSubtitle": "مرحبًا بعودتك إلى طابت",
+
   "email": "البريد الإلكتروني",
+  "emailAddress": "البريد الإلكتروني",
   "emailHint": "name@email.com",
   "enterEmail": "يرجى إدخال البريد الإلكتروني",
+  "enterYourEmail": "أدخل بريدك الإلكتروني",
   "validEmail": "بريد إلكتروني غير صالح",
   "emailAlreadyUsed": "البريد الإلكتروني مستخدم بالفعل، حاول استخدام بريد إلكتروني آخر",
+
   "failedSigningUp": "فشل تسجيل الحساب الجديد",
   "failedSigningIn": "فشل تسجيل دخول الحساب",
 
@@ -23,6 +29,26 @@
   "password8Chars": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
   "forgotPassword": "هل نسيت كلمة السر؟",
   "reEnterPassword": "أعد إدخال كلمة المرور",
+
+  "forgotPasswordTitle": "نسيت كلمة المرور",
+  "forgotPasswordSubtitle": "استرجاع حساب تابات",
+  "resetYourPassword": "إعادة تعيين كلمة المرور",
+  "sendResetLink": "إرسال رابط التعيين",
+  "backToLogin": "العودة لتسجيل الدخول",
+  "checkInboxReset": "تحقق من بريدك الإلكتروني وافتح رابط إعادة التعيين.",
+  "enterEmailToReceive": "أدخل بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.",
+
+  "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+  "resetPasswordSubtitle": "قم بإنشاء كلمة مرور جديدة وآمنة",
+  "setNewPassword": "تعيين كلمة مرور جديدة",
+  "enterConfirmPassword": "أدخل كلمة المرور الجديدة وقم بتأكيدها.",
+  "updatePassword": "تحديث كلمة المرور",
+
+  "passwordRequirements": "متطلبات كلمة المرور",
+  "atLeast8Chars": "8 أحرف على الأقل",
+  "uppercaseRequirement": "حرف كبير واحد على الأقل",
+  "lowercaseRequirement": "حرف صغير واحد على الأقل",
+  "numberRequirement": "رقم واحد على الأقل",
 
   "fullName": "الاسم الكامل",
   "enterFullName": "أدخل اسمك الكامل",
@@ -37,7 +63,7 @@
   "shareLocation": "مشاركة موقعي لعرض المزارع والخدمات القريبة",
   "locationSaved": "تم حفظ الموقع",
 
-  "noAccount": " ليس لديك حساب؟",
+  "noAccount": "ليس لديك حساب؟",
   "haveAccount": "لديك حساب بالفعل؟",
 
   "logout": "تسجيل الخروج",
@@ -55,17 +81,21 @@
   "saveFarm": "حفظ المزرعة",
   "farmName": "اسم المزرعة",
   "farmNameRequired": "اسم المزرعة مطلوب",
+
   "location": "وصف الموقع (المدينة، الحي، الشارع) *",
   "locationRequired": "الموقع مطلوب",
   "locationRequiredDesc": "قم بتمكين الوصول إلى الموقع لاكتشاف المزارع.",
   "openPermissions": "فتح إعدادات الصلاحيات",
+
   "selectFruits": "اختر الفواكه",
   "visibleToShoppers": "مرئية للمتسوقين",
   "disableArchiveFarm": "إيقافها يؤدي لأرشفة المزرعة",
   "selectAtLeastOneFruit": "يرجى اختيار فاكهة واحدة على الأقل",
+
   "noFarmsYet": "لا توجد مزارع حتى الآن",
   "deleteFailed": "فشل الحذف",
   "failedLoadingFarms": "فشل تحميل المزارع",
+
   "farmLocationGps": "موقع المزرعة (GPS) *",
   "getting": "جاري التحديد...",
   "currentLocation": "موقعي الحالي",
@@ -75,17 +105,21 @@
   "noGpsSelected": "لم يتم تحديد موقع GPS بعد",
   "pleaseSetFarmGps": "يرجى تحديد موقع المزرعة (الموقع الحالي أو اختيار من الخريطة)",
   "couldNotGetLocation": "تعذر الحصول على الموقع الحالي",
-  "shareMyGPSLocation":"شارك موقعي عبر نظام تحديد المواقع العالمي (GPS) لعرض المزارع والخدمات القريبة.",
+
+  "shareMyGPSLocation": "شارك موقعي عبر نظام تحديد المواقع العالمي (GPS) لعرض المزارع والخدمات القريبة.",
   "locationPermissionDenied": "تم رفض صلاحية الموقع",
   "pleaseEnableLocation": "يرجى تفعيل إذن الوصول إلى الموقع للمتابعة",
+
   "registrationFailed": "فشل التسجيل:",
   "gps": "GPS:",
   "pickFarmLocation": "اختر موقع المزرعة",
 
   "retry": "أعد المحاولة",
   "unableLoadingWeather": "لا يمكن تحميل بيانات الطقس حاليا.",
+
   "basedOnYourLocation": "بناءً على موقعك",
   "farmWeather": "طقس المزرعة",
+
   "sunny": "مشمس",
   "partlyCloudy": "غائم جزئياً",
   "cloudy": "غائم",
@@ -110,21 +144,30 @@
 
   "classifyFruit": "تصنيف الفاكهة",
   "classifyFruitDesc": "تعرّف على نوع الفاكهة باستخدام الكاميرا الذكية",
+  "classifyDescription": "التعرف على نوع الفاكهة باستخدام الكاميرا والذكاء الاصطناعي",
+
   "noFruitAdded": "لم تتم إضافة أي فواكه",
+
   "manageFarm": "إدارة المزارع",
   "manageFarmDesc": "قم بإدارة جميع مزارعك من هنا",
+
   "viewHistory": "عرض السجل",
   "viewHistoryDesc": "عرض سجل الأنشطة والحصاد",
+
   "sampleLocation": "مدينتك",
 
   "cancel": "إلغاء",
   "confirm": "تأكيد",
   "chooseAvatar": "اختر الصورة الرمزية",
+
   "name": "الاسم",
   "nameTooShort": "الاسم يجب أن يكون 3 أحرف على الأقل",
+
   "newPasswordOptional": "كلمة مرور جديدة (اختياري)",
+
   "cameraAccess": "السماح بالكاميرا",
   "locationSharing": "مشاركة الموقع",
+
   "profileupdatedsuccess": "تم تحديث الملف الشخصي بنجاح",
 
   "exploreFarms": "استكشاف المزارع",
@@ -132,13 +175,22 @@
   "unnamedFarm": "مزرعة بدون اسم",
   "noLocation": "لا يوجد موقع",
 
-  "classifyFruit": "تصنيف الفاكهة",
-  "classifyDescription": "التعرف على نوع الفاكهة باستخدام الكاميرا والذكاء الاصطناعي",
   "viewAll": "عرض الكل",
+
   "unknownFarm": "مزرعة غير معروفة",
   "unknownLocation": "موقع غير معروف",
+
   "distance": "المسافة",
 
+  "farmComparison": "مقارنة المزارع",
+  "compareBasedLocation": "بناءً على موقعك",
+  "compareFarmsDescription": "قارن بين المزارع حسب العوامل المحددة",
+
+  "cropCount": "عدد المحاصيل",
+  "freshness":"اعلى مستوى نضج",
+  "fruitAvailability": "توفر الفواكه",
+  "selectedFarms": "المزارع المحددة",
+  "statisticsFilter": "فلترة الإحصائيات",
 
   "apple": "تفاح",
   "banana": "موز",
@@ -151,111 +203,127 @@
   "asilDates": "تمر أصيل",
   "sukaryDates": "تمر سكري",
 
-  
-  "nutritionInformation": "المعلومات الغذائية · 100 جم",
-  "calories": "السعرات الحرارية",
-  "energyDescription": "الطاقة التقريبية في 100 جم من {fruit}.",
-  "dailyIntake": "{percent}% من الاحتياج اليومي (2000 سعرة حرارية)",
+  "mapView": "اضغط لعرض الخريطة",
+"backToFarm": "رجوع للمزرعة",
+"openInMaps": "افتح في الخريطة",
+"reviews": "تقييم",
+"founded": "تأسست",
+"loadingMap": "جاري تحميل الخريطة..."
 
-  "macronutrients": "العناصر الغذائية الكبرى",
+,
+"cropTypes": "أنواع المزروعات",
+"type": "النوع",
+"varietyCropsGrown": "تنوع المحاصيل المزروعة",
+"availableCropsLabel": "المحاصيل المتوفرة",
+"crop": "محصول",
+"availableSlaeNow": "متاح للبيع الآن",
+"annualProduction": "كمية المحصول السنوية",
+"kiloGram": "كجم",
+"totalProduction": "إجمالي الإنتاج هذا الموسم",
+"farmAge": "عمر المزرعة",
+"year": "سنة",
+"fromFoundingUntilNow": "منذ تأسيسها حتى الآن",
+"cropsQuantity": "كميات المحاصيل المتوفرة (كجم)",
+"highestQuantity": "الأعلى كمية",
+"available": "متوفر",
+"veryFresh": "طازج جداً",
+"fresh": "طازج",
+"good": "جيد",
+"acceptable": "مقبول",
+"old": "قديم",
+"quantity": "الكمية",
+"harvestDate": "تاريخ الحصاد",
+"contactWhatsapp": "تواصل عبر واتساب",
+"whatsappMessage": "مرحباً، أود الاستفسار عن منتجات",
+"farmStats": "إحصائيات المزرعة",
+"farmStatsDesc": "مؤشرات أداء المزرعة",
+"availableCrops": "المحاصيل المتوفرة",
+"availableCropsDesc": "تفاصيل المحاصيل الطازجة المتاحة",
+"noCrops": "لا توجد محاصيل متوفرة حالياً",
+"qualityIndicators": "مؤشرات الجودة",
+"qualityDesc": "معايير التميز",
+"noFarm": "لا توجد مزرعة",
+"noFarmDesc": "لم يتم العثور على بيانات المزرعة",
 
-  "carbs": "الكربوهيدرات",
-  "protein": "البروتين",
-  "totalFat": "الدهون الكلية",
+"cameraPermissionDenied": "تم رفض إذن استخدام الكاميرا",
+"errorAccessingCamera": "حدث خطأ أثناء الوصول إلى الكاميرا:",
+"errorWhileScanning": "حدث خطأ أثناء المسح الضوئي",
+"errorWhileUploading": "حدث خطأ أثناء التحميل",
+"unknown": "غير معروف",
+"fruitCondition": "حالة الفاكهة",
+"fruitStructureIsStable": "بنية الفاكهة مستقرة",
+"spotsFound": "تم اكتشاف بقع صغيرة في الفاكهة",
+"seeDetailInformation": "للاطلاع على المعلومات التفصيلية",
+"unableDetectingFruitClearly": "تعذر تحديد الفاكهة بوضوح؛ حاول مرة أخرى",
+"scan": "امسح",
+"scanning": "يتم المسح...",
+"placeFruitInsideFrame": "ضع الفاكهة داخل إطار التصوير.",
+"upload": "تحميل",
 
-  "carbsDescription": "المصدر الرئيسي للطاقة",
-  "proteinDescription": "يدعم العضلات",
-  "fatDescription": "إجمالي كمية الدهون",
+"nutritionInformation": "المعلومات الغذائية · 100 جم",
+"kilocalorie": "سعرة حرارية",
+"calories": "السعرات الحرارية",
+"macronutrients": "العناصر الغذائية الكبرى",
+"carbs": "الكربوهيدرات",
+"carbsDescription": "المصدر الرئيسي للطاقة",
+"protein": "البروتين",
+"proteinDescription": "يدعم العضلات",
+"totalFat": "الدهون الكلية",
+"fatDescription": "إجمالي كمية الدهون",
+"fiberSugar": "الألياف والسكريات",
+"fiber": "الألياف",
+"fiberDescription": "يساعد على الهضم والشعور بالشبع.",
+"sugar": "السكر",
+"sugarDescription": "السكر الطبيعي الموجود في الفاكهة.",
+"micronutrients": "العناصر الغذائية الدقيقة",
+"water": "الماء",
+"gram": "جم",
+"calcium": "الكالسيوم",
+"milligram": "ملجم",
+"iron": "الحديد",
+"nutritionDisclaimer": "* جميع القيم تقريبية وتعتمد على حصة مقدارها 100 جم.",
 
-  "fiberSugar": "الألياف والسكريات",
+"percent": "%",
+"millimeter": "ملمتر",
+"kiloMeterPerHour": "كم/ساعة",
+"kiloMeter": "كم",
+"noCameraFound": "لا توجد كاميرا متاحة في هذا الجهاز",
+"selectedFarmss": "اختر من 2 إلى 5 مزارع",
 
-  "fiber": "الألياف",
-  "sugar": "السكر",
-
-  "fiberDescription": "يساعد على الهضم والشعور بالشبع.",
-  "sugarDescription": "السكر الطبيعي الموجود في الفاكهة.",
-
-  "micronutrients": "العناصر الغذائية الدقيقة",
-
-  "water": "الماء",
-  "calcium": "الكالسيوم",
-  "iron": "الحديد",
-
-  "nutritionDisclaimer": "* جميع القيم تقريبية وتعتمد على حصة مقدارها 100 جم.",
-
-  "noNutritionData": "لا توجد بيانات غذائية لـ {fruit}",
-  "loadingError": "حدث خطأ أثناء تحميل البيانات",
-  "gram": "جم",
-  "milligram": "ملجم",
-  "kilocalorie": "سعرة حرارية",
-  "percent": "%",
-  "millimeter": "ملمتر",
-  "kiloMeterPerHour": "كم/ساعة",
-  "kiloMeter": "كم",
-  "kiloGram": "كجم",
-
-  "noCameraFound": "لا توجد كاميرا متاحة في هذا الجهاز",
-  "errorAccessingCamera": "حدث خطأ أثناء الوصول إلى الكاميرا:",
-  "errorWhileScanning": "حدث خطأ أثناء المسح الضوئي",
-  "errorWhileUploading": "حدث خطأ أثناء التحميل",
-  "fruitCondition":"حالة الفاكهة",
-  "spotsFound": "تم اكتشاف بقع صغيرة في الفاكهة",
-  "fruitStructureIsStable": "بنية الفاكهة مستقرة",
-  "unableDetectingFruitClearly": "تعذر تحديد الفاكهة بوضوح؛ حاول مرة أخرى",
-  "seeDetailInformation": "للاطلاع على المعلومات التفصيلية.",
-  "unknown": "غير معروف",
-  "scan": "امسح الفاكهة",
-  "placeFruitInsideFrame": "ضع الفاكهة داخل إطار التصوير.",
-  "scanning": "يتم التقاط الفاكهة...",
-  "upload": "تحميل الصورة",
-  "cameraPermissionDenied": "تم رفض إذن استخدام الكاميرا",
-
-  "farmStats": "إحصائيات المزرعة",
-  "farmStatsDesc": "مؤشرات أداء المزرعة",
-
-  "mapView": "عرض الخريطة",
-  "backToFarm": "رجوع للمزرعة",
-  "openInMaps": "افتح في الخريطة",
-
-  "veryFresh": "طازج جداً",
-  "fresh": "طازج",
-  "good": "جيد",
-  "acceptable": "مقبول",
-  "old": "قديم",
-
-  "quantity": "الكمية",
-  "harvestDate": "تاريخ الحصاد",
-  "type": "النوع",
-
-  "cropsQuantity": "كميات المحاصيل المتوفرة (كجم)",
-  "highestQuantity": "الأعلى كمية",
-  "available": "متوفر",
-
-  "availableCrops": "المحاصيل المتوفرة حالياً",
-  "availableCropsDesc": "تفاصيل المحاصيل الطازجة المتاحة",
-
-  "qualityIndicators": "مؤشرات الجودة",
-  "qualityDesc": "معايير التميز",
-
-  "noFarm": "لا توجد مزرعة",
-  "noFarmDesc": "لم يتم العثور على بيانات المزرعة",
-
-  "contactWhatsapp": "تواصل عبر واتساب",
-  "reviews": "تقييم",
-  "founded": "تأسست",
-  "loadingMap": "جاري تحميل الخريطة...",
-
-  "cropTypes": "أنواع المزروعات",
-  "availableCropsLabel": "المحاصيل المتوفرة",
-  "annualProduction": "كمية المحصول السنوية",
-  "farmAge": "عمر المزرعة",
-  "noCrops": "لا توجد محاصيل متوفرة حالياً",
-  "whatsappMessage": "مرحباً، أود الاستفسار عن منتجات",
-  "types": "أنواع",
-  "varietyCropsGrown": "تنوع المحاصيل المزروعة",
-  "crop": "محصول",
-  "availableSlaeNow": "متاح للبيع الآن",
-  "totalProduction": "إجمالي الإنتاج هذا الموسم",
-  "year": "سنة",
-  "fromFoundingUntilNow": "منذ تأسيسها حتى الآن"
+"searchFarms": "ابحث عن المزارع...",
+"sortByDistance": "الترتيب حسب المسافة",
+"none": "بدون",
+"nearestFirst": "الأقرب أولاً",
+"farthestFirst": "الأبعد أولاً",
+"filterByAvailableFruits": "فلترة حسب الفواكه المتوفرة",
+"all": "الكل",
+"noFarmsMatchFilters": "لا توجد مزارع تطابق الفلاتر",
+"useNearest4": "استخدم أقرب 4",
+"defaultSelection": "افتراضي",
+"selectedOutOfFive": "{count}/5 محددة",
+"@selectedOutOfFive": {
+  "placeholders": {
+    "count": {}
+  }
+},
+"compareUpTo5": "يمكنك مقارنة 5 مزارع فقط",
+"selectAtLeast2Farms": "اختر مزرعتين على الأقل للمقارنة",
+"noNutritionData": "لا توجد بيانات غذائية لـ {fruit}",
+"@noNutritionData": {
+  "placeholders": {
+    "fruit": {}
+  }
+},
+"energyDescription": "الطاقة التقريبية في 100 جم من {fruit}.",
+"@energyDescription": {
+  "placeholders": {
+    "fruit": {}
+  }
+},
+"dailyIntake": "{percent}% من الاحتياج اليومي 2000 سعرة حرارية",
+"@dailyIntake": {
+  "placeholders": {
+    "percent": {}
+  }
+}
 }
